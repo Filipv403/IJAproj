@@ -1,0 +1,24 @@
+<project name="ija-app" default="compile" basedir=".">
+
+    <target name="clean">
+        <delete dir="build"/>
+        <delete dir="dest"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <mkdir dir="build"/>
+        <javac srcdir="src" destdir="build" includeantruntime="false"></javac>
+        <copy todir="build">
+            <fileset dir="src" includes="**/*.css"></fileset>
+            <fileset dir="lib" includes="**/*.png"></fileset>
+        </copy>
+        <mkdir dir="dest"/>
+        <jar destfile="dest/ija-app.jar" basedir="build">
+            <manifest><attribute name="Main-Class" value="Main"/></manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="compile">
+        <java jar="dest/ija-app.jar" fork="true"/>
+    </target>
+</project>

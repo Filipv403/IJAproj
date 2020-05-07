@@ -1,0 +1,20 @@
+#vbox {
+    -fx-padding: 40px;
+    -fx-spacing: 15;
+    -fx-background-color: rgba(121, 124, 186);
+}
+
+.button{
+    -fx-background-color: #45ce38;
+    -fx-background-image: url("/img/plus-sign.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 24px 24px;
+    -fx-background-position: right center;
+    -fx-font-size: 14pt;
+    -fx-font-weight: 700;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-text-fill: #fafafa;
+    -fx-padding: 10px 20px;
+    -fx-pref-width: 200px;
+    -fx-cursor: hand;
+}
