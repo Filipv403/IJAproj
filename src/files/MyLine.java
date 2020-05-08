@@ -52,5 +52,10 @@ public class MyLine implements Line {
 	public static Line defaultLine(java.lang.String id) {
 		Line line = new MyLine(id);
 		return line;
+	}
+	
+	@Override
+    public String toString(){
+        return "" + this.id + "";
     }
 }

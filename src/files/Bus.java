@@ -19,7 +19,24 @@ public class Bus {
         this.carrier = carrier;
     }
 
+    public int getId() {
+        return this.id;
+    }
+
+    public String getType(){
+        return this.type;
+    }
+
+    public String getCarrier(){
+        return this.carrier;
+    }
+
     public void addLine(List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list){
         this.map_list = map_list;
+    }
+
+    @Override
+    public String toString(){
+        return "#"+this.id + " " + this.type + " " + this.carrier + " ";
     }
 }

@@ -48,6 +48,6 @@ public class MyStop implements Stop {
 
     @Override
     public String toString(){
-        return "stop(" + id + ")";
+        return "" + this.id + "";
     }
 }

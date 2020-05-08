@@ -18,3 +18,39 @@
     -fx-pref-width: 350px;
     -fx-cursor: hand;
 }
+
+.combo-box{
+    -fx-background-color: #45ce38;
+    -fx-background-image: url("/img/plus-sign.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 28px 28px;
+    -fx-background-position: 90% 50%;
+    -fx-font-size: 16pt;
+    -fx-font-weight: 700;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-text-fill: #fafafa;
+    -fx-padding: 7px 20px;
+    -fx-pref-width: 350px;
+    -fx-cursor: hand;
+}
+
+.combo-box .arrow, .combo-box .arrow-button{
+    -fx-background-color: transparent;
+}
+
+.combo-box .list-cell{
+    -fx-background: #45ce38;
+    -fx-background-color: #45ce38;
+    -fx-text-fill: #fafafa;
+}
+
+.combo-box .list-view{
+    -fx-background-color: #45ce38;
+    -fx-font-size: 16pt;
+    -fx-font-weight: 700;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-text-fill: #fafafa;
+    -fx-padding: 7px 20px;
+    -fx-pref-width: 350px;
+    -fx-cursor: hand;
+}
