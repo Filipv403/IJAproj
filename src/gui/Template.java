@@ -1,18 +1,11 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
+import simulation.Timers;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.geometry.*;
-import gui.*;
 
 public class Template {
 
@@ -39,6 +32,10 @@ public class Template {
         borderPane.setRight(rightMenu);
 
         /*import mapy*/
+
+        Timers myTimer = new Timers();
+        //myTimer.setGui();
+        myTimer.startTimers();
 
         Scene scene = new Scene(borderPane, 1280, 720);
         window.setScene(scene);
