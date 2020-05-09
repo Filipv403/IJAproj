@@ -8,6 +8,11 @@ public class Coordinate{
     private int x = 0;
     private int y = 0;
 
+    public Coordinate() {
+        this.x = 0;
+        this.y = 0;
+    }
+
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
@@ -20,6 +25,11 @@ public class Coordinate{
 
     public int getY(){
         return this.y;
+    }
+
+    public void setXY(int x, int y){
+        this.x = x;
+        this.y = y;
     }
     //rozdíl souřadnic
     public int diffX(Coordinate c){

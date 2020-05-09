@@ -4,6 +4,7 @@ import simulation.Timers;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -62,12 +63,15 @@ public class Template {
         rightMenu.setId("vbox");
         rightMenu.getStylesheets().addAll("gui/rightMenu.css");
 
+        /*import mapy*/
+        Group root = new Group();
+        root = MapObjects.drawStreet();
+
         //BorderPane
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(menuBar);
         borderPane.setRight(rightMenu);
-
-        /*import mapy*/
+        borderPane.setCenter(root);
 
         Timers myTimer = new Timers();
         //myTimer.setGui();

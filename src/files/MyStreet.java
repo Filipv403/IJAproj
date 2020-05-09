@@ -22,6 +22,10 @@ public class MyStreet implements Street {
 	public java.lang.String getId() {
 		return nazev;
 	}
+
+	public Coordinate[] getCoordinate(){
+		return this.c;
+	}
 	
 	public java.util.List<Coordinate> getCoordinates() {
 		return list_c;
