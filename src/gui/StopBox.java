@@ -17,6 +17,10 @@ public class StopBox {
         this.stopBox.getItems().addAll(stop.toString());
     }
 
+    public void addStopFile(MyStop stop){
+        this.stopBox.getItems().addAll(stop.toString());
+    }
+
     /**
      * @return the stopBox
      */

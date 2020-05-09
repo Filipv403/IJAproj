@@ -8,6 +8,12 @@ public class MyStreet implements Street {
     private String nazev;
 	private Coordinate[] c;
 	
+
+	public MyStreet() {
+		this.nazev = "";
+		this.c[0] = new Coordinate(0,0);
+	}
+
 	public MyStreet(String nazev, Coordinate... c) {
 		this.nazev = nazev;
 		this.c = c;
@@ -19,6 +25,10 @@ public class MyStreet implements Street {
 	
 	public java.util.List<Coordinate> getCoordinates() {
 		return list_c;
+	}
+
+	public void setId(String id){
+		this.nazev = id;
 	}
 	
 	public Coordinate begin() {

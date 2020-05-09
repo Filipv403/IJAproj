@@ -13,6 +13,12 @@ public class Bus {
     private String carrier;
     private List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list;
 
+    public Bus(){
+        this.id=0;
+        this.type="";
+        this.carrier="";
+    }
+
     public Bus(int id, String type, String carrier){
         this.id = id;
         this.type = type;
@@ -29,6 +35,18 @@ public class Bus {
 
     public String getCarrier(){
         return this.carrier;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public void setCarrier(String carrier){
+        this.carrier = carrier;
     }
 
     public void addLine(List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list){

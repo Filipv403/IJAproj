@@ -17,6 +17,10 @@ public class BusBox {
         this.busBox.getItems().addAll(bus.toString());
     }
 
+    public void addBusFile(Bus bus){
+        this.busBox.getItems().addAll(bus.toString());
+    }
+
     /**
      * @return the busBox
      */

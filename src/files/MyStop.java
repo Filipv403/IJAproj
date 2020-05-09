@@ -3,7 +3,11 @@ package files;
 public class MyStop implements Stop {
 	private String id;
     private Coordinate c;
-	private Street s;
+    private Street s;
+    
+    public MyStop() {
+        this.id = "";
+    }
 
     public MyStop(String id) {
         this.id = id;
@@ -25,6 +29,9 @@ public class MyStop implements Stop {
         return null;
     }
 
+    public void setId(String id){
+        this.id = id;
+    }
 
     public void setStreet(Street s){
 		this.s = s;

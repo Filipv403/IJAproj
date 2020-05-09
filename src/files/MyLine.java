@@ -10,7 +10,15 @@ public class MyLine implements Line {
 	private String id;
 	List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = new ArrayList <AbstractMap.SimpleImmutableEntry<Street,Stop>>();
 
+	public MyLine(){
+		this.id = "";
+	}
+
 	public MyLine(String id){
+		this.id = id;
+	}
+
+	public void setId(String id){
 		this.id = id;
 	}
 

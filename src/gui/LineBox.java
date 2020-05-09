@@ -17,6 +17,10 @@ public class LineBox {
         this.lineBox.getItems().addAll(line.toString());
     }
 
+    public void addLineFile(MyLine line){
+        this.lineBox.getItems().addAll(line.toString());
+    }
+
     /**
      * @return the lineBox
      */
