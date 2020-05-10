@@ -31,6 +31,14 @@ public class MyStreet implements Street {
 		return list_c;
 	}
 
+	public MyStreet getStreetById(String id){
+		if(this.nazev == id){
+			MyStreet street = new MyStreet(this.nazev, this.c);			
+			return street;
+		}
+		return null;
+	}
+
 	public void setId(String id){
 		this.nazev = id;
 	}

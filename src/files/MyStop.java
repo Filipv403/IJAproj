@@ -55,6 +55,10 @@ public class MyStop implements Stop {
 
     @Override
     public String toString(){
-        return "" + this.id + "";
+        try {
+            return "" + this.id + " na ulici: " + s.getId();
+        } catch (Exception e) {
+            return "" + this.id + "";
+        }
     }
 }

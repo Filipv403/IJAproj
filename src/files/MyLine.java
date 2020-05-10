@@ -18,8 +18,20 @@ public class MyLine implements Line {
 		this.id = id;
 	}
 
+	public String getId(){
+		return this.id;
+	}
+
 	public void setId(String id){
 		this.id = id;
+	}
+
+	public Stop getFirstStop(){
+		return this.map_list.get(0).getValue();
+	}
+
+	public Stop getLastStop(){
+		return this.map_list.get(map_list.size()-1).getValue();
 	}
 
 	public boolean addStop(Stop stop) {
@@ -64,6 +76,10 @@ public class MyLine implements Line {
 	
 	@Override
     public String toString(){
-        return "" + this.id + "";
+		try {
+			return "" + this.id + " pocatecni zastavka: " + getFirstStop().getId();
+		} catch (Exception e) {
+			return "" + this.id + "";
+		} 
     }
 }

@@ -1,44 +1,57 @@
 package loaded;
 
+import java.util.ArrayList;
+
 import files.*;
 import gui.*;
 
 public interface AddBoxItem {
-
+    Loaded l = new Loaded();
     public static BusBox itemBus(BusBox busBox){
-        Bus bus = new Bus();
+        ArrayList<Bus> buses = new ArrayList<Bus>();
+        buses = l.getBuses();
 
-        //misto setteru se bude nacitat ze souboru
-        bus.setId(1);
-        bus.setType("Volvo");
-        bus.setCarrier("Vojtila");
-
-        //vlozeni
-        busBox.addBusFile(bus);
+        for (Bus bus : buses) {
+            //vlozeni
+            busBox.addBusFile(bus);
+        }
 
         return busBox;
     }
 
     public static StopBox itemStop(StopBox stopBox){
-        MyStop stop = new MyStop();
 
-        //misto setteru se bude nacitat ze souboru, souradnice a ulice jeste
-        stop.setId("Deckerova");
-
+        //nacteni zastavek ze souboru
+        ArrayList<MyStop> stops = new ArrayList<MyStop>();
+        ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
+        stops = l.getStops();
+        streets = l.getStreets();
         //vlozeni
-        stopBox.addStopFile(stop);
+        for (MyStop myStop : stops) {
+            for (MyStreet myStreet : streets) {
+                if(myStreet.addStop(myStop)){
+                    myStop.setStreet(myStreet);
+                    stopBox.addStopFile(myStop);
+                    break;
+                }
+            }
+        }
 
         return stopBox;
     }
 
     public static LineBox itemLine(LineBox lineBox){
-        MyLine line = new MyLine();
-
-        //misto setteru se bude nacitat ze souboru, pridat seznam jeste
-        line.setId("\u010d\u00edslo 2");
-
+        ArrayList<MyStop> stops = new ArrayList<MyStop>();
+        ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
+        ArrayList<MyLine> lines = new ArrayList<MyLine>();
+        stops = l.getStops();
+        streets = l.getStreets();
+        lines = l.getLines();
+        
         //vlozeni
-        lineBox.addLineFile(line);
+        for (MyLine myLine : lines) {
+            lineBox.addLineFile(myLine);
+        }
 
         return lineBox;
     }

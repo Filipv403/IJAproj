@@ -48,10 +48,12 @@ public class Template {
         StopBox stops = new StopBox("Zast\u00e1vky"); //u00e1 => á
         LineBox linky = new LineBox("Linky");
         BusBox busBox = new BusBox("Autobusy");
+
         //plneni pres program
-        stops.addStop("Bayerova");
-        linky.addLine("\u010d\u00edslo 1"); //u010d => č | u00ed => í
-        busBox.addBus(1, "Iveco", "ARRIVA");
+        //stops.addStop("Bayerova");
+        //linky.addLine("\u010d\u00edslo 1"); //u010d => č | u00ed => í
+        //busBox.addBus(1, "Iveco", "ARRIVA");
+
         //plneni pres soubor
         busBox = AddBoxItem.itemBus(busBox);
         stops = AddBoxItem.itemStop(stops);
@@ -73,6 +75,7 @@ public class Template {
         borderPane.setRight(rightMenu);
         borderPane.setCenter(root);
 
+        //timer
         Timers myTimer = new Timers();
         //myTimer.setGui();
         myTimer.startTimers();

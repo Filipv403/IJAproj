@@ -2,7 +2,7 @@ package files;
 
 import java.util.List;
 import java.util.AbstractMap;
-import files.Line;
+import files.*;
 
 /**
  * @author xvacla30
@@ -12,6 +12,7 @@ public class Bus {
     private String type;
     private String carrier;
     private List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list;
+    private MyLine line;
 
     public Bus(){
         this.id=0;
@@ -49,12 +50,21 @@ public class Bus {
         this.carrier = carrier;
     }
 
-    public void addLine(List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list){
+    public void addLine(MyLine line){
+        this.line = line;
+    }
+
+    public void addLineList(List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list){
         this.map_list = map_list;
+    }
+
+    public Coordinate getFirstStopCoordinate(){
+        Coordinate c = new Coordinate();
+        return this.line.getFirstStop().getCoordinate();
     }
 
     @Override
     public String toString(){
-        return "#"+this.id + " " + this.type + " " + this.carrier + " ";
+        return "#"+this.id + " " + this.type + " " + this.carrier + " " + this.line.getId();
     }
 }

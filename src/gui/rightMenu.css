@@ -30,7 +30,7 @@
     -fx-font-family: Arial, Helvetica, sans-serif;
     -fx-text-fill: #fafafa;
     -fx-padding: 7px 20px;
-    -fx-pref-width: 350px;
+    -fx-pref-width: 400px;
     -fx-cursor: hand;
 }
 
@@ -42,6 +42,7 @@
     -fx-background: #45ce38;
     -fx-background-color: #45ce38;
     -fx-text-fill: #fafafa;
+    -fx-padding: 7px 0;
 }
 
 .combo-box .list-view{
@@ -51,7 +52,7 @@
     -fx-font-family: Arial, Helvetica, sans-serif;
     -fx-text-fill: #fafafa;
     -fx-padding: 7px 20px;
-    -fx-pref-width: 350px;
+    -fx-pref-width: 400px;
     -fx-cursor: hand;
 }
 
