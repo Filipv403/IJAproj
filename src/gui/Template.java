@@ -25,6 +25,7 @@ public class Template {
 
     public static void displayTemplate(String MHD){
         Stage window = new Stage();
+        Loaded data = new Loaded();
         window.setTitle(MHD);
 
         //Menu
@@ -55,9 +56,9 @@ public class Template {
         //busBox.addBus(1, "Iveco", "ARRIVA");
 
         //plneni pres soubor
-        busBox = AddBoxItem.itemBus(busBox);
-        stops = AddBoxItem.itemStop(stops);
-        linky = AddBoxItem.itemLine(linky);
+        busBox = AddBoxItem.itemBus(data, busBox);
+        stops = AddBoxItem.itemStop(data, stops);
+        linky = AddBoxItem.itemLine(data, linky);
 
         //comboBox.setOnAction("po kliknutí zvýrazní na mapě");
 
@@ -67,7 +68,8 @@ public class Template {
 
         /*import mapy*/
         Group root = new Group();
-        root = MapObjects.drawStreet();
+
+        root = MapObjects.drawStreet(data);
 
         //BorderPane
         BorderPane borderPane = new BorderPane();
@@ -78,6 +80,7 @@ public class Template {
         //timer
         Timers myTimer = new Timers();
         //myTimer.setGui();
+        myTimer.setBusses(data.getBuses());
         myTimer.startTimers();
 
         Scene scene = new Scene(borderPane, 1280, 720);

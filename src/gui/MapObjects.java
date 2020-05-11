@@ -1,19 +1,17 @@
 package gui;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-
 import files.*;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import loaded.*;
 
 public interface MapObjects {
-    public static Group drawStreet(){
+    public static Group drawStreet(Loaded l){
         MyStreet street;
         Line line = new Line();
         Rectangle rectangle = new Rectangle();
@@ -24,12 +22,10 @@ public interface MapObjects {
         int[] y = {0, 0};
         int i = 0;
 
-
         ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
         ArrayList<Bus> buses = new ArrayList<Bus>();
         Group root = new Group();
-        Loaded l = new Loaded();
         Boolean bool;
         
         //vlozeni
@@ -44,11 +40,14 @@ public interface MapObjects {
                 y[i] = coordinate.getY();
                 i++;
             }
+
             //vykresleni ulic
             line = new Line(x[0], y[0], x[1], y[1]);
             line.setStroke(Color.rgb(65, 63, 68));
             line.setStrokeWidth(7);
+            myStreet.setMapLine(line);
             root.getChildren().addAll(line);
+
             //vykresleni a pridani zastavek
             for (MyStop myStop : stops) {
                 bool = myStreet.addStop(myStop);
@@ -56,20 +55,21 @@ public interface MapObjects {
                     rectangle = new Rectangle(myStop.getCoordinate().getX(), myStop.getCoordinate().getY(), 5, 5);
                     rectangle.setStroke(Color.RED);
                     rectangle.setFill(Color.RED);
-                    root.getChildren().addAll(rectangle);
+                    myStop.setMapRect(rectangle);
+                    root.getChildren().addAll(rectangle, new Text(myStop.getCoordinate().getX(), myStop.getCoordinate().getY(), myStop.getId()));
                 }
             }
-            //vykresleni autobusu
-            for (Bus bus : buses) {
-                circle = new Circle(bus.getFirstStopCoordinate().getX(), bus.getFirstStopCoordinate().getY(), 7);
-                circle.setStroke(Color.BLUE);
-                circle.setFill(Color.BLUE);
-                root.getChildren().addAll(circle);
-            }   
             i=0;
         }
 
+        //vykresleni autobusu
+        for (Bus bus : buses) {
+            circle = new Circle(bus.getFirstStopCoordinate().getX(), bus.getFirstStopCoordinate().getY(), 7);
+            circle.setStroke(Color.BLUE);
+            circle.setFill(Color.BLUE);
+            bus.setCircle(circle);
+            root.getChildren().addAll(circle);
+        }
         return root;
     }
-
 }

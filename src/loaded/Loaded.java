@@ -16,8 +16,8 @@ public class Loaded {
     public Loaded(){
         this.myStops = Load.loadStops();
         this.myStreets = Load.loadStreets();
-        this.myLines = Load.loadLines();
-        this.Buses = Load.loadBuses();
+        this.myLines = Load.loadLines(this.myStreets, this.myStops);
+        this.Buses = Load.loadBuses(this.myLines, this.myStops);
     }
 
     public ArrayList<MyStop> getStops(){

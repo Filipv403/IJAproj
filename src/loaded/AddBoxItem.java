@@ -6,8 +6,7 @@ import files.*;
 import gui.*;
 
 public interface AddBoxItem {
-    Loaded l = new Loaded();
-    public static BusBox itemBus(BusBox busBox){
+    public static BusBox itemBus(Loaded l, BusBox busBox){
         ArrayList<Bus> buses = new ArrayList<Bus>();
         buses = l.getBuses();
 
@@ -19,7 +18,7 @@ public interface AddBoxItem {
         return busBox;
     }
 
-    public static StopBox itemStop(StopBox stopBox){
+    public static StopBox itemStop(Loaded l, StopBox stopBox){
 
         //nacteni zastavek ze souboru
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
@@ -40,7 +39,7 @@ public interface AddBoxItem {
         return stopBox;
     }
 
-    public static LineBox itemLine(LineBox lineBox){
+    public static LineBox itemLine(Loaded l, LineBox lineBox){
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
         ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
         ArrayList<MyLine> lines = new ArrayList<MyLine>();

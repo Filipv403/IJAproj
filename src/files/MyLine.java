@@ -82,4 +82,36 @@ public class MyLine implements Line {
 			return "" + this.id + "";
 		} 
     }
+
+    private Coordinate getEqualCoord(Street street1, Street street2) {
+		if (street1.begin().equals(street2.begin()) || street1.begin().equals(street2.end()))
+			return street1.begin();
+		else if (street1.end().equals(street2.end()) || street1.end().equals(street2.begin()))
+			return street1.end();
+		else
+			return null;
+	}
+
+    public ArrayList<Coordinate> getRoute(Stop prevStop, Stop nextStop) {
+		boolean startFound = false;
+		ArrayList<Coordinate> route = new ArrayList<>();
+		for (int i = 0; i < map_list.size() - 1; i++) {
+			if (!startFound) {
+				if (map_list.get(i).getValue().equals(prevStop)) {
+					startFound = true;
+					route.add(prevStop.getCoordinate());
+					route.add(getEqualCoord(prevStop.getStreet(), map_list.get(i + 1).getKey()));
+				}
+			} else {
+				if (map_list.get(i).getValue() != null && map_list.get(i).getValue().equals(nextStop)) {
+					route.add(nextStop.getCoordinate());
+					break;
+				} else {
+					route.add(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()));
+				}
+			}
+		}
+
+		return route;
+    }
 }

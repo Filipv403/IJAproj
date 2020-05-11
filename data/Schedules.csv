@@ -1,0 +1,6 @@
+busID;Time;Stop;Time;Stop...
+1;10:00:00;Stop 1;11:00:00;Stop 6
+2;11:00:00;Stop 1;12:00:00;Stop 6
+3;12:00:00;Stop 1;13:00:00;Stop 6
+4;14:00:00;Stop 4;14:20:00;Stop 9
+5;10:00;Stop 9;11:00;Stop 6;12:00;Stop 4;13:00;Stop 3;13:45;Stop 2;

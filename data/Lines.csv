@@ -1,3 +1,4 @@
 id;streets
-Linka 1;Ulice 1;Ulice 2;Ulice 3
-Linka 2;Ulice 4;Ulice 5;Ulice 6; Ulice 7
+Linka 1;Stop 1;Ulice 2;Ulice 3;Stop 6
+Linka 2;Stop 4;Ulice 4;Stop 9
+Linka 3;Stop 9;Stop 6;Stop 4;Stop 3;Stop 2;

@@ -1,26 +1,30 @@
 package simulation;
 
+import files.Bus;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Timers {
-    private TextField textMinutes;
-    private TextField textHours;
-    private Label labelCurrentTime;
-    private TextField textSimSpeed;
+    private TextField textMinutes = null;
+    private TextField textHours = null;
+    private Label labelCurrentTime = null;
+    private TextField textSimSpeed = null;
 
     private Timer currentTimeTimer;
     private LocalTime currentTime;
 
     private Timer busRedrawTimer;
 
-    private float scale = 1;
+    private ArrayList<Bus> busses;
+
+    private float scale = 600;
 
     public void setGui(TextField textMinutes, TextField textHours, Label labelCurrentTime, TextField textSimSpeed) {
         this.textMinutes = textMinutes;
@@ -73,11 +77,17 @@ public class Timers {
         if (labelCurrentTime != null)
             labelCurrentTime.setText(currentTime.format(dtf));
         else
-            System.out.println(currentTime.format(dtf));
+            return;
+            //System.out.println(currentTime.format(dtf));
     }
 
     private void updateBusPos() {
+        if (busses == null)
+            return;
 
+        for (Bus bus : busses) {
+            bus.updatePos(currentTime);
+        }
     }
 
     public void startTimers() {
@@ -87,7 +97,7 @@ public class Timers {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    currentTime = currentTime.plusSeconds((long) (60 * scale));
+                    currentTime = currentTime.plusNanos((long)(100000000 * scale));
                     updateTime();
                 });
             }
@@ -100,5 +110,9 @@ public class Timers {
                 updateBusPos();
             }
         }, 0, 1000);
+    }
+
+    public void setBusses(ArrayList<Bus> busses) {
+        this.busses = busses;
     }
 }

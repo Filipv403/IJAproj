@@ -1,9 +1,13 @@
 package files;
 
+
+import javafx.scene.shape.Rectangle;
+
 public class MyStop implements Stop {
 	private String id;
     private Coordinate c;
     private Street s;
+    private Rectangle mapRect;
     
     public MyStop() {
         this.id = "";
@@ -60,5 +64,9 @@ public class MyStop implements Stop {
         } catch (Exception e) {
             return "" + this.id + "";
         }
+    }
+
+    public void setMapRect(Rectangle mapRect) {
+        this.mapRect = mapRect;
     }
 }
