@@ -24,7 +24,7 @@ public class Timers {
 
     private ArrayList<Bus> busses;
 
-    private float scale = 600;
+    private float scale = 120;
 
     public void setGui(TextField textMinutes, TextField textHours, Label labelCurrentTime, TextField textSimSpeed) {
         this.textMinutes = textMinutes;
