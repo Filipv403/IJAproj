@@ -100,7 +100,9 @@ public class MyLine implements Line {
 				if (map_list.get(i).getValue().equals(prevStop)) {
 					startFound = true;
 					route.add(prevStop.getCoordinate());
-					route.add(getEqualCoord(prevStop.getStreet(), map_list.get(i + 1).getKey()));
+
+					if (!prevStop.getStreet().equals(nextStop.getStreet()))
+						route.add(getEqualCoord(prevStop.getStreet(), map_list.get(i + 1).getKey()));
 				}
 			} else {
 				if (map_list.get(i).getValue() != null && map_list.get(i).getValue().equals(nextStop)) {

@@ -22,6 +22,7 @@ public class Bus {
     private Circle circle;
     private Schedule schedule;
     private int delay;
+    private LocalTime prevTime = LocalTime.of(9,0);
 
     public Bus(){
         this.id=0;
@@ -87,6 +88,8 @@ public class Bus {
             return;
         }
 
+        prevTime = currentTime;
+
         Stop nextStop = schedule.getNextStop(currentTime);
         Stop prevStop = schedule.getPreviousStop(currentTime);
 
@@ -99,6 +102,8 @@ public class Bus {
         double currentLen = len * (currentDuration / (double) routeDuration);
 
         Vec2d newPos = RouteCalculation.getPosition(route, currentLen);
+
+
         this.circle.setCenterX(newPos.x);
         this.circle.setCenterY(newPos.y);
     }

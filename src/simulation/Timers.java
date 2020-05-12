@@ -77,7 +77,8 @@ public class Timers {
         if (labelCurrentTime != null)
             labelCurrentTime.setText(currentTime.format(dtf));
         else
-            System.out.println(currentTime.format(dtf));
+            return;
+            //System.out.println(currentTime.format(dtf));
     }
 
     private void updateBusPos() {
@@ -90,7 +91,7 @@ public class Timers {
     }
 
     public void startTimers() {
-        currentTime = LocalTime.of(10, 0);
+        currentTime = LocalTime.of(10,0);
         currentTimeTimer = new Timer(false);
         currentTimeTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

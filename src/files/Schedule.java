@@ -48,7 +48,7 @@ public class Schedule {
 
     public Stop getPreviousStop(LocalTime time) {
         for (int i = schedule.size(); i-- > 0; ) {
-            if (schedule.get(i).getKey().isBefore(time)){
+            if (schedule.get(i).getKey().isBefore(time) || schedule.get(i).getKey().equals(time)){
                 return schedule.get(i).getValue();
             }
         }
