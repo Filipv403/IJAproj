@@ -77,8 +77,7 @@ public class Timers {
         if (labelCurrentTime != null)
             labelCurrentTime.setText(currentTime.format(dtf));
         else
-            return;
-            //System.out.println(currentTime.format(dtf));
+            System.out.println(currentTime.format(dtf));
     }
 
     private void updateBusPos() {

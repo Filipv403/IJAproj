@@ -95,7 +95,7 @@ public class MyLine implements Line {
     public ArrayList<Coordinate> getRoute(Stop prevStop, Stop nextStop) {
 		boolean startFound = false;
 		ArrayList<Coordinate> route = new ArrayList<>();
-		for (int i = 0; i < map_list.size() - 1; i++) {
+		for (int i = 0; i < map_list.size(); i++) {
 			if (!startFound) {
 				if (map_list.get(i).getValue().equals(prevStop)) {
 					startFound = true;
