@@ -45,6 +45,9 @@ public interface MapObjects {
             line = new Line(x[0], y[0], x[1], y[1]);
             line.setStroke(Color.rgb(65, 63, 68));
             line.setStrokeWidth(7);
+            line.setOnMouseClicked(e -> {
+                myStreet.setOpen(!myStreet.isOpen());
+            });
             myStreet.setMapLine(line);
             root.getChildren().addAll(line);
 
@@ -67,6 +70,11 @@ public interface MapObjects {
             circle = new Circle(bus.getFirstStopCoordinate().getX(), bus.getFirstStopCoordinate().getY(), 7);
             circle.setStroke(Color.BLUE);
             circle.setFill(Color.BLUE);
+            circle.setOnMouseClicked(e -> {
+                l.getStreets().forEach(MyStreet::deselect);
+                l.getStops().forEach(MyStop::deselect);
+                bus.highlightLine();
+            });
             bus.setCircle(circle);
             root.getChildren().addAll(circle);
         }

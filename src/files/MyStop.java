@@ -1,6 +1,7 @@
 package files;
 
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class MyStop implements Stop {
@@ -68,5 +69,19 @@ public class MyStop implements Stop {
 
     public void setMapRect(Rectangle mapRect) {
         this.mapRect = mapRect;
+    }
+
+    public void deselect() {
+        if (mapRect != null) {
+            mapRect.setFill(Color.RED);
+            mapRect.setStroke(Color.RED);
+        }
+    }
+
+    public void select() {
+        if (mapRect != null) {
+            mapRect.setFill(Color.rgb(14, 41, 0));
+            mapRect.setStroke(Color.rgb(14, 41, 0));
+        }
     }
 }

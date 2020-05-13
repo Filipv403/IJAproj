@@ -23,6 +23,10 @@ public interface Street {
 	public Coordinate end();
 
 	public boolean follows(Street s);
+
+	public void deselect();
+
+	public void select();
 	
 	java.util.List<Stop> list_stop = new ArrayList<>();
 	static java.util.List<Coordinate> list_tmp_c = new ArrayList<>();

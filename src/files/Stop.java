@@ -12,6 +12,10 @@ public interface Stop {
 
 	public Street getStreet();
 
+	public void deselect();
+
+	public void select();
+
 	public static Stop defaultStop(String id, Coordinate c) {
 		Stop stop = new MyStop(id, c);
 		return stop;

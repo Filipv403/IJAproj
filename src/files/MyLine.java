@@ -116,4 +116,12 @@ public class MyLine implements Line {
 
 		return route;
     }
+
+    public void highlight() {
+		this.map_list.forEach(pair -> {
+			pair.getKey().select();
+			if (pair.getValue() != null)
+				pair.getValue().select();
+		});
+    }
 }

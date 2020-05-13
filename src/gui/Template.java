@@ -1,6 +1,9 @@
 package gui;
 
+import files.MyStop;
+import files.MyStreet;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import simulation.Timers;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -80,6 +83,12 @@ public class Template {
         myTimer.startTimers();
 
         Scene scene = new Scene(borderPane, 1280, 720);
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ESCAPE){
+                data.getStreets().forEach(MyStreet::deselect);
+                data.getStops().forEach(MyStop::deselect);
+            }
+        });
         window.setScene(scene);
         window.show();
     }

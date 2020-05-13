@@ -80,6 +80,11 @@ public class Bus {
         this.circle = circle;
     }
 
+    public void highlightLine() {
+
+        this.line.highlight();
+    }
+
     public void updatePos(LocalTime currentTime) {
         if (this.schedule.isOnRoute(currentTime)) {
             this.circle.setVisible(true);

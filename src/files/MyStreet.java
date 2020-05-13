@@ -5,27 +5,34 @@ import java.util.List;
 
 import files.Street;
 import files.Coordinate;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class MyStreet implements Street {
     private String nazev;
 	private Coordinate[] c = new Coordinate[2];
 	private boolean isOpen;
+	private boolean isCloseable;
 	private int traffic;
 	private Line mapLine;
+	private boolean isSelected;
 
 	public MyStreet() {
 		this.nazev = "";
 		this.c[0] = new Coordinate(0,0);
 		this.isOpen = true;
+		this.isCloseable = true;
 		this.traffic = 1;
+		this.isSelected = false;
 	}
 
 	public MyStreet(String nazev, Coordinate... c) {
 		this.nazev = nazev;
 		this.c = c;
 		this.isOpen = true;
+		this.isCloseable = true;
 		this.traffic = 1;
+		this.isSelected = false;
 	}
 	
 	public java.lang.String getId() {
@@ -152,9 +159,37 @@ public class MyStreet implements Street {
 
 	public void setOpen(boolean open) {
 		isOpen = open;
+
+		if (this.mapLine != null) {
+			if (!open) {
+				this.mapLine.setStroke(Color.RED);
+			}
+			else {
+				if (!isSelected)
+					this.mapLine.setStroke(Color.rgb(65, 63, 68));
+				else
+					this.mapLine.setStroke(Color.rgb(85, 255, 0));
+			}
+		}
 	}
 
 	public void setMapLine(Line mapLine) {
 		this.mapLine = mapLine;
+	}
+
+	public void deselect() {
+		this.isSelected = false;
+
+		if (this.mapLine != null && this.isOpen()) {
+			this.mapLine.setStroke(Color.rgb(65, 63, 68));
+		}
+	}
+
+	public void select() {
+		this.isSelected = true;
+
+		if (this.mapLine != null && this.isOpen()) {
+			this.mapLine.setStroke(Color.rgb(85, 255, 0));
+		}
 	}
 }
