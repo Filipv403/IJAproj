@@ -71,6 +71,10 @@ public class MyStop implements Stop {
         this.mapRect = mapRect;
     }
 
+    public Rectangle getMapRect(){
+        return this.mapRect;
+    }
+
     public void deselect() {
         if (mapRect != null) {
             mapRect.setFill(Color.RED);

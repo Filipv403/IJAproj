@@ -49,7 +49,7 @@ public interface MapObjects {
                 myStreet.setOpen(!myStreet.isOpen());
             });
             myStreet.setMapLine(line);
-            root.getChildren().addAll(line);
+            root.getChildren().addAll(myStreet.getMapLine());
 
             //vykresleni a pridani zastavek
             for (MyStop myStop : stops) {
@@ -59,7 +59,7 @@ public interface MapObjects {
                     rectangle.setStroke(Color.RED);
                     rectangle.setFill(Color.RED);
                     myStop.setMapRect(rectangle);
-                    root.getChildren().addAll(rectangle, new Text(myStop.getCoordinate().getX(), myStop.getCoordinate().getY(), myStop.getId()));
+                    root.getChildren().addAll(myStop.getMapRect(), new Text(myStop.getCoordinate().getX(), myStop.getCoordinate().getY(), myStop.getId()));
                 }
             }
             i=0;
@@ -76,7 +76,7 @@ public interface MapObjects {
                 bus.highlightLine();
             });
             bus.setCircle(circle);
-            root.getChildren().addAll(circle);
+            root.getChildren().addAll(bus.getCircle());
         }
         return root;
     }

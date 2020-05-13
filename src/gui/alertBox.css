@@ -1,0 +1,7 @@
+.label{
+    -fx-font-size: 14pt;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-padding: 15px 0px;
+    -fx-pref-width: 350px;
+    -fx-wrap-text: true; 
+}

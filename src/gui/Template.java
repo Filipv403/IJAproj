@@ -38,7 +38,8 @@ public class Template {
             window.close();
             System.exit(0);
         });
-        fileMenu.getItems().addAll(exitItem);
+        MenuItem openItem = new MenuItem("Open");
+        fileMenu.getItems().addAll(openItem, exitItem);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(fileMenu);
 

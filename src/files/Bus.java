@@ -80,6 +80,10 @@ public class Bus {
         this.circle = circle;
     }
 
+    public Circle getCircle(){
+        return this.circle;
+    }
+
     public void highlightLine() {
 
         this.line.highlight();

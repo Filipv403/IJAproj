@@ -177,6 +177,10 @@ public class MyStreet implements Street {
 		this.mapLine = mapLine;
 	}
 
+	public Line getMapLine(){
+		return this.mapLine;
+	}
+
 	public void deselect() {
 		this.isSelected = false;
 

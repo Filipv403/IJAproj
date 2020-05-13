@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import files.*;
@@ -14,8 +15,34 @@ import gui.*;
 public interface Load {
     public static ArrayList<MyStop> loadStops(){
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
+        BufferedReader br;
+        List<File> files; 
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./data/Stops.csv"));
+            br = new BufferedReader(new FileReader("./data/Stops.csv"));
+            Load.stopCSVRead(stops, br);
+        }catch (FileNotFoundException fnfe){
+            //nacte ze zadaneho souboru
+            files = AlertBox.display("Stops.csv").getFiles();
+            for (File file : files) {
+                if(file.getName().contains("Stops")){
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        Load.stopCSVRead(stops, br);
+                        break;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        } 
+
+        return stops;
+    }
+
+    public static void stopCSVRead(ArrayList<MyStop> stops, BufferedReader br){
+        try {
             String line = "";
             int lineCNT = 0;
             while((line = br.readLine()) != null){
@@ -39,13 +66,39 @@ public interface Load {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return stops;
     }
 
     public static ArrayList<MyStreet> loadStreets(){
         ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
+        BufferedReader br;
+        List<File> files;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./data/Streets.csv"));
+            br = new BufferedReader(new FileReader("./data/Streets.csv"));
+            Load.streetCSVRead(streets, br);
+        }catch (FileNotFoundException fnfe){
+            //nacte ze zadaneho souboru
+            files = AlertBox.display("Streets.csv").getFiles();
+            for (File file : files) {
+                if(file.getName().contains("Streets")){
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        Load.streetCSVRead(streets, br);
+                        break;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return streets;
+    }
+
+    public static void streetCSVRead(ArrayList<MyStreet> streets, BufferedReader br){
+        try {
             String line = "";
             int lineCNT = 0;
             while((line = br.readLine()) != null){
@@ -71,13 +124,40 @@ public interface Load {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return streets;
     }
 
     public static ArrayList<MyLine> loadLines(ArrayList<MyStreet> streets, ArrayList<MyStop> stops){
         ArrayList<MyLine> lines = new ArrayList<MyLine>();
         //ArrayList<MyStreet> streets = Load.loadStreets();
         //ArrayList<MyStop> stops = Load.loadStops();
+        BufferedReader br;
+        List<File> files;
+        try {
+            br = new BufferedReader(new FileReader("./data/Lines.csv"));
+            Load.lineCSVRead(streets, stops, lines, br);
+        }catch (FileNotFoundException fnfe){
+            //nacte ze zadaneho souboru
+            files = AlertBox.display("Lines.csv").getFiles();
+            for (File file : files) {
+                if(file.getName().contains("Lines")){
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        Load.lineCSVRead(streets, stops, lines, br);
+                        break;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lines;
+    }
+
+    public static void lineCSVRead(ArrayList<MyStreet> streets, ArrayList<MyStop> stops, ArrayList<MyLine> lines, BufferedReader br){
         try {
             for (MyStop myStop : stops) {
                 for (MyStreet myStreet : streets) {
@@ -87,8 +167,6 @@ public interface Load {
                     }
                 }
             }
-
-            BufferedReader br = new BufferedReader(new FileReader("./data/Lines.csv"));
             String line = "";
             int lineCNT = 0;
             while((line = br.readLine()) != null){
@@ -136,13 +214,39 @@ public interface Load {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return lines;
     }
 
     public static ArrayList<Schedule> loadSchedules(ArrayList<MyStop> stops) {
         ArrayList<Schedule> schedules = new ArrayList<>();
+        BufferedReader br;
+        List<File> files;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./data/Schedules.csv"));
+            br = new BufferedReader(new FileReader("./data/Schedules.csv"));
+            Load.scheduleCSVRead(stops, schedules, br);
+        }catch (FileNotFoundException fnfe){
+            //nacte ze zadaneho souboru
+            files = AlertBox.display("Schedules.csv").getFiles();
+            for (File file : files) {
+                if(file.getName().contains("Schedules")){
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        Load.scheduleCSVRead(stops, schedules, br);
+                        break;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
+        return schedules;
+    }
+
+    public static void scheduleCSVRead(ArrayList<MyStop> stops, ArrayList<Schedule> schedules, BufferedReader br){
+        try {
             String line = "";
             int lineCNT = 0;
             while((line = br.readLine()) != null) {
@@ -173,17 +277,44 @@ public interface Load {
 
                 schedules.add(schedule);
             }
+            br.close();
         } catch (Exception e) {
         e.printStackTrace();
-    }
-        return schedules;
+        }
     }
 
     public static ArrayList<Bus> loadBuses(ArrayList<MyLine> lines, ArrayList<MyStop> stops){
         ArrayList<Bus> buses = new ArrayList<Bus>();
         ArrayList<Schedule> schedules = loadSchedules(stops);
+        BufferedReader br;
+        List<File> files;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("./data/Buses.csv"));
+            br = new BufferedReader(new FileReader("./data/Buses.csv"));
+            Load.busCSVRead(lines, stops, buses, schedules, br);
+        }catch (FileNotFoundException fnfe){
+            //nacte ze zadaneho souboru
+            files = AlertBox.display("Buses.csv").getFiles();
+            for (File file : files) {
+                if(file.getName().contains("Buses")){
+                    try {
+                        br = new BufferedReader(new FileReader(file));
+                        Load.busCSVRead(lines, stops, buses, schedules, br);
+                        break;
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return buses;
+    }
+
+    public static void busCSVRead(ArrayList<MyLine> lines, ArrayList<MyStop> stops, ArrayList<Bus> buses, ArrayList<Schedule> schedules, BufferedReader br){
+        try {
             String line = "";
             int lineCNT = 0;
             while((line = br.readLine()) != null){
@@ -221,6 +352,5 @@ public interface Load {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return buses;
     }
 }
