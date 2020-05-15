@@ -14,12 +14,10 @@ public class MyLine implements Line {
 
 	public MyLine(){
 		this.id = "";
-		this.detours = new ArrayList<>();
 	}
 
 	public MyLine(String id){
 		this.id = id;
-		this.detours = new ArrayList<>();
 	}
 
 	public String getId(){
@@ -95,7 +93,6 @@ public class MyLine implements Line {
 		else
 			return null;
 	}
-
 	/*
     public ArrayList<Coordinate> getRoute(Stop prevStop, Stop nextStop) {
 		boolean startFound = false;
@@ -120,7 +117,7 @@ public class MyLine implements Line {
 		}
 
 		return route;
-    } */
+    }*/
 
     public void highlight() {
 		this.map_list.forEach(pair -> {
@@ -128,9 +125,9 @@ public class MyLine implements Line {
 			if (pair.getValue() != null)
 				pair.getValue().select();
 		});
-    }
-
-    private int[] getStopIdxs() {
+	}
+	
+	private int[] getStopIdxs() {
     	int [] idxs = new int[2];
     	boolean haveStart = false;
     	boolean haveEnd = false;

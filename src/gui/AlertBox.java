@@ -42,6 +42,9 @@ public class AlertBox {
             click.openFiles(e);
             window.close();
         });
+        window.setOnCloseRequest(e -> {
+            window.close();
+        });
         Button conBtn = new Button("Continue");
         conBtn.setOnAction(e -> window.close());
 
@@ -62,6 +65,48 @@ public class AlertBox {
         layout.setCenter(layout1);
 
         Scene scene = new Scene(layout, 500, 250);
+        window.setScene(scene);
+        window.showAndWait();
+        return click;
+    }
+
+    public static AlertBox displayA(String display){
+        Stage window = new Stage();
+
+        window.initModality(Modality.APPLICATION_MODAL);
+
+        window.setTitle("Warning");
+
+        Label label = new Label();
+        label.setText("Vyberte z adresare soubory " + display);
+        label.wrapTextProperty();
+
+        AlertBox click = new AlertBox();
+        Button openBtn = new Button("Continue");
+        openBtn.setOnAction(e -> {
+            click.openFiles(e);
+            window.close();
+        });
+        window.setOnCloseRequest(e -> {
+            window.close();
+        });
+
+        HBox layout1 = new HBox(20);
+        layout1.getChildren().addAll(openBtn);
+        layout1.setAlignment(Pos.CENTER);
+        VBox layout2 = new VBox(10);
+        layout2.getChildren().addAll(label);
+        layout2.setAlignment(Pos.CENTER);
+        label.setAlignment(Pos.CENTER);
+
+        layout1.getStylesheets().addAll("gui/alertBox.css");
+        layout2.getStylesheets().addAll("gui/alertBox.css");
+
+        BorderPane layout = new BorderPane();
+        layout.setTop(layout2);
+        layout.setCenter(layout1);
+
+        Scene scene = new Scene(layout, 400, 250);
         window.setScene(scene);
         window.showAndWait();
         return click;

@@ -1,0 +1,30 @@
+#popup {
+    -fx-background-color: rgba(45,216,38);
+    -fx-pref-width: 1160px;
+    -fx-pref-height: 150px;
+    -fx-spacing: 10;
+    -fx-padding: 20px;
+}
+
+.split-pane-divider {
+    -fx-background-color: transparent;
+ }
+
+ .grids {
+    -fx-padding: 10px 20px;
+ }
+
+.text-id{
+    -fx-font-size: 16pt;
+    -fx-fill: #fafafa;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-padding: 15px 5px;
+    -fx-font-weight: 700;
+}
+
+.label{
+    -fx-font-size: 16pt;
+    -fx-font-family: Arial, Helvetica, sans-serif;
+    -fx-padding: 10px 20px;
+    -fx-text-fill: #fafafa;
+}

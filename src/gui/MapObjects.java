@@ -3,15 +3,18 @@ package gui;
 import java.util.ArrayList;
 import files.*;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import loaded.*;
 
 public interface MapObjects {
-    public static Group drawStreet(Loaded l){
+    public static Group drawStreet(GridPane gridPane, Loaded l){
         MyStreet street;
         Line line = new Line();
         Rectangle rectangle = new Rectangle();
@@ -74,6 +77,9 @@ public interface MapObjects {
                 l.getStreets().forEach(MyStreet::deselect);
                 l.getStops().forEach(MyStop::deselect);
                 bus.highlightLine();
+                MyPopup myPopup = new MyPopup();
+                myPopup.load(bus);
+                myPopup.display(gridPane);
             });
             bus.setCircle(circle);
             root.getChildren().addAll(bus.getCircle());

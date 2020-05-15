@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.List;
+
 import files.MyStop;
 import files.MyStreet;
 import javafx.scene.control.*;
@@ -12,9 +14,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.io.File;
 import loaded.AddBoxItem;
 import javafx.geometry.*;
 import gui.*;
@@ -39,6 +46,13 @@ public class Template {
             System.exit(0);
         });
         MenuItem openItem = new MenuItem("Open");
+        openItem.setOnAction(e -> {
+            List<File> files; 
+            files = AlertBox.displayA("Stops.csv, Streets.csv, Lines.csv, Buses.csv, Schedules.csv").getFiles();
+            Load lo = new Load();
+            lo.userOpen(files);
+            lo.userOpenBool(files);
+        });
         fileMenu.getItems().addAll(openItem, exitItem);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(fileMenu);
@@ -66,16 +80,24 @@ public class Template {
         rightMenu.setId("vbox");
         rightMenu.getStylesheets().addAll("gui/rightMenu.css");
 
+        //GridPane
+        GridPane gridPane = new GridPane();
+        gridPane.add(menuBar, 0, 0, 2, 1);
+        gridPane.add(rightMenu, 1, 1, 1, 2);
+
+        gridPane.getColumnConstraints().add(new ColumnConstraints(1160));
+        gridPane.getColumnConstraints().add(new ColumnConstraints(440));
+        gridPane.getRowConstraints().add(new RowConstraints(32));
+        gridPane.getRowConstraints().add(new RowConstraints(668));
+
+
+
         /*import mapy*/
         Group root = new Group();
 
-        root = MapObjects.drawStreet(data);
+        root = MapObjects.drawStreet(gridPane, data);
 
-        //BorderPane
-        BorderPane borderPane = new BorderPane();
-        borderPane.setTop(menuBar);
-        borderPane.setRight(rightMenu);
-        borderPane.setCenter(root);
+        gridPane.add(root, 0, 1);
 
         //timer
         Timers myTimer = new Timers();
@@ -83,7 +105,7 @@ public class Template {
         myTimer.setBusses(data.getBuses());
         myTimer.startTimers();
 
-        Scene scene = new Scene(borderPane, 1280, 720);
+        Scene scene = new Scene(gridPane, 1600, 900);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE){
                 data.getStreets().forEach(MyStreet::deselect);

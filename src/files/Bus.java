@@ -50,6 +50,14 @@ public class Bus {
         return this.carrier;
     }
 
+    public MyLine getLine(){
+        return this.line;
+    }
+
+    public Schedule getSchedule(){
+        return this.schedule;
+    }
+
     public void setId(int id){
         this.id = id;
     }

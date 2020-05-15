@@ -12,14 +12,56 @@ import java.io.IOException;
 import files.*;
 import gui.*;
 
-public interface Load {
-    public static ArrayList<MyStop> loadStops(){
+public class Load {
+
+    static List<File> filesUser;
+    static Boolean userOpen = false;
+
+    public List<File> userOpen(List<File> files) {
+        if (files.size() != 5) {
+            return null;
+        }
+        Load.filesUser = files;
+        return files;
+    }
+
+    public Boolean userOpenBool(List<File> files) {
+        if (files.size() != 5) {
+            return false;
+        }
+        Load.userOpen = true;
+        return true;
+    }
+
+    public static List<File> getFilesUser() {
+        return filesUser;
+    }
+
+    public static Boolean getUserOpen() {
+        return userOpen;
+    }
+
+    public static ArrayList<MyStop> loadStops() {
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
         BufferedReader br;
-        List<File> files; 
+        List<File> files;
         try {
-            br = new BufferedReader(new FileReader("./data/Stops.csv"));
-            Load.stopCSVRead(stops, br);
+            if (!getUserOpen()){
+                br = new BufferedReader(new FileReader("./data/Stops.csv"));
+                Load.stopCSVRead(stops, br);
+            }else{
+                for (File file : getFilesUser()) {
+                    if(file.getName().contains("Stops")){
+                        try {
+                            br = new BufferedReader(new FileReader(file));
+                            Load.stopCSVRead(stops, br);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            }
         }catch (FileNotFoundException fnfe){
             //nacte ze zadaneho souboru
             files = AlertBox.display("Stops.csv").getFiles();
@@ -73,8 +115,22 @@ public interface Load {
         BufferedReader br;
         List<File> files;
         try {
-            br = new BufferedReader(new FileReader("./data/Streets.csv"));
-            Load.streetCSVRead(streets, br);
+            if (!getUserOpen()){
+                br = new BufferedReader(new FileReader("./data/Streets.csv"));
+                Load.streetCSVRead(streets, br);
+            }else{
+                for (File file : getFilesUser()) {
+                    if(file.getName().contains("Streets")){
+                        try {
+                            br = new BufferedReader(new FileReader(file));
+                            Load.streetCSVRead(streets, br);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            }
         }catch (FileNotFoundException fnfe){
             //nacte ze zadaneho souboru
             files = AlertBox.display("Streets.csv").getFiles();
@@ -133,8 +189,22 @@ public interface Load {
         BufferedReader br;
         List<File> files;
         try {
-            br = new BufferedReader(new FileReader("./data/Lines.csv"));
-            Load.lineCSVRead(streets, stops, lines, br);
+            if (!getUserOpen()){
+                br = new BufferedReader(new FileReader("./data/Lines.csv"));
+                Load.lineCSVRead(streets, stops, lines, br);
+            }else{
+                for (File file : getFilesUser()) {
+                    if(file.getName().contains("Lines")){
+                        try {
+                            br = new BufferedReader(new FileReader(file));
+                            Load.lineCSVRead(streets, stops, lines, br);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            }
         }catch (FileNotFoundException fnfe){
             //nacte ze zadaneho souboru
             files = AlertBox.display("Lines.csv").getFiles();
@@ -221,8 +291,22 @@ public interface Load {
         BufferedReader br;
         List<File> files;
         try {
-            br = new BufferedReader(new FileReader("./data/Schedules.csv"));
-            Load.scheduleCSVRead(stops, schedules, br);
+            if (!getUserOpen()){
+                br = new BufferedReader(new FileReader("./data/Schedules.csv"));
+                Load.scheduleCSVRead(stops, schedules, br);
+            }else{
+                for (File file : getFilesUser()) {
+                    if(file.getName().contains("Schedules")){
+                        try {
+                            br = new BufferedReader(new FileReader(file));
+                            Load.scheduleCSVRead(stops, schedules, br);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            }
         }catch (FileNotFoundException fnfe){
             //nacte ze zadaneho souboru
             files = AlertBox.display("Schedules.csv").getFiles();
@@ -289,8 +373,22 @@ public interface Load {
         BufferedReader br;
         List<File> files;
         try {
-            br = new BufferedReader(new FileReader("./data/Buses.csv"));
-            Load.busCSVRead(lines, stops, buses, schedules, br);
+            if (!getUserOpen()){
+                br = new BufferedReader(new FileReader("./data/Buses.csv"));
+                Load.busCSVRead(lines, stops, buses, schedules, br);
+            }else{
+                for (File file : getFilesUser()) {
+                    if(file.getName().contains("Schedules")){
+                        try {
+                            br = new BufferedReader(new FileReader(file));
+                            Load.busCSVRead(lines, stops, buses, schedules, br);
+                            break;
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } 
+                    }
+                }
+            }
         }catch (FileNotFoundException fnfe){
             //nacte ze zadaneho souboru
             files = AlertBox.display("Buses.csv").getFiles();
