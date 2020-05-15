@@ -4,6 +4,12 @@ package files;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Třídá reprezentující zastávky autobusů
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public class MyStop implements Stop {
 	private String id;
     private Coordinate c;
@@ -67,14 +73,27 @@ public class MyStop implements Stop {
         }
     }
 
+    /**
+     * Nastavení odkazu na čtverec reprezentující zastávku na mapě
+     *
+     * @param mapRect
+     */
     public void setMapRect(Rectangle mapRect) {
         this.mapRect = mapRect;
     }
 
+    /**
+     * Získání čtverec reprezentující zastávku na mapě
+     *
+     * @return čtverec reprezentující zastávku na mapě
+     */
     public Rectangle getMapRect(){
         return this.mapRect;
     }
 
+    /**
+     * Zruší zvýraznění zastávky na mapě
+     */
     public void deselect() {
         if (mapRect != null) {
             mapRect.setFill(Color.RED);
@@ -82,6 +101,9 @@ public class MyStop implements Stop {
         }
     }
 
+    /**
+     * Zvýrazní zastávku na mapě
+     */
     public void select() {
         if (mapRect != null) {
             mapRect.setFill(Color.rgb(14, 41, 0));

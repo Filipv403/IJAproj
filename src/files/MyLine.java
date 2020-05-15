@@ -6,6 +6,12 @@ import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Třídá reprezentující linku autobusu
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public class MyLine implements Line {
 
 	private String id;
@@ -85,6 +91,13 @@ public class MyLine implements Line {
 		} 
     }
 
+	/**
+	 * Najde souřadnice, které mají společné zadané cesty
+	 *
+	 * @param street1 Cesta 1
+	 * @param street2 Cesta 2
+	 * @return Souřadnice, které mají cesty společné
+	 */
     private Coordinate getEqualCoord(Street street1, Street street2) {
 		if (street1.begin().equals(street2.begin()) || street1.begin().equals(street2.end()))
 			return street1.begin();
@@ -93,32 +106,10 @@ public class MyLine implements Line {
 		else
 			return null;
 	}
-	/*
-    public ArrayList<Coordinate> getRoute(Stop prevStop, Stop nextStop) {
-		boolean startFound = false;
-		ArrayList<Coordinate> route = new ArrayList<>();
-		for (int i = 0; i < map_list.size(); i++) {
-			if (!startFound) {
-				if (map_list.get(i).getValue().equals(prevStop)) {
-					startFound = true;
-					route.add(prevStop.getCoordinate());
 
-					if (!prevStop.getStreet().equals(nextStop.getStreet()))
-						route.add(getEqualCoord(prevStop.getStreet(), map_list.get(i + 1).getKey()));
-				}
-			} else {
-				if (map_list.get(i).getValue() != null && map_list.get(i).getValue().equals(nextStop)) {
-					route.add(nextStop.getCoordinate());
-					break;
-				} else {
-					route.add(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()));
-				}
-			}
-		}
-
-		return route;
-    }*/
-
+	/**
+	 * Zvýrazní linku na mapě
+	 */
     public void highlight() {
 		this.map_list.forEach(pair -> {
 			pair.getKey().select();
@@ -126,23 +117,32 @@ public class MyLine implements Line {
 				pair.getValue().select();
 		});
 	}
-	
+
+	/**
+	 * Najde indexy první a poslední zastávky na lince. Pokud mezi zastávkami není uzavřená cesta bez objížďky
+	 * jedná se o první a poslední zastávku na lince. Jinak jsou to zastávky mezi kterými není zavřená cesta bez objížďky.
+	 * Vrací null pokud nejde takto najít 2 zastávky.
+	 *
+	 * @return indexy první a poslední zastávky linkys
+	 */
 	private int[] getStopIdxs() {
     	int [] idxs = new int[2];
     	boolean haveStart = false;
     	boolean haveEnd = false;
     	for (int i = 0; i < map_list.size(); i++) {
+    		//najde první zastávku
     		if (!haveStart) {
 				if (map_list.get(i).getValue() != null && map_list.get(i).getKey().isOpen()) {
 					haveStart = true;
 					idxs[0] = i;
 				}
 			} else {
+    			//hledá poslední zastávku
     			if (map_list.get(i).getValue() != null) {
     				if (map_list.get(i).getKey().isOpen()) {
     					haveEnd = true;
     					idxs[1] = i;
-					} else if (!hasDetour(map_list.get(i).getKey())) {
+					} else if (!hasDetour(map_list.get(i).getKey())) { //ulice je zavřená a nemá objížďku
     					if (haveEnd)
     						return idxs;
     					else
@@ -162,6 +162,12 @@ public class MyLine implements Line {
 			return null;
 	}
 
+	/**
+	 * Zjistí jestli je pro zadanou cestu definována objížďka
+	 *
+	 * @param street Ulice pro, kterou se objížďka hledá
+	 * @return true, jestli cesta má objížďku
+	 */
 	private boolean hasDetour(Street street) {
     	return false;
     	/*
@@ -173,10 +179,19 @@ public class MyLine implements Line {
     	return false; */
 	}
 
+	/**
+	 * Sestaví cestu autobusu. Kontroluje jestli jestli jsou cesty zavřené. V případě, že je nějaká cesta zavřená
+	 * přidá cestu objížďky, jestli objížďka existuje, nebo změní konečnou/první zastávku. Ke každé zastávce přidá čas z
+	 * jízdního řádu, v případě že se jedná o zlom na cestě k hodnotě času je přiřazena hodnota null.
+	 *
+	 * @param schedule Jízdí řád autobusu pro danou linku
+	 * @return Souřadnice, které reprezentují jednotlivé zlomy na cestě/zastávky a časy kdy se tam autobus má nacházet
+	 */
 	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule) {
 		List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = new ArrayList<>();
 		int jump;
 
+		//indexy první a poslední zastávky
 		int[] stopIdxs = getStopIdxs();
 
 		if (stopIdxs == null)
@@ -184,25 +199,29 @@ public class MyLine implements Line {
 
 		for (int i = stopIdxs[0]; i < stopIdxs[1]; i++) {
 			if (map_list.get(i).getValue() == null) {
-				if (!hasDetour(map_list.get(i).getKey())) {
+				//přidání cesty
+				if (!hasDetour(map_list.get(i).getKey())) { //bez objížďky
 					route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
-				} else {
+				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getKey(), route);
 					i += jump;
 				}
 			} else {
-				if (!hasDetour(map_list.get(i).getValue().getStreet())) {
+				//přidíní zastávky
+				if (!hasDetour(map_list.get(i).getValue().getStreet())) { //bez objížďky
 					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getValue().getCoordinate(), schedule.getTime(map_list.get(i).getValue())));
+
+					//přidání konce ulice, když se na ulici nenachází další zastávka
 					if (map_list.get(i + 1).getValue() == null || (map_list.get(i + 1).getValue() != null && !map_list.get(i + 1).getKey().equals(map_list.get(i).getKey())))
 						route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
-				} else {
+				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getValue().getStreet(), route);
 					i += jump;
 				}
 			}
 		}
 
-		//add last stop
+		//poslední zastávka
 		route.add(new AbstractMap.SimpleEntry<>(map_list.get(stopIdxs[1]).getValue().getCoordinate(), schedule.getTime(map_list.get(stopIdxs[1]).getValue())));
 		return route;
 	}
@@ -218,6 +237,11 @@ public class MyLine implements Line {
 		return 0;
 	}
 
+	/**
+	 * Získá seznam cest, s obížďkama, pro jednotlivé úseky mezi body v cestě autobusu
+	 *
+	 * @return Seznam ulic
+	 */
 	public List<Street> getStreets() {
 		List<Street> streets = new ArrayList<>();
 
@@ -225,9 +249,13 @@ public class MyLine implements Line {
 
 		for (int i = 1; i < map_list.size() - 1; i++) {
 			if (map_list.get(i).getValue() == null) {
+				//přidání ulice bez zastávky
 				streets.add(map_list.get(i).getKey());
 			} else {
+				//přidání ulice pro úsek ulice za zastávkou
 				streets.add(map_list.get(i).getKey());
+
+				//přidání ulice pro úsek před zastávkou, pokud jí nepředchází zastávka na stejné ulici
 				if (map_list.get(i - 1).getValue() == null || (map_list.get(i - 1).getValue() != null && !map_list.get(i - 1).getKey().equals(map_list.get(i).getKey())))
 					streets.add(map_list.get(i).getKey());
 			}

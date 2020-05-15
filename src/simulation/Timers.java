@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Třída starající se o aktualizaci pozice autobusů a času simulace
+ *
+ * @author Michal Zobaník (xzoban01)
+ */
 public class Timers {
     private TextField textMinutes = null;
     private TextField textHours = null;
@@ -26,6 +31,14 @@ public class Timers {
 
     private float scale = 120;
 
+    /**
+     * Nastací UI pro správu Timeru
+     *
+     * @param textMinutes Textové pole pro nastavení aktuální minuty simulace
+     * @param textHours Textové pole pro nastavení aktuální hodiny simulace
+     * @param labelCurrentTime Label pro zobrazení aktuálního času simulce
+     * @param textSimSpeed Testové pole pro nastavení aktuální rychlosti simulace
+     */
     public void setGui(TextField textMinutes, TextField textHours, Label labelCurrentTime, TextField textSimSpeed) {
         this.textMinutes = textMinutes;
         this.textHours  = textHours;
@@ -33,6 +46,9 @@ public class Timers {
         this.textSimSpeed = textSimSpeed;
     }
 
+    /**
+     * Nastaví aktuální čas simulace
+     */
     public void setCurrentTime() {
         int newHour, newMinute;
         try {
@@ -54,6 +70,9 @@ public class Timers {
         }
     }
 
+    /**
+     * Nastaví akuální rychlost simulace v rozmezí (0 - 3600)
+     */
     public void setSimSpeed() {
         float simSpeed;
         try {
@@ -62,7 +81,7 @@ public class Timers {
 
             simSpeed = Float.parseFloat(textSimSpeed.getText());
 
-            if (scale < 0.1 || scale > 1000)
+            if (scale < 0.1 || scale > 3600)
                 throw new NumberFormatException();
 
             scale = simSpeed;
@@ -72,6 +91,9 @@ public class Timers {
         }
     }
 
+    /**
+     * Aktualizuje zobrazovaný čas
+     */
     private void updateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         if (labelCurrentTime != null)
@@ -81,6 +103,9 @@ public class Timers {
             //System.out.println(currentTime.format(dtf));
     }
 
+    /**
+     * Aktualizuje pozici všech autobusů na mapě
+     */
     private void updateBusPos() {
         if (busses == null)
             return;
@@ -90,6 +115,9 @@ public class Timers {
         }
     }
 
+    /**
+     * Spustí časovač pro aktualizaci pozice autobusů a auktualizaci času simulace
+     */
     public void startTimers() {
         currentTime = LocalTime.of(10,10);
         currentTimeTimer = new Timer(false);
@@ -103,6 +131,7 @@ public class Timers {
             }
         }, 0, 100);
 
+        //Timer pro aktualizaci pozice autobusu
         busRedrawTimer = new Timer(false);
         busRedrawTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -112,6 +141,11 @@ public class Timers {
         }, 0, 1000);
     }
 
+    /**
+     * Nastaví autobusy, jejichž pozice se bude aktualiovat
+     *
+     * @param busses Pole s autobusy pro aktualizaci polohy
+     */
     public void setBusses(ArrayList<Bus> busses) {
         this.busses = busses;
     }

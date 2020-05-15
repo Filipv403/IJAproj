@@ -4,28 +4,50 @@ import java.time.LocalTime;
 import java.util.AbstractMap;
 import java.util.List;
 
+/**
+ * Třídá reprezentující objíždku
+ *
+ * @author Michal Zobaník (xzoban01)
+ */
 public class Detour {
     private List<Street> replace;
     private List<Street> detourList;
     private int delay;
     private int jump;
 
-    public List<Street> getReplace() {
-        return replace;
-    }
-
+    /**
+     * Zjistí jestli se jedná o objížďku zadané cety
+     *
+     * @param street cesta
+     * @return true jestli se jedná o objížďku zadané cesty
+     */
     public boolean isReplacing(Street street) {
         return replace.get(0).equals(street) || replace.get(replace.size() - 1).equals(street);
     }
 
+    /**
+     * Odstraňení objížďky
+     */
     public void remove() {
         detourList.forEach(s -> s.setCloseable(true));
     }
 
+    /**
+     * Dokončí zadávání objížďky. Upraví seznam cest a zastávek, které objížďka objíždí
+     *
+     * @param line Linka pro kterou je objížďka určena
+     * @return true jestli se jedná o platně vytvořenou objížďku
+     */
     public boolean finalize(MyLine line) {
         return false;
     }
 
+    /**
+     * Přidá cestu, po které objížďka povede
+     *
+     * @param street Nová cessta po které objížďka povede
+     * @return True jestli se přidání povedlo
+     */
     public boolean addStreet(Street street) {
         if (replace.isEmpty()) {
             replace.add(street);
@@ -42,6 +64,13 @@ public class Detour {
         return false;
     }
 
+    /**
+     * Najde souřadnice, které mají společné zadané cesty
+     *
+     * @param street1 Cesta 1
+     * @param street2 Cesta 2
+     * @return Souřadnice, které mají cesty společné
+     */
     //pridat do street ..........................  (a odebrat z myline)......
     private Coordinate getEqualCoord(Street street1, Street street2) {
         if (street1.begin().equals(street2.begin()) || street1.begin().equals(street2.end()))
@@ -52,6 +81,12 @@ public class Detour {
             return null;
     }
 
+    /**
+     * Najde Poslední vynechanou ulici z původní cesty
+     *
+     * @param firstStreet první cesta před objížďkou
+     * @return původní cesta linky, která končí na křižovatce s objíždkou
+     */
     private Street getLastReplaced(Street firstStreet) {
         if (replace.get(0).equals(firstStreet))
             return replace.get(replace.size() - 1);
@@ -59,6 +94,12 @@ public class Detour {
             return replace.get(0);
     }
 
+    /**
+     * Přidá cestu objížďky místo původní cesty linky
+     *
+     * @param street Poslední cesta před objížďkou
+     * @param route Trasa autobusu do objížďky, do kterré bude cesta přidána
+     */
     public void getRoute(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
         if (replace.get(0).follows(street)) {
             route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(street, detourList.get(0)), null));
@@ -75,6 +116,11 @@ public class Detour {
         }
     }
 
+    /**
+     * Zjistí kolik cest/zastávek se díky objížďce přeskocčilo
+     *
+     * @return počet přeskočených cest/zastávek
+     */
     public int getJump() {
         return jump;
     }

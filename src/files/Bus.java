@@ -12,7 +12,10 @@ import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
 /**
- * @author xvacla30
+ * Třídá reprezentující jedtlové autobusy
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
  */
 public class Bus {
     private int id;
@@ -84,24 +87,46 @@ public class Bus {
         return "#"+this.id + " " + this.type + " " + this.carrier + " " + this.line;
     }
 
+    /**
+     * Nastaví odkaz na kruh, který autobus reprezentuje na mapě
+     *
+     * @param circle kruh, kterým je autobus reprezentovaný
+     */
     public void setCircle(Circle circle) {
         this.circle = circle;
     }
 
+    /**
+     *  Získá kruh reprezentující autobus na mapě
+     *
+     * @return kruh, reprezentující autobus
+     */
     public Circle getCircle(){
         return this.circle;
     }
 
+    /**
+     * Zvírazní linka autobusu na mapě
+     */
     public void highlightLine() {
 
         this.line.highlight();
     }
 
+    /**
+     * Nastaví pozici autobusu na mapě podle aktuálního času simulace
+     *
+     * @param currentTime Aktuální čas
+     */
     public void updatePos(LocalTime currentTime) {
+        //Sestavení cesty
         List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
+        //Získání cest, o kterých autobus jede
         List<Street> streets = this.line.getStreets();
+        //spočítání zpoždění
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
+        //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
         } else {
@@ -109,9 +134,8 @@ public class Bus {
             return;
         }
 
+        //výpočet aktuální polohy
         int nextStop = schedule.getNextStop(route, currentTime);
-
-        //ArrayList<Coordinate> route = this.line.getRoute(prevStop, nextStop);
 
         long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
         long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();
@@ -121,6 +145,7 @@ public class Bus {
 
         Vec2d newPos = RouteCalculation.getPosition(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), currentLen);
 
+        //nastavení nové polohy
         this.circle.setCenterX(newPos.x);
         this.circle.setCenterY(newPos.y);
     }

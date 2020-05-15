@@ -8,6 +8,12 @@ import files.Coordinate;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
+/**
+ * Třídá reprezentující jedtlové autobusy
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public class MyStreet implements Street {
     private String nazev;
 	private Coordinate[] c = new Coordinate[2];
@@ -142,10 +148,20 @@ public class MyStreet implements Street {
 		return null;
 	}
 
+	/**
+	 * Získá stupeň provozu na cestě
+	 *
+	 * @return stupeň provozu
+	 */
 	public int getTraffic() {
 		return traffic;
 	}
 
+	/**
+	 * Naství stupeň provozu
+	 *
+	 * @param traffic Nový stupeň provozu
+	 */
 	public void setTraffic(int traffic) {
 		if (traffic < 0 || traffic > 100)
 			this.traffic = 1;
@@ -153,10 +169,20 @@ public class MyStreet implements Street {
 			this.traffic = traffic;
 	}
 
+	/**
+	 * Zjistí jestli je cesta otevřená
+	 *
+	 * @return
+	 */
 	public boolean isOpen() {
 		return isOpen;
 	}
 
+	/**
+	 * Nastaví jestli je cesta zavřená/otevřená. Při nastavení zavřené cesty nastaví její barvu na červenou.
+	 *
+	 * @param open Otevřenost cesty
+	 */
 	public void setOpen(boolean open) {
 		isOpen = open;
 
@@ -173,14 +199,27 @@ public class MyStreet implements Street {
 		}
 	}
 
+	/**
+	 * Nastaví odkaz na úsečku reprezentující cestu na mapě
+	 *
+	 * @param mapLine Úsečka reprezentující cestu
+	 */
 	public void setMapLine(Line mapLine) {
 		this.mapLine = mapLine;
 	}
 
+	/**
+	 * Získá úsečku reprezentující cestu
+	 *
+	 * @return Úsečka reprezentující cestu
+	 */
 	public Line getMapLine(){
 		return this.mapLine;
 	}
 
+	/**
+	 * Zruší zvýraznění úsečky na mapě
+	 */
 	public void deselect() {
 		this.isSelected = false;
 
@@ -189,6 +228,9 @@ public class MyStreet implements Street {
 		}
 	}
 
+	/**
+	 * Zvýrazní cestu na mapě
+	 */
 	public void select() {
 		this.isSelected = true;
 
@@ -197,6 +239,11 @@ public class MyStreet implements Street {
 		}
 	}
 
+	/**
+	 * Nastaví možnost zavírání cesty
+	 *
+	 * @param closeable true -> cestu je možné uzavřít
+	 */
 	public void setCloseable(boolean closeable) {
 		isCloseable = closeable;
 	}
