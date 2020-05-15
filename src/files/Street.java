@@ -27,6 +27,12 @@ public interface Street {
 	public void deselect();
 
 	public void select();
+
+	public boolean isOpen();
+
+	public int getTraffic();
+
+	public void setCloseable(boolean closeable);
 	
 	java.util.List<Stop> list_stop = new ArrayList<>();
 	static java.util.List<Coordinate> list_tmp_c = new ArrayList<>();

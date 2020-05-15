@@ -1,7 +1,7 @@
 id;startX;startY;endX;endY;open;traffic
 Ulice 1;0;0;0;200;true;1
 Ulice 2;0;200;200;200;true;1
-Ulice 3;200;200;300;300;true;1
+Ulice 3;200;200;300;300;true;3
 Ulice 4;300;300;300;350;true;1
 Ulice 5;300;350;350;350;true;1
 Ulice 6;0;200;0;350;true;1

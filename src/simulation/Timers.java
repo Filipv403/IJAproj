@@ -91,7 +91,7 @@ public class Timers {
     }
 
     public void startTimers() {
-        currentTime = LocalTime.of(10,0);
+        currentTime = LocalTime.of(10,10);
         currentTimeTimer = new Timer(false);
         currentTimeTimer.scheduleAtFixedRate(new TimerTask() {
             @Override

@@ -196,4 +196,8 @@ public class MyStreet implements Street {
 			this.mapLine.setStroke(Color.rgb(85, 255, 0));
 		}
 	}
+
+	public void setCloseable(boolean closeable) {
+		isCloseable = closeable;
+	}
 }

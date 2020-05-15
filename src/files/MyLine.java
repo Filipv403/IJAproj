@@ -1,5 +1,6 @@
 package files;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.AbstractMap;
 import java.util.Collections;
@@ -9,13 +10,16 @@ public class MyLine implements Line {
 
 	private String id;
 	List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = new ArrayList <AbstractMap.SimpleImmutableEntry<Street,Stop>>();
+	private List<Detour> detours;
 
 	public MyLine(){
 		this.id = "";
+		this.detours = new ArrayList<>();
 	}
 
 	public MyLine(String id){
 		this.id = id;
+		this.detours = new ArrayList<>();
 	}
 
 	public String getId(){
@@ -92,6 +96,7 @@ public class MyLine implements Line {
 			return null;
 	}
 
+	/*
     public ArrayList<Coordinate> getRoute(Stop prevStop, Stop nextStop) {
 		boolean startFound = false;
 		ArrayList<Coordinate> route = new ArrayList<>();
@@ -115,7 +120,7 @@ public class MyLine implements Line {
 		}
 
 		return route;
-    }
+    } */
 
     public void highlight() {
 		this.map_list.forEach(pair -> {
@@ -124,4 +129,115 @@ public class MyLine implements Line {
 				pair.getValue().select();
 		});
     }
+
+    private int[] getStopIdxs() {
+    	int [] idxs = new int[2];
+    	boolean haveStart = false;
+    	boolean haveEnd = false;
+    	for (int i = 0; i < map_list.size(); i++) {
+    		if (!haveStart) {
+				if (map_list.get(i).getValue() != null && map_list.get(i).getKey().isOpen()) {
+					haveStart = true;
+					idxs[0] = i;
+				}
+			} else {
+    			if (map_list.get(i).getValue() != null) {
+    				if (map_list.get(i).getKey().isOpen()) {
+    					haveEnd = true;
+    					idxs[1] = i;
+					} else if (!hasDetour(map_list.get(i).getKey())) {
+    					if (haveEnd)
+    						return idxs;
+    					else
+    						return null;
+					}
+				} else {
+					if (!map_list.get(i).getKey().isOpen() && !hasDetour(map_list.get(i).getKey()) && !haveEnd) {
+						return null;
+					}
+				}
+			}
+		}
+
+		if (haveEnd)
+			return idxs;
+		else
+			return null;
+	}
+
+	private boolean hasDetour(Street street) {
+    	return false;
+    	/*
+    	for (Detour detour : detours) {
+    		if (detour.isReplacing(street))
+    			return true;
+		}
+
+    	return false; */
+	}
+
+	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule) {
+		List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = new ArrayList<>();
+		int jump;
+
+		int[] stopIdxs = getStopIdxs();
+
+		if (stopIdxs == null)
+			return null;
+
+		for (int i = stopIdxs[0]; i < stopIdxs[1]; i++) {
+			if (map_list.get(i).getValue() == null) {
+				if (!hasDetour(map_list.get(i).getKey())) {
+					route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
+				} else {
+					jump = setDetourRoute(map_list.get(i).getKey(), route);
+					i += jump;
+				}
+			} else {
+				if (!hasDetour(map_list.get(i).getValue().getStreet())) {
+					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getValue().getCoordinate(), schedule.getTime(map_list.get(i).getValue())));
+					if (map_list.get(i + 1).getValue() == null || (map_list.get(i + 1).getValue() != null && !map_list.get(i + 1).getKey().equals(map_list.get(i).getKey())))
+						route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
+				} else {
+					jump = setDetourRoute(map_list.get(i).getValue().getStreet(), route);
+					i += jump;
+				}
+			}
+		}
+
+		//add last stop
+		route.add(new AbstractMap.SimpleEntry<>(map_list.get(stopIdxs[1]).getValue().getCoordinate(), schedule.getTime(map_list.get(stopIdxs[1]).getValue())));
+		return route;
+	}
+
+	private int setDetourRoute(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
+		for (Detour detour : detours) {
+			if (detour.isReplacing(street)) {
+				detour.getRoute(street, route);
+				return detour.getJump();
+			}
+		}
+
+		return 0;
+	}
+
+	public List<Street> getStreets() {
+		List<Street> streets = new ArrayList<>();
+
+		streets.add(map_list.get(0).getKey());
+
+		for (int i = 1; i < map_list.size() - 1; i++) {
+			if (map_list.get(i).getValue() == null) {
+				streets.add(map_list.get(i).getKey());
+			} else {
+				streets.add(map_list.get(i).getKey());
+				if (map_list.get(i - 1).getValue() == null || (map_list.get(i - 1).getValue() != null && !map_list.get(i - 1).getKey().equals(map_list.get(i).getKey())))
+					streets.add(map_list.get(i).getKey());
+			}
+		}
+
+		streets.add(map_list.get(map_list.size() - 1).getKey());
+
+		return streets;
+	}
 }

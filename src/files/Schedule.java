@@ -35,7 +35,7 @@ public class Schedule {
 
         return null;
     }
-
+ /*
     public Stop getNextStop(LocalTime time) {
         for (AbstractMap.SimpleImmutableEntry<LocalTime, Stop> stop : schedule) {
             if (stop.getKey().isAfter(time)) {
@@ -54,13 +54,19 @@ public class Schedule {
         }
 
         return null;
-    }
+    } */
 
     public int getBusID() {
         return busID;
     }
 
-    public boolean isOnRoute(LocalTime currentTime) {
-        return getPreviousStop(currentTime) != null && getNextStop(currentTime) != null;
+    public int getNextStop(List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, LocalTime time) {
+        for (int i = 1; i < route.size(); i++) {
+            if (route.get(i).getValue().isAfter(time)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

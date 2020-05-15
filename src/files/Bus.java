@@ -90,28 +90,28 @@ public class Bus {
     }
 
     public void updatePos(LocalTime currentTime) {
-        if (this.schedule.isOnRoute(currentTime)) {
+        List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
+        List<Street> streets = this.line.getStreets();
+        List<Long> delay = RouteCalculation.computeDelay(route, streets);
+
+        if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
         } else {
             this.circle.setVisible(false);
             return;
         }
 
-        prevTime = currentTime;
+        int nextStop = schedule.getNextStop(route, currentTime);
 
-        Stop nextStop = schedule.getNextStop(currentTime);
-        Stop prevStop = schedule.getPreviousStop(currentTime);
+        //ArrayList<Coordinate> route = this.line.getRoute(prevStop, nextStop);
 
-        ArrayList<Coordinate> route = this.line.getRoute(prevStop, nextStop);
+        long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
+        long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();
 
-        long routeDuration = Duration.between(schedule.getTime(nextStop), schedule.getTime(prevStop)).getSeconds();
-        long currentDuration = Duration.between(currentTime, schedule.getTime(prevStop)).getSeconds();
-
-        double len = RouteCalculation.routeLenght(route);
+        double len = RouteCalculation.routeLenght(route, nextStop - 1, nextStop);
         double currentLen = len * (currentDuration / (double) routeDuration);
 
-        Vec2d newPos = RouteCalculation.getPosition(route, currentLen);
-
+        Vec2d newPos = RouteCalculation.getPosition(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), currentLen);
 
         this.circle.setCenterX(newPos.x);
         this.circle.setCenterY(newPos.y);
