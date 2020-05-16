@@ -7,28 +7,32 @@ import files.MyStreet;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import simulation.Timers;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.File;
 
-import javafx.geometry.*;
-import gui.*;
 import loaded.*;
 
+/**
+ * Třídá s templatem programu
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public class Template {
 
+    /**
+     * Zobrazí template
+     * 
+     * @param data načtená data ze souborů
+     * @param MHD název okna pro template
+     */
     public static void displayTemplate(Loaded data, String MHD){
         Stage window = new Stage();
         window.setTitle(MHD);

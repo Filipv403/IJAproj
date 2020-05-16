@@ -17,8 +17,18 @@ import javafx.stage.Stage;
 
 import loaded.*;
 
+/**
+ * Prázdný template, který se zobrazí, když se nenačtou žádné soubory
+ * 
+ * @author Filip Václavík (xvacla30)
+ */
 public class EmptyTemplate {
 
+    /**
+     * Zobrazí prázdný template
+     * 
+     * @param MHD název prázdného templatu
+     */
     public static void display(String MHD){
         Stage window = new Stage();
         window.setTitle(MHD);

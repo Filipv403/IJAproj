@@ -3,19 +3,29 @@ package gui;
 import java.util.ArrayList;
 import files.*;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import loaded.*;
 
+/**
+ * Rozhraní pro vykreslení objektů na mapě
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public interface MapObjects {
+    /**
+     * Vykreslí mapu
+     * 
+     * @param gridPane panel na který se má umístit mapa a vyskakovací okénko
+     * @param l data ze souborů pro ulice apod.
+     * @return mapa s objekty
+     */
     public static Group drawStreet(GridPane gridPane, Loaded l){
-        MyStreet street;
         Line line = new Line();
         Rectangle rectangle = new Rectangle();
         Circle circle = new Circle();

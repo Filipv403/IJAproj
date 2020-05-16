@@ -1,28 +1,34 @@
 package gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.geometry.*;
-import files.*;
 
+/**
+ * Třída pro custom tlačítko
+ * 
+ * @author Filip Václavík (xvacla30)
+ */
 public class Buttons {
+    /**
+     * nové tlačítko
+     */
     private Button button = new Button();
 
+    /**
+     * Konstruktor tlačítka
+     * 
+     * @param name název tlačítka
+     */
     public Buttons(String name){
         this.button.setText(name);
-        this.button.setOnAction(e -> System.out.println("Hey its me"));
+        this.button.setOnAction(e -> System.out.println(""));
         this.button.setAlignment(Pos.CENTER_LEFT);
     }
 
+    /**
+     * 
+     * @return vytvořené tlačítko
+     */
     public Button getButton(){
         return this.button;
     }

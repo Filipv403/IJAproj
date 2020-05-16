@@ -1,27 +1,31 @@
 package gui;
 
-import java.time.LocalTime;
-
 import files.*;
-import simulation.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
+
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 
+/**
+ * Vyskakovací okénko s údajema autobusu, po kliknutí na autobus
+ *
+ * @author Filip Václavík (xvacla30)
+ * @author Michal Zobaník (xzoban01)
+ */
 public class MyPopup {
+    /**
+     * Deklarace vyskakovacího panelu
+     */
     private SplitPane popup;
 
+    /**
+     * Načte vyskakovací okénko a uloží ho 
+     * 
+     * @param bus načte autobus, ze kterého si bere informace
+     * @return popup okno
+     */
     public SplitPane load(Bus bus) {
         SplitPane popup = new SplitPane();
         GridPane leftGrid = new GridPane();
@@ -80,11 +84,18 @@ public class MyPopup {
         return popup;
     }
    
-   public SplitPane getPopup(){
-       return this.popup;
-   }
+    /**
+     * @return popup okénko
+     */
+    public SplitPane getPopup(){
+        return this.popup;
+    }
 
-   public void display(GridPane gridPane){
-       gridPane.add(getPopup(), 0, 2);
-   }
+    /**
+     * 
+     * @param gridPane panel, do kterého se má přidat vyskakovací okno
+     */
+    public void display(GridPane gridPane){
+        gridPane.add(getPopup(), 0, 2);
+    }
 }

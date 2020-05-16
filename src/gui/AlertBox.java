@@ -17,9 +17,24 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
+
+/**
+ * Třída s vyskakovacími upozorňovacími okénkami s eventy
+ * 
+ * @author Filip Václavík (xvacla30)
+ */
 public class AlertBox {
+    /**
+     * Seznam všech souborů
+     */
     private List<File> files;
 
+    /**
+     * Vyskakovácí varovné okénko, které se zobrazí, když nelze načíst soubory
+     * 
+     * @param display název souboru, který nelze načíst
+     * @return vrátí ono okénko
+     */
     public static AlertBox display(String display){
         Stage window = new Stage();
 
@@ -71,6 +86,13 @@ public class AlertBox {
         return click;
     }
 
+    /**
+     * Vyskakovácí varovné okénko, které řekne jaké soubory se mají načíst
+     * Pro více souborů než jen jeden
+     * 
+     * @param display název souborů pro načtení
+     * @return vrátí ono okénko
+     */
     public static AlertBox displayA(String display){
         Stage window = new Stage();
 
@@ -113,6 +135,11 @@ public class AlertBox {
         return click;
     }
 
+    /**
+     * Event po kliknutí na tlačítko otevře FileChooser pro vybraní .csv souborů
+     * 
+     * @param event ActionEvent
+     */
     public void openFiles(ActionEvent event){
         FileChooser fc = new FileChooser();
         String currentDir = Paths.get("../").toAbsolutePath().normalize().toString();
