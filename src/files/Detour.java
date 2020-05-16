@@ -26,7 +26,7 @@ public class Detour {
     }
 
     /**
-     * Odstraňení objížďky
+     * Odstraneni objizdky
      */
     public void remove() {
         detourList.forEach(s -> s.setCloseable(true));
