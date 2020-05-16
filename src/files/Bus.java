@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.AbstractMap;
 
 import com.sun.javafx.geom.Vec2d;
-import files.*;
 import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
@@ -26,6 +25,10 @@ public class Bus {
     private int delay;
     private LocalTime prevTime = LocalTime.of(9,0);
 
+    /**
+     * Konstruktor pro Autobus
+     * Nastaví číslo a zpoždění na 0 a z typu a dopravce udělá prázdné řetězce
+     */
     public Bus(){
         this.id=0;
         this.type="";
@@ -33,6 +36,13 @@ public class Bus {
         this.delay = 0;
     }
 
+    /**
+     * Konstruktor pro Autobus, zpoždění nastavuje na 0
+     * 
+     * @param id číslo autobusu
+     * @param type typ vozidla
+     * @param carrier dopravce
+     */
     public Bus(int id, String type, String carrier){
         this.id = id;
         this.type = type;
@@ -40,43 +50,89 @@ public class Bus {
         this.delay = 0;
     }
 
+    /**
+     * 
+     * @return id autobusu
+     */
     public int getId() {
         return this.id;
     }
 
+    /**
+     * 
+     * @return typ autobusu
+     */
     public String getType(){
         return this.type;
     }
 
+    /**
+     * 
+     * @return dopravce autobusu
+     */
     public String getCarrier(){
         return this.carrier;
     }
 
+    /**
+     * 
+     * @return linku autobusu
+     */
     public MyLine getLine(){
         return this.line;
     }
 
+    /**
+     * 
+     * @return jízdní řád autobusu
+     */
     public Schedule getSchedule(){
         return this.schedule;
     }
 
+    /**
+     * Nastaví číslo autobus
+     * 
+     * @param id číslo autobusu
+     */
     public void setId(int id){
         this.id = id;
     }
 
+    /**
+     * Nastaví typ autobus
+     * 
+     * @param type typ autobusu
+     */
     public void setType(String type){
         this.type = type;
     }
 
+    /**
+     * Nastaví dopravce autobusu
+     * 
+     * @param carrier dopravce autobusu
+     */
     public void setCarrier(String carrier){
         this.carrier = carrier;
     }
 
+    /**
+     * Přidá linku do autobusu
+     * 
+     * @param line přidávaná linka
+     * @param schedule přidávaný jizdní řád
+     */
     public void addLine(MyLine line, Schedule schedule){
         this.line = line;
         this.schedule = schedule;
     }
 
+    /**
+     * Získá souřadnice první autobusové zastávky
+     * 
+     * @return souřadnice první autobusové zastávky
+     */
     public Coordinate getFirstStopCoordinate(){
         return this.line.getFirstStop().getCoordinate();
     }
