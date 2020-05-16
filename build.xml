@@ -7,7 +7,7 @@
 
     <target name="compile" depends="clean">
         <mkdir dir="build"/>
-        <javac srcdir="src" destdir="build" includeantruntime="false"></javac>
+        <javac srcdir="src" destdir="build" includeantruntime="false" encoding="utf8"></javac>
         <copy todir="build">
             <fileset dir="src" includes="**/*.css"></fileset>
             <fileset dir="lib" includes="**/*.png"></fileset>

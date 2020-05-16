@@ -242,7 +242,7 @@ public class MyStreet implements Street {
 	/**
 	 * Nastaví možnost zavírání cesty
 	 *
-	 * @param closeable true -> cestu je možné uzavřít
+	 * @param closeable true, cestu je možné uzavřít
 	 */
 	public void setCloseable(boolean closeable) {
 		isCloseable = closeable;
