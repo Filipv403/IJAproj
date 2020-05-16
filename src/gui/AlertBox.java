@@ -17,9 +17,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
-import gui.*;
-import loaded.*;
-
 public class AlertBox {
     private List<File> files;
 
@@ -44,9 +41,13 @@ public class AlertBox {
         });
         window.setOnCloseRequest(e -> {
             window.close();
+            //EmptyTemplate.display("MHD");
         });
         Button conBtn = new Button("Continue");
-        conBtn.setOnAction(e -> window.close());
+        conBtn.setOnAction(e -> {
+            window.close();
+            //EmptyTemplate.display("MHD");
+        });
 
         HBox layout1 = new HBox(20);
         layout1.getChildren().addAll(openBtn, conBtn);
@@ -124,7 +125,7 @@ public class AlertBox {
     }
 
     /**
-     * @return the files
+     * @return seznam souborů
      */
     public List<File> getFiles() {
         return this.files;

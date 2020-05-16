@@ -149,18 +149,18 @@ public class MyStreet implements Street {
 	}
 
 	/**
-	 * Získá stupeň provozu na cestě
+	 * Získá stupen provozu na cestě
 	 *
-	 * @return stupeň provozu
+	 * @return stupen provozu
 	 */
 	public int getTraffic() {
 		return traffic;
 	}
 
 	/**
-	 * Naství stupeň provozu
+	 * Naství stupen provozu
 	 *
-	 * @param traffic Nový stupeň provozu
+	 * @param traffic Nový stupen provozu
 	 */
 	public void setTraffic(int traffic) {
 		if (traffic < 0 || traffic > 100)

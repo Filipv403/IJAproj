@@ -2,7 +2,6 @@ package files;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap;
 
@@ -12,7 +11,7 @@ import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
 /**
- * Třídá reprezentující jedtlové autobusy
+ * Třídá reprezentující jednotlivé autobusy
  *
  * @author Filip Václavík (xvacla30)
  * @author Michal Zobaník (xzoban01)

@@ -22,16 +22,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.File;
-import loaded.AddBoxItem;
+
 import javafx.geometry.*;
 import gui.*;
 import loaded.*;
 
 public class Template {
 
-    public static void displayTemplate(String MHD){
+    public static void displayTemplate(Loaded data, String MHD){
         Stage window = new Stage();
-        Loaded data = new Loaded();
         window.setTitle(MHD);
 
         //Menu
@@ -46,13 +45,19 @@ public class Template {
             System.exit(0);
         });
         MenuItem openItem = new MenuItem("Open");
+
+        //user input
         openItem.setOnAction(e -> {
             List<File> files; 
             files = AlertBox.displayA("Stops.csv, Streets.csv, Lines.csv, Buses.csv, Schedules.csv").getFiles();
-            Load lo = new Load();
-            lo.userOpen(files);
-            lo.userOpenBool(files);
+            if(files != null){
+                final Loaded userData = new Loaded(files);
+                data.userInput(userData);
+                window.close();
+                displayTemplate(userData, MHD);
+            }
         });
+
         fileMenu.getItems().addAll(openItem, exitItem);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(fileMenu);
@@ -73,8 +78,6 @@ public class Template {
         busBox = AddBoxItem.itemBus(data, busBox);
         stops = AddBoxItem.itemStop(data, stops);
         linky = AddBoxItem.itemLine(data, linky);
-
-        //comboBox.setOnAction("po kliknutí zvýrazní na mapě");
 
         rightMenu.getChildren().addAll(stops.getStopBox(), linky.getLineBox(), busBox.getBusBox());
         rightMenu.setId("vbox");
