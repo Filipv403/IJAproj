@@ -6,14 +6,10 @@ import files.MyStop;
 import files.MyStreet;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
 import simulation.Timers;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.File;
 
@@ -83,6 +79,22 @@ public class Template {
         stops = AddBoxItem.itemStop(data, stops);
         linky = AddBoxItem.itemLine(data, linky);
 
+        //zobrazeni casu
+        Timers myTimer = new Timers();
+
+        Label currentTimeLabel = new Label("Akuální čas: 10:00");
+        Label currentSimSpeed = new Label("Ryhclost simulace: 1x");
+        TextField time = new TextField();
+        Button setTime = new Button("Nastavit čas");
+        setTime.setOnMouseClicked(e -> myTimer.setCurrentTime());
+        Slider simSpeedSlider = new Slider();
+        simSpeedSlider.setMin(1);
+        simSpeedSlider.setMax(3600);
+        simSpeedSlider.setOnMouseDragged(e -> myTimer.setSimSpeed());
+
+        rightMenu.getChildren().addAll(currentTimeLabel, time, setTime, currentSimSpeed, simSpeedSlider);
+        myTimer.setGui(time, currentSimSpeed, currentTimeLabel, simSpeedSlider);
+
         rightMenu.getChildren().addAll(stops.getStopBox(), linky.getLineBox(), busBox.getBusBox());
         rightMenu.setId("vbox");
         rightMenu.getStylesheets().addAll("gui/rightMenu.css");
@@ -97,20 +109,15 @@ public class Template {
         gridPane.getRowConstraints().add(new RowConstraints(32));
         gridPane.getRowConstraints().add(new RowConstraints(668));
 
-
-
         /*import mapy*/
         Group root = new Group();
 
         root = MapObjects.drawStreet(gridPane, data);
 
-        gridPane.add(root, 0, 1);
-
-        //timer
-        Timers myTimer = new Timers();
-        //myTimer.setGui();
         myTimer.setBusses(data.getBuses());
         myTimer.startTimers();
+
+        gridPane.add(root, 0, 1);
 
         Scene scene = new Scene(gridPane, 1600, 900);
         scene.setOnKeyPressed(e -> {

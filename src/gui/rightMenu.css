@@ -48,6 +48,18 @@
     -fx-cursor: hand;
 }
 
+.label{
+    -fx-background-size: 28px 28px;
+    -fx-background-position: 90% 50%;
+    -fx-font-size: 16pt;
+    -fx-font-weight: 700;
+}
+
+.text-field{
+    -fx-pref-width: 60px;
+    -fx-pref-height: 10px;
+}
+
 .combo-box .arrow, .combo-box .arrow-button{
     -fx-background-color: transparent;
 }

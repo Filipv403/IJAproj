@@ -4,6 +4,7 @@ import files.Bus;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -17,10 +18,10 @@ import java.util.TimerTask;
  * @author Michal Zobaník (xzoban01)
  */
 public class Timers {
-    private TextField textMinutes = null;
-    private TextField textHours = null;
+    private TextField textTime = null;
     private Label labelCurrentTime = null;
-    private TextField textSimSpeed = null;
+    private Label labelSimSpeed = null;
+    private Slider sliderSimSpeed = null;
 
     private Timer currentTimeTimer;
     private LocalTime currentTime;
@@ -29,43 +30,38 @@ public class Timers {
 
     private ArrayList<Bus> busses;
 
-    private float scale = 120;
+    private double scale = 1;
 
     /**
      * Nastací UI pro správu Timeru
      *
-     * @param textMinutes Textové pole pro nastavení aktuální minuty simulace
-     * @param textHours Textové pole pro nastavení aktuální hodiny simulace
+     * @param time Textové pole pro nastavení aktuálního času
      * @param labelCurrentTime Label pro zobrazení aktuálního času simulce
      * @param textSimSpeed Testové pole pro nastavení aktuální rychlosti simulace
      */
-    public void setGui(TextField textMinutes, TextField textHours, Label labelCurrentTime, TextField textSimSpeed) {
-        this.textMinutes = textMinutes;
-        this.textHours  = textHours;
+    public void setGui(TextField time, Label labelSimSpeed, Label labelCurrentTime, Slider textSimSpeed) {
+        this.textTime = time;
+        this.labelSimSpeed = labelSimSpeed;
         this.labelCurrentTime =labelCurrentTime;
-        this.textSimSpeed = textSimSpeed;
+        this.sliderSimSpeed = textSimSpeed;
     }
 
     /**
      * Nastaví aktuální čas simulace
      */
     public void setCurrentTime() {
-        int newHour, newMinute;
+        LocalTime newTime;
         try {
-            if (textMinutes == null || textHours == null)
+            if (textTime == null)
                 return;
 
-            newHour = Integer.parseInt(textHours.getText());
-            newMinute = Integer.parseInt(textMinutes.getText());
+            newTime = LocalTime.parse(textTime.getText());
 
-            if (newHour < 0 || newHour > 23 || newMinute < 0 || newMinute > 59)
-                throw new NumberFormatException();
-
-            currentTime = LocalTime.of(newHour, newMinute);
+            currentTime = newTime;
             updateTime();
 
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid time format");
+        } catch (java.time.format.DateTimeParseException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Očekáván čas ve formátu: hh:mm:ss");
             alert.showAndWait();
         }
     }
@@ -74,21 +70,18 @@ public class Timers {
      * Nastaví akuální rychlost simulace v rozmezí (0 - 3600)
      */
     public void setSimSpeed() {
-        float simSpeed;
-        try {
-            if (textSimSpeed == null)
-                return;
+        double simSpeed;
+        if (sliderSimSpeed == null)
+            return;
 
-            simSpeed = Float.parseFloat(textSimSpeed.getText());
+        simSpeed = sliderSimSpeed.getValue();
 
-            if (scale < 0.1 || scale > 3600)
-                throw new NumberFormatException();
+        scale = simSpeed;
 
-            scale = simSpeed;
-        } catch (NumberFormatException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid speed format");
-            alert.showAndWait();
-        }
+        if (labelSimSpeed == null)
+            return;
+
+        labelSimSpeed.setText("Rychlost simulace: " + (long)scale + "x");
     }
 
     /**
@@ -97,7 +90,7 @@ public class Timers {
     private void updateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         if (labelCurrentTime != null)
-            labelCurrentTime.setText(currentTime.format(dtf));
+            labelCurrentTime.setText("Akuální čas: " + currentTime.format(dtf));
         else
             return;
             //System.out.println(currentTime.format(dtf));
