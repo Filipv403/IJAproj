@@ -18,30 +18,64 @@ public class MyLine implements Line {
 	List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = new ArrayList <AbstractMap.SimpleImmutableEntry<Street,Stop>>();
 	private List<Detour> detours;
 
+	/**
+	 * Prázdný konstruktor pro vytvoření bezejmenné linky
+	 */
 	public MyLine(){
 		this.id = "";
 	}
 
+	/**
+	 * Konstruktor pro vytvoření linky
+	 * 
+	 * @param id jméno linky
+	 */
 	public MyLine(String id){
 		this.id = id;
 	}
 
+	/**
+	 * 
+	 * @return jméno linky
+	 */
 	public String getId(){
 		return this.id;
 	}
 
+	/**
+	 * Nastaví jméno linky
+	 * 
+	 * @param id linky
+	 */
 	public void setId(String id){
 		this.id = id;
 	}
 
+	/**
+	 * Získá první zastávku na lince
+	 * 
+	 * @return fistStop
+	 */
 	public Stop getFirstStop(){
 		return this.map_list.get(0).getValue();
 	}
 
+	/**
+	 * Získá poslední zastávku na lince
+	 * 
+	 * @return lastStop
+	 */
 	public Stop getLastStop(){
 		return this.map_list.get(map_list.size()-1).getValue();
 	}
 
+	/**
+	 * Vloží zastávku do linky podle toho zda leží na ulici, která se nachází na lince, vrátí true nebo false podle
+	 * toho zda to bylo úspěšné
+	 * 
+	 * @param stop přidávaní zastávka 
+	 * @return true když se přidala, false když se nepřidala
+	 */
 	public boolean addStop(Stop stop) {
         Street s = stop.getStreet();
 		if(!(map_list.isEmpty())){
@@ -61,6 +95,13 @@ public class MyLine implements Line {
 		return true;
 	}
 	
+	/**
+	 * Vloží ulici do linky, vrátí true nebo false podle
+	 * toho zda to bylo úspěšné
+	 * 
+	 * @param street přidávaná ulice
+	 * @return true když se přidala, false když se nepřidala
+	 */
 	public boolean addStreet(Street street) {
 		if(!(map_list.isEmpty())){
 			Street s = map_list.get(map_list.size()-1).getKey();
@@ -72,11 +113,23 @@ public class MyLine implements Line {
 		}
 		return false;
 	}
+
+	/**
+	 * Vrátí linku s ulicemi a zastávkami
+	 * 
+	 * @return linka
+	 */
 	public java.util.List<java.util.AbstractMap.SimpleImmutableEntry<Street,Stop>> getRoute() {
 		List <AbstractMap.SimpleImmutableEntry<Street,Stop>> lists = Collections.unmodifiableList(map_list);
 		return lists;
 	}
 	
+	/**
+	 * Vytvoří linku pouze se jménem
+	 * 
+	 * @param id jméno linky
+	 * @return linka
+	 */
 	public static Line defaultLine(java.lang.String id) {
 		Line line = new MyLine(id);
 		return line;
