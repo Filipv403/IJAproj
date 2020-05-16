@@ -90,6 +90,7 @@ public interface MapObjects {
                 MyPopup myPopup = new MyPopup();
                 myPopup.load(bus);
                 myPopup.display(gridPane);
+                bus.setPopUp(myPopup);
             });
             bus.setCircle(circle);
             root.getChildren().addAll(bus.getCircle());

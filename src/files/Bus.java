@@ -7,6 +7,7 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.AbstractMap;
 
 import com.sun.javafx.geom.Vec2d;
+import gui.MyPopup;
 import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
@@ -25,6 +26,8 @@ public class Bus {
     private Schedule schedule;
     private int delay;
     private LocalTime prevTime = LocalTime.of(9,0);
+    private Stop nextStop;
+    private MyPopup popUp;
 
     /**
      * Konstruktor pro Autobus
@@ -35,6 +38,8 @@ public class Bus {
         this.type="";
         this.carrier="";
         this.delay = 0;
+        this.nextStop = null;
+        this.popUp = null;
     }
 
     /**
@@ -49,6 +54,8 @@ public class Bus {
         this.type = type;
         this.carrier = carrier;
         this.delay = 0;
+        this.nextStop = null;
+        this.popUp = null;
     }
 
     /**
@@ -152,24 +159,6 @@ public class Bus {
         this.circle = circle;
     }
 
-    /*public Stop getNextStop(LocalTime currentTime){
-        List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
-        MyLine line = getLine();
-        int nextStop = schedule.getNextStop(route, currentTime);
-        List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = line.getRoute();
-        for (SimpleImmutableEntry<Street,Stop> simpleImmutableEntry : map_list) {
-            int stopX = simpleImmutableEntry.getValue().getCoordinate().getX();
-            int stopY = simpleImmutableEntry.getValue().getCoordinate().getY();
-            int nextX = route.get(nextStop).getKey().getX();
-            int nextY = route.get(nextStop).getKey().getY();
-            if(stopX == nextX && stopY == nextY){
-                return simpleImmutableEntry.getValue();
-            }
-        }
-        MyStop s = new MyStop();
-        return s;
-    }*/
-
     /**
      *  Získá kruh reprezentující autobus na mapě
      *
@@ -200,6 +189,8 @@ public class Bus {
         //spočítání zpoždění
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
+        this.nextStop = getLine().getFirstStop();
+
         //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
@@ -210,6 +201,7 @@ public class Bus {
 
         //výpočet aktuální polohy
         int nextStop = schedule.getNextStop(route, currentTime);
+        this.nextStop = findNextStop(route, nextStop);
 
         long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
         long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();
@@ -222,5 +214,50 @@ public class Bus {
         //nastavení nové polohy
         this.circle.setCenterX(newPos.x);
         this.circle.setCenterY(newPos.y);
+    }
+
+    /**
+     * Najde další zastávku na trase autobusu
+     *
+     * @param route Cesta autobusu
+     * @param nextNode Index dalšího bodu na cestě
+     * @return Další zastávku
+     */
+    private Stop findNextStop(List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, int nextNode) {
+        Stop stop;
+        for (int i = nextNode; i < route.size(); i++) {
+            if ((stop = schedule.getStopAt(route.get(i).getKey())) != null) {
+                return stop;
+            }
+        }
+
+        return line.getFirstStop();
+    }
+
+    /**
+     * Získá další zastávku autobusu
+     *
+     * @return zastávka autobusu
+     */
+    public Stop getNextStop() {
+        return nextStop;
+    }
+
+    /**
+     * Nastaví vyskakovací okno
+     * @param popUp vyskakovací okno
+     */
+    public void setPopUp(MyPopup popUp) {
+        this.popUp = popUp;
+    }
+
+    /**
+     * odstraní vyskakovací okno
+     */
+    public void deselect() {
+        if (this.popUp != null) {
+            this.popUp.notDisplay();
+            this.popUp = null;
+        }
     }
 }

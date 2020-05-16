@@ -19,6 +19,7 @@ public class MyPopup {
      * Deklarace vyskakovacího panelu
      */
     private SplitPane popup;
+    private GridPane gridPane;
 
     /**
      * Načte vyskakovací okénko a uloží ho 
@@ -44,7 +45,7 @@ public class MyPopup {
         Text busLine = new Text("Linka: " + bus.getLine().getId());
         Text firstStop = new Text("Po\u010d\u00e1te\u010dn\u00ed zast\u00e1vka: " + bus.getLine().getFirstStop().getId());
         Text lastStop = new Text("Kone\u010dn\u00e1 zast\u00e1vka: " + bus.getLine().getLastStop().getId());
-        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: ");
+        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getId());
 
 
         GridPane.setHalignment(busId, HPos.CENTER);
@@ -94,6 +95,14 @@ public class MyPopup {
      * @param gridPane panel, do kterého se má přidat vyskakovací okno
      */
     public void display(GridPane gridPane){
+        this.gridPane = gridPane;
         gridPane.add(getPopup(), 0, 2);
+    }
+
+    /**
+     * Zruší zobrazení vyskakovacího okna
+     */
+    public void notDisplay() {
+        gridPane.getChildren().removeAll(getPopup());
     }
 }

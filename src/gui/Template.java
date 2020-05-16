@@ -2,6 +2,7 @@ package gui;
 
 import java.util.List;
 
+import files.Bus;
 import files.MyStop;
 import files.MyStreet;
 import javafx.scene.control.*;
@@ -124,6 +125,7 @@ public class Template {
             if (e.getCode() == KeyCode.ESCAPE){
                 data.getStreets().forEach(MyStreet::deselect);
                 data.getStops().forEach(MyStop::deselect);
+                data.getBuses().forEach(Bus::deselect);
             }
         });
         window.setScene(scene);

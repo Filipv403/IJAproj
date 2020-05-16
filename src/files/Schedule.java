@@ -85,4 +85,19 @@ public class Schedule {
 
         return -1;
     }
+
+    /**
+     * Najde Zastávku, která se nachází na zadaných souřadnicích
+     *
+     * @param c Souřadnice zastávky
+     * @return Zastávka, která leží na souřadnicích, jestli není žádná nalezená vrací null
+     */
+    public Stop getStopAt(Coordinate c) {
+        for (AbstractMap.SimpleImmutableEntry<LocalTime,Stop> stopPair: schedule) {
+            if (stopPair.getValue().getCoordinate().equals(c))
+                return stopPair.getValue();
+        }
+
+        return null;
+    }
 }
