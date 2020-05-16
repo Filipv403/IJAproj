@@ -16,23 +16,45 @@ public class MyStop implements Stop {
     private Street s;
     private Rectangle mapRect;
     
+    /**
+     * Prázdný konstruktor pro zastávku
+     */
     public MyStop() {
         this.id = "";
     }
 
+    /**
+     * Konstruktor pro zastávku se jménem zastávky
+     * 
+     * @param id zastávky
+     */
     public MyStop(String id) {
         this.id = id;
     }
 
+    /**
+     * Konstruktor pro zastávku se jménem zastávky a souřadnicemi zastávky
+     * 
+     * @param id zastávky
+     * @param c souřadnice zastávky
+     */
     public MyStop(String id, Coordinate c) {
         this.id = id;
         this.c = c;
     }
 
+    /**
+	 * 
+	 * @return název zastávky
+	 */
     public String getId(){
         return this.id;
     }
 
+    /**
+	 * 
+	 * @return souřadnice zastávky
+	 */
     public Coordinate getCoordinate(){
         if(c != null){
             return this.c;
@@ -40,19 +62,40 @@ public class MyStop implements Stop {
         return null;
     }
 
+    /**
+	 * Nastaví jméno zastávky
+	 * 
+	 * @param id název
+	 */
     public void setId(String id){
         this.id = id;
     }
 
+    /**
+	 * Nastaví zastávku do ulice
+	 * 
+	 * @param s ulice
+	 */
     public void setStreet(Street s){
 		this.s = s;
     }
 
-
+    /**
+	 * Získá ulici, na které je tato zastávka
+	 * 
+	 * @return street
+	 */
     public Street getStreet(){
 		return this.s;
     }
-    //nastaví výchozí zastávku
+
+    /**
+	 * Nastaví výchozí zastávku a vrátí vytvořenou zastávku
+	 * 
+	 * @param id jméno 
+	 * @param c souřadnice
+	 * @return stop
+	 */
     public static Stop defaultStop(String id, Coordinate c){
         Stop stop = new MyStop(id, c);
         return stop;
