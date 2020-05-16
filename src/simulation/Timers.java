@@ -36,7 +36,8 @@ public class Timers {
      * Nastací UI pro správu Timeru
      *
      * @param time Textové pole pro nastavení aktuálního času
-     * @param labelCurrentTime Label pro zobrazení aktuálního času simulce
+     * @param labelSimSpeed Label pro nastavení rychlosti simulace
+     * @param labelCurrentTime Label pro zobrazení aktuálního času simulace
      * @param textSimSpeed Testové pole pro nastavení aktuální rychlosti simulace
      */
     public void setGui(TextField time, Label labelSimSpeed, Label labelCurrentTime, Slider textSimSpeed) {
@@ -82,6 +83,10 @@ public class Timers {
             return;
 
         labelSimSpeed.setText("Rychlost simulace: " + (long)scale + "x");
+    }
+
+    public LocalTime getCurrentTime(){
+        return this.currentTime;
     }
 
     /**

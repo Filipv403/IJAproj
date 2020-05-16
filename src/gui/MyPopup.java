@@ -1,7 +1,7 @@
 package gui;
 
 import files.*;
-
+import javafx.geometry.HPos;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -46,6 +46,15 @@ public class MyPopup {
         Text lastStop = new Text("Kone\u010dn\u00e1 zast\u00e1vka: " + bus.getLine().getLastStop().getId());
         Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: ");
 
+
+        GridPane.setHalignment(busId, HPos.CENTER);
+        GridPane.setHalignment(busType, HPos.CENTER);
+        GridPane.setHalignment(busCarrier, HPos.CENTER);
+        GridPane.setHalignment(busLine, HPos.CENTER);
+        GridPane.setHalignment(firstStop, HPos.CENTER);
+        GridPane.setHalignment(lastStop, HPos.CENTER);
+        GridPane.setHalignment(nextStop, HPos.CENTER);
+
         leftGrid.add(busId, 0, 0);
         leftGrid.add(busType, 1, 0);
         leftGrid.add(busCarrier, 0, 1);
@@ -55,7 +64,7 @@ public class MyPopup {
 
         rightGrid.add(firstStop, 0, 0);
         rightGrid.add(lastStop, 1, 0);
-        rightGrid.add(nextStop, 0, 1, 1, 1);
+        rightGrid.add(nextStop, 0, 1, 2, 1);
         rightGrid.getColumnConstraints().add(new ColumnConstraints(290));
         rightGrid.getRowConstraints().add(new RowConstraints(75));
 
@@ -67,17 +76,6 @@ public class MyPopup {
         firstStop.getStyleClass().add("text-id");
         lastStop.getStyleClass().add("text-id");
         nextStop.getStyleClass().add("text-id");
-
-        // pozice
-        /*
-         * busId.setTranslateY(25); busId.setTranslateX(-90); busType.setTranslateY(25);
-         * busType.setTranslateX(-90); busCarrier.setTranslateY(25);
-         * busCarrier.setTranslateX(-90); busLine.setTranslateY(25);
-         * busLine.setTranslateX(-90); bus5.setTranslateY(75); bus5.setTranslateX(-675);
-         * firstStop.setTranslateY(75); firstStop.setTranslateX(-650);
-         * bus6.setTranslateY(75); bus6.setTranslateX(-625); lastStop.setTranslateY(75);
-         * lastStop.setTranslateX(-600);
-         */
 
         this.popup = popup;
 

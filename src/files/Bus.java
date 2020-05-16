@@ -3,6 +3,7 @@ package files;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.AbstractMap;
 
 import com.sun.javafx.geom.Vec2d;
@@ -150,6 +151,24 @@ public class Bus {
     public void setCircle(Circle circle) {
         this.circle = circle;
     }
+
+    /*public Stop getNextStop(LocalTime currentTime){
+        List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
+        MyLine line = getLine();
+        int nextStop = schedule.getNextStop(route, currentTime);
+        List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = line.getRoute();
+        for (SimpleImmutableEntry<Street,Stop> simpleImmutableEntry : map_list) {
+            int stopX = simpleImmutableEntry.getValue().getCoordinate().getX();
+            int stopY = simpleImmutableEntry.getValue().getCoordinate().getY();
+            int nextX = route.get(nextStop).getKey().getX();
+            int nextY = route.get(nextStop).getKey().getY();
+            if(stopX == nextX && stopY == nextY){
+                return simpleImmutableEntry.getValue();
+            }
+        }
+        MyStop s = new MyStop();
+        return s;
+    }*/
 
     /**
      *  Získá kruh reprezentující autobus na mapě
