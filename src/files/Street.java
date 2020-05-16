@@ -56,6 +56,7 @@ public interface Street {
 	/**
 	 * Zjistí zda na sebe ulice navazují
 	 * 
+	 * @param s ulice
 	 * @return true pokud na sebe ulice navazují jinak false
 	 */
 	public boolean follows(Street s);
@@ -73,7 +74,7 @@ public interface Street {
 	/**
 	 * Zjistí jestli je cesta otevřená
 	 *
-	 * @return
+	 * @return true nebo false podle dané instance ulice
 	 */
 	public boolean isOpen();
 
@@ -87,7 +88,7 @@ public interface Street {
 	/**
 	 * Nastaví možnost zavírání cesty
 	 *
-	 * @param closeable true -> cestu je možné uzavřít
+	 * @param closeable true, cestu je možné uzavřít
 	 */
 	public void setCloseable(boolean closeable);
 	

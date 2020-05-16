@@ -36,7 +36,7 @@ public class LineBox {
     /**
      * Vložení prvku do custom comboBoxu přes soubor
      * 
-     * @param bus instance třídy autobusu
+     * @param line instance třídy linky
      */
     public void addLineFile(MyLine line){
         this.lineBox.getItems().addAll(line.toString());

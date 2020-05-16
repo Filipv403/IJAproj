@@ -22,7 +22,7 @@ public interface Load {
     /**
      *  Načte seznam zastávek ze souboru, pokud se nenačte tak dovolí uživateli vybrat sám soubor
      *
-     * @return ArrayList<MyStop> stops, seznam zastávek
+     * @return ArrayList stops, seznam zastávek
      */
     public static ArrayList<MyStop> loadStops() {
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
@@ -57,7 +57,7 @@ public interface Load {
      * 
      * @param userFiles seznam souborů, které vybral uživatel pro načtení
      *
-     * @return ArrayList<MyStop> stops, seznam zastávek
+     * @return ArrayList stops, seznam zastávek
      */
     public static ArrayList<MyStop> loadStops(List<File> userFiles) {
         ArrayList<MyStop> stops = new ArrayList<MyStop>();
@@ -117,7 +117,7 @@ public interface Load {
     /**
      *  Načte ulice ze souboru, pokud se nenačtou, tak dovolí uživateli znovu vybrat
      *
-     * @return ArrayList<MyStreet> streets, seznam ulic
+     * @return ArrayList streets, seznam ulic
      */
     public static ArrayList<MyStreet> loadStreets(){
         ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
@@ -153,7 +153,7 @@ public interface Load {
      * 
      * @param userFiles seznam souborů, které vybral uživatel pro načtení
      *
-     * @return ArrayList<MyStreet> streets, seznam ulic
+     * @return ArrayList streets, seznam ulic
      */
     public static ArrayList<MyStreet> loadStreets(List<File> userFiles) {
         ArrayList<MyStreet> streets = new ArrayList<MyStreet>();
@@ -219,7 +219,7 @@ public interface Load {
      * @param streets seznam již načtených ulic pro linky
      * @param stops seznam již načtených zastávek pro linky
      *
-     * @return ArrayList<MyLine> lines, seznam linek
+     * @return ArrayList lines, seznam linek
      */
     public static ArrayList<MyLine> loadLines(ArrayList<MyStreet> streets, ArrayList<MyStop> stops){
         ArrayList<MyLine> lines = new ArrayList<MyLine>();
@@ -260,7 +260,7 @@ public interface Load {
      * @param streets seznam již načtených ulic pro linky
      * @param stops seznam již načtených zastávek pro linky
      *
-     * @return ArrayList<MyLine> lines, seznam linek
+     * @return ArrayList lines, seznam linek
      */
     public static ArrayList<MyLine> loadLines(List<File> userFiles, ArrayList<MyStreet> streets, ArrayList<MyStop> stops) {
         ArrayList<MyLine> lines = new ArrayList<MyLine>();
@@ -356,7 +356,7 @@ public interface Load {
      * 
      * @param stops seznam již načtených zastávek pro časy jízdního řádu
      *
-     * @return ArrayList<Schedule> schedules, jízdní řád
+     * @return ArrayList schedules, jízdní řád
      */
     public static ArrayList<Schedule> loadSchedules(ArrayList<MyStop> stops) {
         ArrayList<Schedule> schedules = new ArrayList<>();
@@ -394,7 +394,7 @@ public interface Load {
      * @param userFiles soubory vybrané uživatelem
      * @param stops seznam již načtených zastávek pro časy jízdního řádu
      *
-     * @return ArrayList<Schedule> schedules, jízdní řád
+     * @return ArrayList schedules, jízdní řád
      */
     public static ArrayList<Schedule> loadSchedules(List<File> userFiles, ArrayList<MyStop> stops) {
         ArrayList<Schedule> schedules = new ArrayList<>();
@@ -469,7 +469,7 @@ public interface Load {
      * @param lines seznam již načtených linek
      * @param stops seznam již načtených zastávek
      *
-     * @return ArrayList<Bus> buses, seznam autobusů
+     * @return ArrayList buses, seznam autobusů
      */
     public static ArrayList<Bus> loadBuses(ArrayList<MyLine> lines, ArrayList<MyStop> stops){
         ArrayList<Bus> buses = new ArrayList<Bus>();
@@ -509,7 +509,7 @@ public interface Load {
      * @param lines seznam již načtených linek
      * @param stops seznam již načtených zastávek
      *
-     * @return ArrayList<Bus> buses, seznam autobusů
+     * @return ArrayList buses, seznam autobusů
      */
     public static ArrayList<Bus> loadBuses(List<File> userFiles, ArrayList<MyLine> lines, ArrayList<MyStop> stops) {
         ArrayList<Bus> buses = new ArrayList<Bus>();

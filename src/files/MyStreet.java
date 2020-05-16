@@ -172,6 +172,7 @@ public class MyStreet implements Street {
 	/**
 	 * Zjistí zda na sebe ulice navazují
 	 * 
+	 * @param s ulice
 	 * @return true pokud na sebe ulice navazují jinak false
 	 */
 	public boolean follows(Street s) {
@@ -237,7 +238,7 @@ public class MyStreet implements Street {
 	/**
 	 * Zjistí jestli je cesta otevřená
 	 *
-	 * @return
+	 * @return true nebo false dané instance ulice
 	 */
 	public boolean isOpen() {
 		return isOpen;
@@ -307,7 +308,7 @@ public class MyStreet implements Street {
 	/**
 	 * Nastaví možnost zavírání cesty
 	 *
-	 * @param closeable true -> cestu je možné uzavřít
+	 * @param closeable true, cestu je možné uzavřít
 	 */
 	public void setCloseable(boolean closeable) {
 		isCloseable = closeable;

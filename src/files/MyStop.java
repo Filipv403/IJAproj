@@ -119,7 +119,7 @@ public class MyStop implements Stop {
     /**
      * Nastavení odkazu na čtverec reprezentující zastávku na mapě
      *
-     * @param mapRect
+     * @param mapRect obdelník z mapy
      */
     public void setMapRect(Rectangle mapRect) {
         this.mapRect = mapRect;

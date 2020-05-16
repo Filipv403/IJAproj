@@ -37,7 +37,7 @@ public class StopBox {
     /**
      * Vložení prvku do custom comboBoxu přes soubor
      * 
-     * @param bus instance třídy autobusu
+     * @param stop instance třídy zastávky
      */
     public void addStopFile(MyStop stop){
         this.stopBox.getItems().addAll(stop.toString());

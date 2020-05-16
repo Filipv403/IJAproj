@@ -3,9 +3,10 @@
     <target name="clean">
         <delete dir="build"/>
         <delete dir="dest"/>
+        <delete dir="doc"/>
     </target>
 
-    <target name="compile" depends="clean">
+    <target name="compile" depends="clean, doc">
         <mkdir dir="build"/>
         <javac srcdir="src" destdir="build" includeantruntime="false" encoding="utf8"></javac>
         <copy todir="build">
@@ -16,6 +17,12 @@
         <jar destfile="dest/ija-app.jar" basedir="build">
             <manifest><attribute name="Main-Class" value="Main"/></manifest>
         </jar>
+    </target>
+
+    <target name="doc" depends="clean">
+        <mkdir dir="doc"/>
+        <javadoc locale="cs_CZ" encoding="utf8" packagenames="files, gui, loaded, simulation" sourcepath="src" destdir="doc" windowtitle="IJA projekt" charset="UTF-8">
+        </javadoc>
     </target>
 
     <target name="run" depends="compile">
