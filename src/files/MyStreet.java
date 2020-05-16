@@ -23,6 +23,9 @@ public class MyStreet implements Street {
 	private Line mapLine;
 	private boolean isSelected;
 
+	/**
+	 * Prázdný konstruktor ulice, který nastaví prázdné jméno, souřadnice na nulu, vše na tru a provoz na 1
+	 */
 	public MyStreet() {
 		this.nazev = "";
 		this.c[0] = new Coordinate(0,0);
@@ -32,6 +35,12 @@ public class MyStreet implements Street {
 		this.isSelected = false;
 	}
 
+	/**
+	 * Konstruktor pro ulice, definuje se název a souřadnice začátku a konce, ostatní se nastaví na true a provoz na 1
+	 * 
+	 * @param nazev nazev
+	 * @param c souřadnice
+	 */
 	public MyStreet(String nazev, Coordinate... c) {
 		this.nazev = nazev;
 		this.c = c;
@@ -41,18 +50,37 @@ public class MyStreet implements Street {
 		this.isSelected = false;
 	}
 	
+	/**
+	 * @return nazev ulice
+	 */
 	public java.lang.String getId() {
 		return nazev;
 	}
 
+	/**
+	 * Vrátí pole všech souřadnic, kterýma je definovaná ulice
+	 * 
+	 * @return c souřadnice
+	 */
 	public Coordinate[] getCoordinate(){
 		return this.c;
 	}
 	
+	/**
+	 * Vrátí seznam všech souřadnic, kterýma je definovaná ulice
+	 * 
+	 * @return seznam souřadnic
+	 */
 	public java.util.List<Coordinate> getCoordinates() {
 		return list_c;
 	}
 
+	/**
+	 * Vrátí ulici podle předaného názvu, jinak null
+	 * 
+	 * @param id název hledané ulice
+	 * @return street nebo null pokud se nenajde
+	 */
 	public MyStreet getStreetById(String id){
 		if(this.nazev.equals(id)){
 			return new MyStreet(this.nazev, this.c);
@@ -60,23 +88,49 @@ public class MyStreet implements Street {
 		return null;
 	}
 
+	/**
+	 * Nastaví jméno ulice
+	 * 
+	 * @param id ulice
+	 */
 	public void setId(String id){
 		this.nazev = id;
 	}
 	
+	/**
+	 * Získá počáteční souřadnici z pole
+	 * 
+	 * @return počáteční souřadnice
+	 */
 	public Coordinate begin() {
 		return c[0];
 	}
 	
+	/**
+	 * Získá poslední souřadnici z pole
+	 * 
+	 * @return poslední souřadnice
+	 */
 	public Coordinate end() {
 		return c[(c.length)-1];
 	}
 	
+	/**
+	 * Získá seznam zastávek na ulici
+	 * 
+	 * @return seznam zastávek
+	 */
 	public java.util.List<Stop> getStops() {
 		return list_stop;
 	}
 	
-	// vloží zastávku, podmínky kontrolují rozmezí intervalů zda se nachází na přímce
+	/**
+	 * Vloží zastávku na ulici, kontroluje se zda se na ní nachází, vrátí false pokud
+	 * zastávka se nenachází na ulici a nemůže být přidána
+	 * 
+	 * @param stop zastávka na ulici
+	 * @return true pokud se přidá, false pokud se nepřidá
+	 */
 	public boolean addStop(Stop stop) {
 		Coordinate stopPos = stop.getCoordinate();
 		for (int i = 0; i < c.length - 1; i++) {
@@ -114,13 +168,24 @@ public class MyStreet implements Street {
 
 		return false;
 	}
-	//zda na sebe ulice nabazují pomocí koncových a počátačních souřadnic
+
+	/**
+	 * Zjistí zda na sebe ulice navazují
+	 * 
+	 * @return true pokud na sebe ulice navazují jinak false
+	 */
 	public boolean follows(Street s) {
 
 		return (this.begin()).equals(s.begin()) || (this.end()).equals(s.end()) || (this.begin()).equals(s.end()) || (this.end()).equals(s.begin());
 	}
 
-	//nastaví výchozí ulici, speciálně i pro se dvěmi souřadnicemi a třemi souřadnicemi, rovnost souřadnic
+	/**
+	 * Nastaví výchozí ulici podle souřadnic aby na sebe navazovali
+	 * 
+	 * @param id název ulice
+	 * @param c pole souřadnic ulic
+	 * @return ulice
+	 */
 	public static Street defaultStreet(String id, Coordinate... c) {
 		Street street = new MyStreet(id, c);
 		for (Coordinate coordinate : c) {
@@ -242,7 +307,7 @@ public class MyStreet implements Street {
 	/**
 	 * Nastaví možnost zavírání cesty
 	 *
-	 * @param closeable true, cestu je možné uzavřít
+	 * @param closeable true -> cestu je možné uzavřít
 	 */
 	public void setCloseable(boolean closeable) {
 		isCloseable = closeable;
