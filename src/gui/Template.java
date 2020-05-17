@@ -84,8 +84,8 @@ public class Template {
         //zobrazeni casu
         Timers myTimer = new Timers();
 
-        Label currentTimeLabel = new Label("Akuální čas: 10:00");
-        Label currentSimSpeed = new Label("Ryhclost simulace: 1x");
+        Label currentTimeLabel = new Label("Aktuální čas: 10:00");
+        Label currentSimSpeed = new Label("Rychlost simulace: 1x");
         TextField time = new TextField();
         Button setTime = new Button("Nastavit čas");
         setTime.setOnMouseClicked(e -> myTimer.setCurrentTime());
