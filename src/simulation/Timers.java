@@ -134,7 +134,9 @@ public class Timers {
         busRedrawTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                updateBusPos();
+                Platform.runLater(() -> {
+                    updateBusPos();
+                });
             }
         }, 0, 1000);
     }

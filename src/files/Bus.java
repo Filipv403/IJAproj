@@ -190,11 +190,15 @@ public class Bus {
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
         this.nextStop = getLine().getFirstStop();
+        if (this.popUp != null) {
+            //this.popUp.update(this);
+        }
 
         //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
         } else {
+            deselect();
             this.circle.setVisible(false);
             return;
         }
@@ -202,6 +206,9 @@ public class Bus {
         //výpočet aktuální polohy
         int nextStop = schedule.getNextStop(route, currentTime);
         this.nextStop = findNextStop(route, nextStop);
+
+        if (this.popUp != null)
+            this.popUp.update();
 
         long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
         long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();

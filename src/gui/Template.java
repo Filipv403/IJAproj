@@ -120,6 +120,8 @@ public class Template {
         myTimer.startTimers();
 
         ScrollPane map = new ScrollPane();
+        map.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        map.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         map.setContent(root);
         map.setPannable(true);
         map.getStylesheets().addAll("gui/map.css");

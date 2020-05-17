@@ -3,6 +3,7 @@ package gui;
 import files.*;
 import javafx.geometry.HPos;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -20,6 +21,8 @@ public class MyPopup {
      */
     private SplitPane popup;
     private GridPane gridPane;
+    private Text nextStopField;
+    private Bus selectedBus;
 
     /**
      * Načte vyskakovací okénko a uloží ho 
@@ -28,6 +31,7 @@ public class MyPopup {
      * @return popup okno
      */
     public SplitPane load(Bus bus) {
+        this.selectedBus = bus;
         SplitPane popup = new SplitPane();
         GridPane leftGrid = new GridPane();
         GridPane rightGrid = new GridPane();
@@ -47,6 +51,7 @@ public class MyPopup {
         Text lastStop = new Text("Kone\u010dn\u00e1 zast\u00e1vka: " + bus.getLine().getLastStop().getId());
         Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getId());
 
+        this.nextStopField = nextStop;
 
         GridPane.setHalignment(busId, HPos.CENTER);
         GridPane.setHalignment(busType, HPos.CENTER);
@@ -104,5 +109,12 @@ public class MyPopup {
      */
     public void notDisplay() {
         gridPane.getChildren().removeAll(getPopup());
+    }
+
+    /**
+     * Aktualizuje informace o následující zastávce autobusu autobusu
+     */
+    public void update() {
+        nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + this.selectedBus.getNextStop().getId());
     }
 }
