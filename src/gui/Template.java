@@ -2,13 +2,14 @@ package gui;
 
 import java.util.List;
 
-import files.Bus;
 import files.MyStop;
 import files.MyStreet;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import simulation.Timers;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -118,17 +119,47 @@ public class Template {
         myTimer.setBusses(data.getBuses());
         myTimer.startTimers();
 
-        gridPane.add(root, 0, 1);
+        ScrollPane map = new ScrollPane();
+        map.setContent(root);
+        map.setPannable(true);
+        map.getStylesheets().addAll("gui/map.css");
+
+        gridPane.add(map, 0, 1);
+
+        createZoom(map, root);
 
         Scene scene = new Scene(gridPane, 1600, 900);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE){
                 data.getStreets().forEach(MyStreet::deselect);
                 data.getStops().forEach(MyStop::deselect);
-                data.getBuses().forEach(Bus::deselect);
             }
         });
         window.setScene(scene);
         window.show();
+    }
+
+    /**
+     * Statická metoda, která přidá zoom k mapě, která se nachází uvnitř scroll panu
+     * 
+     * @param map mapa pro zoomovaní
+     * @param group plátno, na které jsou objekty uvnitř map
+     */
+    public static void createZoom(ScrollPane map, final Group group) {
+        final double SCALE_DELTA = 1.1;
+
+        map.setOnScroll(new EventHandler<ScrollEvent>() {
+          @Override public void handle(ScrollEvent event) {
+            event.consume();
+    
+            double scaleFactor =
+              (event.getDeltaY() > 0)
+                ? SCALE_DELTA
+                : 1/SCALE_DELTA;
+    
+            group.setScaleX(group.getScaleX() * scaleFactor);
+            group.setScaleY(group.getScaleY() * scaleFactor);
+          }
+        });
     }
 }

@@ -2,7 +2,10 @@ package gui;
 
 import java.util.ArrayList;
 import files.*;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
