@@ -138,7 +138,7 @@ public class MyLine implements Line {
 	@Override
     public String toString(){
 		try {
-			return "" + this.id + " pocatecni zastavka: " + getFirstStop().getId();
+			return "" + this.id + " Po\u010d\u00e1tek: " + getFirstStop().getId();
 		} catch (Exception e) {
 			return "" + this.id + "";
 		} 

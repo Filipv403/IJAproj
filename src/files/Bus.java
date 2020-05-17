@@ -147,7 +147,7 @@ public class Bus {
 
     @Override
     public String toString(){
-        return "#"+this.id + " " + this.type + " " + this.carrier + " " + this.line;
+        return "#"+this.id + " " + this.type + " " + this.carrier + " " + this.line.getId();
     }
 
     /**
