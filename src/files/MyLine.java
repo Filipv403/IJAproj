@@ -204,6 +204,8 @@ public class MyLine implements Line {
 				} else {
 					if (!map_list.get(i).getKey().isOpen() && !hasDetour(map_list.get(i).getKey()) && !haveEnd) {
 						return null;
+					} else if (!map_list.get(i).getKey().isOpen() && !hasDetour(map_list.get(i).getKey()) && haveEnd) {
+						return idxs;
 					}
 				}
 			}

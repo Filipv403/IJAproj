@@ -49,7 +49,7 @@ public class MyPopup {
         Text busLine = new Text("Linka: " + bus.getLine().getId());
         Text firstStop = new Text("Po\u010d\u00e1te\u010dn\u00ed zast\u00e1vka: " + bus.getLine().getFirstStop().getId());
         Text lastStop = new Text("Kone\u010dn\u00e1 zast\u00e1vka: " + bus.getLine().getLastStop().getId());
-        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getId());
+        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getId() + " (" + bus.getSchedule().getTime(bus.getNextStop()) + ")");
 
         this.nextStopField = nextStop;
 
@@ -115,6 +115,6 @@ public class MyPopup {
      * Aktualizuje informace o následující zastávce autobusu autobusu
      */
     public void update() {
-        nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + this.selectedBus.getNextStop().getId());
+        nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + selectedBus.getNextStop().getId() + " (" + selectedBus.getSchedule().getTime(selectedBus.getNextStop()) + ")");
     }
 }

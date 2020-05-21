@@ -3,3 +3,4 @@ build/*
 dest/*
 out/*
 IJAproj.iml
+doc/*
