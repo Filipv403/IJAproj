@@ -1,13 +1,24 @@
 package gui;
 
+import java.awt.*;
 import java.util.List;
 
+import files.AppData;
+import files.Bus;
 import files.MyStop;
 import files.MyStreet;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import simulation.Timers;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -24,14 +35,13 @@ import loaded.*;
  * @author Michal Zobaník (xzoban01)
  */
 public class Template {
-
     /**
      * Zobrazí template
      * 
      * @param data načtená data ze souborů
      * @param MHD název okna pro template
      */
-    public static void displayTemplate(Loaded data, String MHD){
+    public static void displayTemplate(Loaded data, AppData appData, String MHD){
         Stage window = new Stage();
         window.setTitle(MHD);
 
@@ -56,7 +66,7 @@ public class Template {
                 final Loaded userData = new Loaded(files);
                 data.userInput(userData);
                 window.close();
-                displayTemplate(userData, MHD);
+                displayTemplate(userData, appData, MHD);
             }
         });
 
@@ -81,8 +91,8 @@ public class Template {
         stops = AddBoxItem.itemStop(data, stops);
         linky = AddBoxItem.itemLine(data, linky);
 
-        //zobrazeni casu
-        Timers myTimer = new Timers();
+        //zobrazeni casu, zrychování
+        Timers myTimer = new Timers(appData);
 
         Label currentTimeLabel = new Label("Aktuální čas: 10:00");
         Label currentSimSpeed = new Label("Rychlost simulace: 1x");
@@ -97,7 +107,26 @@ public class Template {
         rightMenu.getChildren().addAll(currentTimeLabel, time, setTime, currentSimSpeed, simSpeedSlider);
         myTimer.setGui(time, currentSimSpeed, currentTimeLabel, simSpeedSlider);
 
-        rightMenu.getChildren().addAll(stops.getStopBox(), linky.getLineBox(), busBox.getBusBox());
+        //nastavení ulice
+        Label streetSetText = new Label("Nastavení Ulice: Žádná nevybrána");
+        CheckBox openCheckBox = new CheckBox("Otevřená ?");
+        Spinner<Integer> trafficSpinner = new Spinner<>(0, 10, 0, 1);
+        SpinnerValueFactory.IntegerSpinnerValueFactory intFactory =
+                (SpinnerValueFactory.IntegerSpinnerValueFactory) trafficSpinner.getValueFactory();
+        rightMenu.getChildren().addAll(new Separator(), streetSetText, openCheckBox, trafficSpinner, new Separator());
+
+        //objížďky
+        Label detourSetText = new Label("Nastavení objížďky pro linku:\n\tŽádná nevybrána");
+        ComboBox<Label> detourCBox = new ComboBox<Label>();
+        detourCBox.setPromptText("Seznam Objížděk");
+        detourCBox.getItems().addAll(new Label("Test label"));
+        Button createDetour = new Button("Přidat objížďku");
+        Button removeDetour = new Button("Odstranit objížďku");
+
+
+        rightMenu.getChildren().addAll(detourSetText, detourCBox, createDetour, removeDetour);
+
+        //rightMenu.getChildren().addAll(stops.getStopBox(), linky.getLineBox(), busBox.getBusBox());
         rightMenu.setId("vbox");
         rightMenu.getStylesheets().addAll("gui/rightMenu.css");
 
@@ -114,7 +143,7 @@ public class Template {
         /*import mapy*/
         Group root = new Group();
 
-        root = MapObjects.drawStreet(gridPane, data);
+        root = MapObjects.drawStreet(gridPane, data, appData);
 
         myTimer.setBusses(data.getBuses());
         myTimer.startTimers();
@@ -133,8 +162,7 @@ public class Template {
         Scene scene = new Scene(gridPane, 1600, 900);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE){
-                data.getStreets().forEach(MyStreet::deselect);
-                data.getStops().forEach(MyStop::deselect);
+                appData.deselectBus();
             }
         });
         window.setScene(scene);

@@ -1,3 +1,4 @@
+import files.AppData;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import gui.*;
@@ -18,7 +19,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         //úvod
         Loaded data = new Loaded();
-        Template.displayTemplate(data, "MHD");
+        AppData appData = new AppData();
+        Template.displayTemplate(data, appData, "MHD");
 
     }
     

@@ -1,5 +1,6 @@
 package simulation;
 
+import files.AppData;
 import files.Bus;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -31,6 +32,12 @@ public class Timers {
     private ArrayList<Bus> busses;
 
     private double scale = 1;
+
+    private AppData data;
+
+    public Timers(AppData data) {
+        this.data = data;
+    }
 
     /**
      * Nastací UI pro správu Timeru
@@ -110,6 +117,11 @@ public class Timers {
 
         for (Bus bus : busses) {
             bus.updatePos(currentTime);
+        }
+
+        //aktualize informaci o autobusu
+        if (data != null) {
+            data.updatePopUp();
         }
     }
 

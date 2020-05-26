@@ -28,7 +28,7 @@ public interface MapObjects {
      * @param l data ze souborů pro ulice apod.
      * @return mapa s objekty
      */
-    public static Group drawStreet(GridPane gridPane, Loaded l){
+    public static Group drawStreet(GridPane gridPane, Loaded l, AppData appData){
         Line line = new Line();
         Rectangle rectangle = new Rectangle();
         Circle circle = new Circle();
@@ -87,13 +87,16 @@ public interface MapObjects {
             circle.setStroke(Color.BLUE);
             circle.setFill(Color.BLUE);
             circle.setOnMouseClicked(e -> {
-                l.getStreets().forEach(MyStreet::deselect);
-                l.getStops().forEach(MyStop::deselect);
+                //l.getStreets().forEach(MyStreet::deselect);
+                //l.getStops().forEach(MyStop::deselect);
+                appData.deselectBus();
+                appData.setSelectedBus(bus);
                 bus.highlightLine();
                 MyPopup myPopup = new MyPopup();
                 myPopup.load(bus);
                 myPopup.display(gridPane);
-                bus.setPopUp(myPopup);
+                appData.setPopup(myPopup);
+                //bus.setPopUp(myPopup);
             });
             bus.setCircle(circle);
             root.getChildren().addAll(bus.getCircle());

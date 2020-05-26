@@ -27,7 +27,7 @@ public class Bus {
     private int delay;
     private LocalTime prevTime = LocalTime.of(9,0);
     private Stop nextStop;
-    private MyPopup popUp;
+    //private MyPopup popUp;
 
     /**
      * Konstruktor pro Autobus
@@ -39,7 +39,7 @@ public class Bus {
         this.carrier="";
         this.delay = 0;
         this.nextStop = null;
-        this.popUp = null;
+        //this.popUp = null;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Bus {
         this.carrier = carrier;
         this.delay = 0;
         this.nextStop = null;
-        this.popUp = null;
+        //this.popUp = null;
     }
 
     /**
@@ -190,15 +190,15 @@ public class Bus {
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
         this.nextStop = getLine().getFirstStop();
-        if (this.popUp != null) {
+        /*if (this.popUp != null) {
             //this.popUp.update(this);
-        }
+        }*/
 
         //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
         } else {
-            deselect();
+            //deselect();
             this.circle.setVisible(false);
             return;
         }
@@ -207,8 +207,8 @@ public class Bus {
         int nextStop = schedule.getNextStop(route, currentTime);
         this.nextStop = findNextStop(route, nextStop);
 
-        if (this.popUp != null)
-            this.popUp.update();
+        /*if (this.popUp != null)
+            this.popUp.update();*/
 
         long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
         long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();
@@ -255,16 +255,18 @@ public class Bus {
      * @param popUp vyskakovací okno
      */
     public void setPopUp(MyPopup popUp) {
-        this.popUp = popUp;
+        //this.popUp = popUp;
     }
 
     /**
-     * odstraní vyskakovací okno
+     * zruší vybrání autobusu
      */
     public void deselect() {
-        if (this.popUp != null) {
+       /* if (this.popUp != null) {
             this.popUp.notDisplay();
             this.popUp = null;
-        }
+        } */
+
+        this.line.deselect();
     }
 }

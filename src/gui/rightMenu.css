@@ -1,5 +1,5 @@
 #vbox {
-    -fx-padding: 40px;
+    -fx-padding: 20px;
     -fx-spacing: 15;
     -fx-background-color: rgba(121, 124, 186);
     -fx-pref-height: 900px;
@@ -78,5 +78,15 @@
     -fx-text-fill: #fafafa;
     -fx-padding: 7px 20px;
     -fx-pref-width: 360px;
+}
+
+.separator {
+    -fx-background: rgba(0, 0, 0);
+    -fx-background-color: rgba(0, 0, 0);
+}
+
+.spinner {
+    -fx-pref-width: 80px;
+    -fx-pref-height: 40px;
 }
 

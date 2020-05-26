@@ -272,6 +272,7 @@ public class MyStreet implements Street {
 	 */
 	public void setMapLine(Line mapLine) {
 		this.mapLine = mapLine;
+		this.setOpen(this.isOpen);
 	}
 
 	/**

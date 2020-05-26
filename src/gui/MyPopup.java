@@ -2,6 +2,7 @@ package gui;
 
 import files.*;
 import javafx.geometry.HPos;
+import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -114,7 +115,12 @@ public class MyPopup {
     /**
      * Aktualizuje informace o následující zastávce autobusu autobusu
      */
-    public void update() {
+    public void update(AppData data) {
+        if (!selectedBus.getCircle().isVisible()) {
+            data.deselectBus();
+            return;
+        }
+
         nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + selectedBus.getNextStop().getId() + " (" + selectedBus.getSchedule().getTime(selectedBus.getNextStop()) + ")");
     }
 }

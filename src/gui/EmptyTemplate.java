@@ -3,6 +3,7 @@ package gui;
 import java.util.List;
 import java.io.File;
 
+import files.AppData;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -52,8 +53,9 @@ public class EmptyTemplate {
             files = AlertBox.displayA("Stops.csv, Streets.csv, Lines.csv, Buses.csv, Schedules.csv").getFiles();
             if(files != null){
                 final Loaded userData = new Loaded(files);
+                final AppData appData = new AppData();
                 window.close();
-                Template.displayTemplate(userData, MHD);
+                Template.displayTemplate(userData, appData,  MHD);
             }
         });
     
@@ -85,8 +87,6 @@ public class EmptyTemplate {
         gridPaneEmpty.getColumnConstraints().add(new ColumnConstraints(440));
         gridPaneEmpty.getRowConstraints().add(new RowConstraints(32));
         gridPaneEmpty.getRowConstraints().add(new RowConstraints(668));
-    
-    
     
         /*import mapy*/
         Group rootEmpty = new Group();

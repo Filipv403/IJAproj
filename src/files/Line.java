@@ -42,4 +42,6 @@ public interface Line {
 		Line line = new MyLine(id);
 		return line;
 	}
+
+    void deselect();
 }

@@ -320,4 +320,12 @@ public class MyLine implements Line {
 
 		return streets;
 	}
+
+	public void deselect() {
+		this.map_list.forEach(pair -> {
+			pair.getKey().deselect();
+			if (pair.getValue() != null)
+				pair.getValue().deselect();
+		});
+	}
 }
