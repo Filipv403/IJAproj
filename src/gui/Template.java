@@ -109,11 +109,22 @@ public class Template {
 
         //nastavení ulice
         Label streetSetText = new Label("Nastavení Ulice: Žádná nevybrána");
-        CheckBox openCheckBox = new CheckBox("Otevřená ?");
-        Spinner<Integer> trafficSpinner = new Spinner<>(0, 10, 0, 1);
+        CheckBox openCheckBox = new CheckBox("Zavřená");
+        Spinner<Integer> trafficSpinner = new Spinner<>(1, 100, 1, 1);
         SpinnerValueFactory.IntegerSpinnerValueFactory intFactory =
                 (SpinnerValueFactory.IntegerSpinnerValueFactory) trafficSpinner.getValueFactory();
         rightMenu.getChildren().addAll(new Separator(), streetSetText, openCheckBox, trafficSpinner, new Separator());
+        appData.setCheckBox(openCheckBox);
+        appData.setTrafficSpinner(trafficSpinner);
+        appData.setStreetSetText(streetSetText);
+
+        appData.getCheckBox().setOnAction(ex-> {
+            if(appData.getCheckBox().isSelected()){
+                appData.getCheckBox().setText("Otevřená");
+            }else{
+                appData.getCheckBox().setText("Zavřená");
+            }
+        });
 
         //objížďky
         Label detourSetText = new Label("Nastavení objížďky pro linku:\n\tŽádná nevybrána");

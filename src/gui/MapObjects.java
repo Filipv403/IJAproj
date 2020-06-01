@@ -62,7 +62,52 @@ public interface MapObjects {
             line.setStroke(Color.rgb(65, 63, 68));
             line.setStrokeWidth(7);
             line.setOnMouseClicked(e -> {
-                myStreet.setOpen(!myStreet.isOpen());
+                if(!myStreet.isSelected()){
+                    appData.getStreetSetText().setText("Nastavení Ulice: " + myStreet.getId());
+                    myStreet.setSelected(true);
+                    if(myStreet.isOpen()){
+                        //pokud je otevrena po kliknuti
+                        appData.getCheckBox().setSelected(true);
+                        appData.getCheckBox().setText("Otevřená");
+                        myStreet.getMapLine().setStroke(Color.rgb(85, 255, 0));
+                        appData.getCheckBox().setOnAction(ex-> {
+                            myStreet.setOpen(!myStreet.isOpen());
+                            if(appData.getCheckBox().isSelected()){
+                                appData.getCheckBox().setText("Otevřená");
+                            }else{
+                                appData.getCheckBox().setText("Zavřená");
+                            }
+                        });
+                    }else{
+                        //pokud je zavrena po kliknuti
+                        appData.getCheckBox().setSelected(false);
+                        appData.getCheckBox().setText("Zavřená");
+                        myStreet.getMapLine().setStroke(Color.RED);
+                        appData.getCheckBox().setOnAction(ex-> {
+                            myStreet.setOpen(!myStreet.isOpen());
+                            if(appData.getCheckBox().isSelected()){
+                                appData.getCheckBox().setText("Otevřená");
+                            }else{
+                                appData.getCheckBox().setText("Zavřená");
+                            }
+                        });
+                    }
+                    //event, po každé změně v hodnotě spinneru, změní provoz instance třídy
+                    /*
+                    appData.getTrafficSpinner.event(e -> {
+                        final Spinner<Integer> trafficSpinner = appData.getTrafficSpinner();
+                        myStreet.setTraffic(trafficSpinner.getValue());
+                    });
+                    */
+                }else{
+                    //odkliknuti silnice
+                    myStreet.setSelected(false);
+                    appData.getCheckBox().setSelected(false);
+                    appData.getCheckBox().setText("Zavřená");
+                    appData.getStreetSetText().setText("Nastavení Ulice: Žádná nevybrána");
+                    myStreet.getMapLine().setStroke(Color.rgb(65, 63, 68));
+                    myStreet.deselect();
+                }
             });
             myStreet.setMapLine(line);
             root.getChildren().addAll(myStreet.getMapLine());

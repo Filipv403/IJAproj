@@ -80,6 +80,11 @@
     -fx-pref-width: 360px;
 }
 
+.check-box {
+    -fx-font-size: 16pt;
+    -fx-font-weight: 700;
+}
+
 .separator {
     -fx-background: rgba(0, 0, 0);
     -fx-background-color: rgba(0, 0, 0);

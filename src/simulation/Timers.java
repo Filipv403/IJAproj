@@ -102,7 +102,7 @@ public class Timers {
     private void updateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         if (labelCurrentTime != null)
-            labelCurrentTime.setText("Akuální čas: " + currentTime.format(dtf));
+            labelCurrentTime.setText("Aktuální čas: " + currentTime.format(dtf));
         else
             return;
             //System.out.println(currentTime.format(dtf));
