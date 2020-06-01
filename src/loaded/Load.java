@@ -203,7 +203,6 @@ public interface Load {
 
                 MyStreet street = new MyStreet(strings[0], new Coordinate(Integer.parseInt(strings[1]), Integer.parseInt(strings[2])), new Coordinate(Integer.parseInt(strings[3]), Integer.parseInt(strings[4])));
                 street.setOpen(Boolean.parseBoolean(strings[5]));
-                street.setTraffic(Integer.parseInt(strings[6]));
                 streets.add(street);
             }
             br.close();
