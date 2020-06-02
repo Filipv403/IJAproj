@@ -68,7 +68,18 @@ public interface MapObjects {
                     else
                         System.out.println("Ulice " + myStreet.getId() + "nelze přidat");
                 } else {
-                    System.out.println("Ulice " + myStreet.getId() + " vybrána");
+                    if (appData.getSelectedStreet() == null || !appData.getSelectedStreet().equals(myStreet)) {
+                        appData.deselectStreet();
+                        appData.deselectBus();
+                        appData.setSelectedStreet(myStreet);
+                        appData.getSelectedStreet().select(false);
+
+                        appData.getStreetSetText().setText("Nastavení Ulice: " + myStreet.getId());
+                        appData.getCheckBox().setSelected(!appData.getSelectedStreet().isOpen());
+                        appData.getTrafficSpinner().getValueFactory().setValue(appData.getSelectedStreet().getTraffic());
+                    } else { //odzančení ulice
+                        appData.deselectStreet();
+                    }
                 }
             });
             myStreet.setMapLine(line);
@@ -95,6 +106,7 @@ public interface MapObjects {
             circle.setFill(Color.BLUE);
             circle.setOnMouseClicked(e -> {
                 appData.deselectBus();
+                appData.deselectStreet();
                 appData.setSelectedBus(bus);
                 bus.highlightLine();
                 MyPopup myPopup = new MyPopup();

@@ -1,5 +1,5 @@
 id;StartX;StartY;EndX;EndY;open;traffic
-Ulice 1;0;0;0;200;true;1
+Ulice 1;0;0;0;200;true;10
 Ulice 2;0;200;0;400;true;1
 Ulice 3;0;400;0;600;true;1
 Ulice 4;0;600;-200;800;true;2

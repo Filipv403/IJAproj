@@ -1,12 +1,20 @@
 package files;
 
 import gui.MyPopup;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.paint.Color;
 
 public class AppData {
     private Bus selectedBus;
+    private MyStreet selectedStreet;
     private MyPopup popup;
     private boolean isEditingDetour;
     private Detour newDetour;
+    private CheckBox checkBox;
+    private Spinner<Integer> trafficSpinner;
+    private Label streetSetText;
 
     public void setSelectedBus(Bus selectedBus) {
         this.selectedBus = selectedBus;
@@ -16,10 +24,44 @@ public class AppData {
         this.popup = popup;
     }
 
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
+    }
+
+    public void setTrafficSpinner(Spinner<Integer> trafficSpinner){
+        this.trafficSpinner = trafficSpinner;
+    }
+
+    public void setStreetSetText(Label streetSetText){
+        this.streetSetText = streetSetText;
+    }
+
+    public CheckBox getCheckBox() {
+        return this.checkBox;
+    }
+
+    public Spinner<Integer> getTrafficSpinner(){
+        return this.trafficSpinner;
+    }
+
+    public Label getStreetSetText(){
+        return this.streetSetText;
+    }
+
+    public Street getSelectedStreet() {
+        return selectedStreet;
+    }
+
+    public void setSelectedStreet(MyStreet selectedStreet) {
+        this.selectedStreet = selectedStreet;
+    }
+
     public AppData() {
         selectedBus = null;
         popup = null;
         isEditingDetour = false;
+        this.checkBox = null;
+        this.trafficSpinner = null;
     }
 
     public void updatePopUp() {
@@ -38,6 +80,19 @@ public class AppData {
             popup.notDisplay();
             popup = null;
         }
+    }
+
+    public void deselectStreet() {
+        if (selectedStreet != null) {
+            selectedStreet.setTraffic(trafficSpinner.getValue());
+            selectedStreet.deselect();
+        }
+
+
+        selectedStreet = null;
+        checkBox.setSelected(false);
+        trafficSpinner.getValueFactory().setValue(1);
+        streetSetText.setText("Nastavení Ulice: Žádná nevybrána");
     }
 
     public boolean isEditingDetour() {

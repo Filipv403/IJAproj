@@ -229,10 +229,9 @@ public class MyStreet implements Street {
 	 * @param traffic Nový stupen provozu
 	 */
 	public void setTraffic(int traffic) {
-		if (traffic < 0 || traffic > 100)
+		if (traffic < 0)
 			this.traffic = 1;
-		else
-			this.traffic = traffic;
+		else this.traffic = Math.min(traffic, 100);
 	}
 
 	/**
@@ -333,4 +332,16 @@ public class MyStreet implements Street {
 			return null;
 	}
 
+	/**
+	 * Vrátí hodnotu, zda byla ulice rozkliknuta
+	 *
+	 * @return true nebo false zda na ulici bylo kliknutu
+	 */
+	public boolean isSelected() {
+		return this.isSelected;
+	}
+
+	public boolean isCloseable() {
+		return isCloseable;
+	}
 }

@@ -106,9 +106,23 @@ public class Template {
 
         //nastavení ulice
         Label streetSetText = new Label("Nastavení Ulice: Žádná nevybrána");
-        CheckBox openCheckBox = new CheckBox("Otevřená ?");
-        Spinner<Integer> trafficSpinner = new Spinner<>(0, 10, 0, 1);
+        CheckBox openCheckBox = new CheckBox("Zavřená");
+        openCheckBox.setOnAction(ex-> {
+            if (appData.getSelectedStreet() != null && appData.getSelectedStreet().isCloseable()) {
+                appData.getSelectedStreet().setOpen(!appData.getSelectedStreet().isOpen());
+            }
+        });
+        Spinner<Integer> trafficSpinner = new Spinner<>(1, 100, 1, 1);
+        trafficSpinner.setEditable(true);
+        trafficSpinner.valueProperty().addListener((obs, oldValue, newValue) -> {
+            if (appData.getSelectedStreet() != null) {
+                appData.getSelectedStreet().setTraffic(newValue);
+            }
+        });
         rightMenu.getChildren().addAll(new Separator(), streetSetText, openCheckBox, trafficSpinner, new Separator());
+        appData.setCheckBox(openCheckBox);
+        appData.setTrafficSpinner(trafficSpinner);
+        appData.setStreetSetText(streetSetText);
 
         //objížďky
         Label detourSetText = new Label("Nastavení objížďky pro linku:\n\tŽádná nevybrána");
@@ -173,6 +187,7 @@ public class Template {
             if (e.getCode() == KeyCode.ESCAPE){
                 appData.deselectBus();
                 appData.cancleDetourEdit();
+                appData.deselectStreet();
             }
         });
         window.setScene(scene);

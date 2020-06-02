@@ -140,4 +140,10 @@ public interface Street {
 	 * @return Souřadnice, které mají cesty společné
 	 */
 	Coordinate getEqualCoord(Street street);
+
+	boolean isCloseable();
+
+	void setOpen(boolean open);
+
+	void setTraffic(int traffic);
 }
