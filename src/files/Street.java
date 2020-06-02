@@ -69,7 +69,7 @@ public interface Street {
 	/**
 	 * Zvýrazní cestu na mapě
 	 */
-	public void select();
+	public void select(boolean isDetour);
 
 	/**
 	 * Zjistí jestli je cesta otevřená
@@ -132,4 +132,12 @@ public interface Street {
 		list_c.clear();
 		return null;
 	}
+
+	/**
+	 * Najde souřadnice, které mají společné zadané cesty
+	 *
+	 * @param street Cesta se kterou se hledají stejné koncové souřadnice
+	 * @return Souřadnice, které mají cesty společné
+	 */
+	Coordinate getEqualCoord(Street street);
 }

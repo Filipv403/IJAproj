@@ -3,10 +3,7 @@ package gui;
 import java.awt.*;
 import java.util.List;
 
-import files.AppData;
-import files.Bus;
-import files.MyStop;
-import files.MyStreet;
+import files.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -111,18 +108,30 @@ public class Template {
         Label streetSetText = new Label("Nastavení Ulice: Žádná nevybrána");
         CheckBox openCheckBox = new CheckBox("Otevřená ?");
         Spinner<Integer> trafficSpinner = new Spinner<>(0, 10, 0, 1);
-        SpinnerValueFactory.IntegerSpinnerValueFactory intFactory =
-                (SpinnerValueFactory.IntegerSpinnerValueFactory) trafficSpinner.getValueFactory();
         rightMenu.getChildren().addAll(new Separator(), streetSetText, openCheckBox, trafficSpinner, new Separator());
 
         //objížďky
         Label detourSetText = new Label("Nastavení objížďky pro linku:\n\tŽádná nevybrána");
-        ComboBox<Label> detourCBox = new ComboBox<Label>();
+        ComboBox<Detour> detourCBox = new ComboBox<Detour>();
         detourCBox.setPromptText("Seznam Objížděk");
-        detourCBox.getItems().addAll(new Label("Test label"));
-        Button createDetour = new Button("Přidat objížďku");
-        Button removeDetour = new Button("Odstranit objížďku");
 
+        Button createDetour = new Button("Přidat objížďku");
+        createDetour.setOnMouseClicked(e -> {
+            if (appData.isEditingDetour()) {
+                appData.finalizeDetour();
+                appData.getSelectedLine().getDetours().add(appData.getNewDetour());
+            }
+            else if (appData.getSelectedLine() != null) {
+                appData.createDetour();
+            }
+
+            appData.toggleEditDetour();
+        });
+
+        Button removeDetour = new Button("Odstranit objížďku");
+        removeDetour.setOnMouseClicked(e -> {
+
+        });
 
         rightMenu.getChildren().addAll(detourSetText, detourCBox, createDetour, removeDetour);
 
@@ -163,6 +172,7 @@ public class Template {
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE){
                 appData.deselectBus();
+                appData.cancleDetourEdit();
             }
         });
         window.setScene(scene);

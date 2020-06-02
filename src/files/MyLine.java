@@ -16,13 +16,14 @@ public class MyLine implements Line {
 
 	private String id;
 	List <AbstractMap.SimpleImmutableEntry<Street,Stop>> map_list = new ArrayList <AbstractMap.SimpleImmutableEntry<Street,Stop>>();
-	private List<Detour> detours;
+	List<Detour> detours;
 
 	/**
 	 * Prázdný konstruktor pro vytvoření bezejmenné linky
 	 */
 	public MyLine(){
 		this.id = "";
+		this.detours = new ArrayList<>();
 	}
 
 	/**
@@ -32,6 +33,7 @@ public class MyLine implements Line {
 	 */
 	public MyLine(String id){
 		this.id = id;
+		this.detours = new ArrayList<>();
 	}
 
 	/**
@@ -145,27 +147,11 @@ public class MyLine implements Line {
     }
 
 	/**
-	 * Najde souřadnice, které mají společné zadané cesty
-	 *
-	 * @param street1 Cesta 1
-	 * @param street2 Cesta 2
-	 * @return Souřadnice, které mají cesty společné
-	 */
-    private Coordinate getEqualCoord(Street street1, Street street2) {
-		if (street1.begin().equals(street2.begin()) || street1.begin().equals(street2.end()))
-			return street1.begin();
-		else if (street1.end().equals(street2.end()) || street1.end().equals(street2.begin()))
-			return street1.end();
-		else
-			return null;
-	}
-
-	/**
 	 * Zvýrazní linku na mapě
 	 */
     public void highlight() {
 		this.map_list.forEach(pair -> {
-			pair.getKey().select();
+			pair.getKey().select(false);
 			if (pair.getValue() != null)
 				pair.getValue().select();
 		});
@@ -224,14 +210,29 @@ public class MyLine implements Line {
 	 * @return true, jestli cesta má objížďku
 	 */
 	private boolean hasDetour(Street street) {
-    	return false;
-    	/*
     	for (Detour detour : detours) {
-    		if (detour.isReplacing(street))
-    			return true;
+    		for (Street s : detour.getReplace()) {
+				if (s.equals(street))
+					return true;
+			}
 		}
 
-    	return false; */
+    	return false;
+	}
+
+	/**
+	 * Zjistí jesli je po zadané cestě začíná objížďka
+	 *
+	 * @param street Ulice pro, kterou se objížďka hledá
+	 * @return True/False
+	 */
+	private boolean isDetourStarting(Street street) {
+		for (Detour detour : detours) {
+			if (detour.isReplacing(street))
+				return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -245,6 +246,7 @@ public class MyLine implements Line {
 	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule) {
 		List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = new ArrayList<>();
 		int jump;
+		long detourDelay = 0;
 
 		//indexy první a poslední zastávky
 		int[] stopIdxs = getStopIdxs();
@@ -255,22 +257,25 @@ public class MyLine implements Line {
 		for (int i = stopIdxs[0]; i < stopIdxs[1]; i++) {
 			if (map_list.get(i).getValue() == null) {
 				//přidání cesty
-				if (!hasDetour(map_list.get(i).getKey())) { //bez objížďky
-					route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
+				if (!isDetourStarting(map_list.get(i).getKey())) { //bez objížďky
+					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getKey().getEqualCoord(map_list.get(i + 1).getKey()), null));
 				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getKey(), route);
+					detourDelay = setDetourDelay(map_list.get(i).getValue().getStreet(), route);
 					i += jump;
 				}
 			} else {
 				//přidíní zastávky
-				if (!hasDetour(map_list.get(i).getValue().getStreet())) { //bez objížďky
-					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getValue().getCoordinate(), schedule.getTime(map_list.get(i).getValue())));
+				if (!isDetourStarting(map_list.get(i).getValue().getStreet())) { //bez objížďky
+					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getValue().getCoordinate(), schedule.getTime(map_list.get(i).getValue()).plusSeconds(detourDelay)));
+					detourDelay = 0;
 
 					//přidání konce ulice, když se na ulici nenachází další zastávka
 					if (map_list.get(i + 1).getValue() == null || (map_list.get(i + 1).getValue() != null && !map_list.get(i + 1).getKey().equals(map_list.get(i).getKey())))
-						route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(map_list.get(i).getKey(), map_list.get(i + 1).getKey()), null));
+						route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getKey().getEqualCoord(map_list.get(i + 1).getKey()), null));
 				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getValue().getStreet(), route);
+					detourDelay = setDetourDelay(map_list.get(i).getValue().getStreet(), route);
 					i += jump;
 				}
 			}
@@ -286,6 +291,16 @@ public class MyLine implements Line {
 			if (detour.isReplacing(street)) {
 				detour.getRoute(street, route);
 				return detour.getJump();
+			}
+		}
+
+		return 0;
+	}
+
+	private long setDetourDelay(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
+		for (Detour detour : detours) {
+			if (detour.isReplacing(street)) {
+				return detour.getDelay();
 			}
 		}
 
@@ -327,5 +342,9 @@ public class MyLine implements Line {
 			if (pair.getValue() != null)
 				pair.getValue().deselect();
 		});
+	}
+
+	public List<Detour> getDetours() {
+		return detours;
 	}
 }

@@ -2,6 +2,8 @@ package files;
 
 import java.time.LocalTime;
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,8 +14,13 @@ import java.util.List;
 public class Detour {
     private List<Street> replace;
     private List<Street> detourList;
-    private int delay;
+    private long delay;
     private int jump;
+
+    public Detour() {
+        this.replace = new ArrayList<>();
+        this.detourList = new ArrayList<>();
+    }
 
     /**
      * Zjistí jestli se jedná o objížďku zadané cety
@@ -22,14 +29,17 @@ public class Detour {
      * @return true jestli se jedná o objížďku zadané cesty
      */
     public boolean isReplacing(Street street) {
-        return replace.get(0).equals(street) || replace.get(replace.size() - 1).equals(street);
+        return replace.get(0).equals(street);
     }
 
     /**
      * Odstraneni objizdky
      */
     public void remove() {
-        detourList.forEach(s -> s.setCloseable(true));
+        detourList.forEach(s -> {
+            s.setCloseable(true);
+            s.deselect();
+        });
     }
 
     /**
@@ -39,25 +49,41 @@ public class Detour {
      * @return true jestli se jedná o platně vytvořenou objížďku
      */
     public boolean finalize(MyLine line) {
-        return false;
-    }
+        boolean startFound = false;
+        boolean endFound = false;
+        int startIdx = -1;
 
-    /**
-     * Přidá cestu, po které objížďka povede
-     *
-     * @param street Nová cessta po které objížďka povede
-     * @return True jestli se přidání povedlo
-     */
-    public boolean addStreet(Street street) {
-        if (replace.isEmpty()) {
-            replace.add(street);
-            street.setCloseable(false);
-            return true;
-        } else {
-            if (replace.get(0).follows(street) || replace.get(replace.size() - 1).follows(street)) {
-                replace.add(street);
-                street.setCloseable(false);
-                return true;
+        for (int i = 1; i < line.map_list.size(); i++) {
+            Coordinate node = line.map_list.get(i).getKey().getEqualCoord(line.map_list.get(i - 1).getKey());
+            Coordinate detourStartNode = line.map_list.get(i).getKey().getEqualCoord(detourList.get(0));
+            Coordinate detourEndNode = line.map_list.get(i).getKey().getEqualCoord(detourList.get(detourList.size() - 1));
+
+            //hledání začátku
+            if (!startFound) {
+                if (line.map_list.get(i).getKey().equals(line.map_list.get(i - 1).getKey()))
+                    continue;
+
+                if (node.equals(detourEndNode))
+                    Collections.reverse(detourList);
+                else if (!node.equals(detourStartNode))
+                    continue;
+
+                startFound = true;
+                startIdx = i;
+
+            } else { //hledání konce
+                if (line.map_list.get(i).getKey().equals(line.map_list.get(i - 1).getKey())) {
+                    replace.add(line.map_list.get(i - 1).getKey());
+                    continue;
+                }
+
+                if (node.equals(detourEndNode)) {
+                    replace.add(line.map_list.get(i - 1).getKey());
+                    jump = i - startIdx - 1;
+                    return multipleDetourCheck(line);
+                }
+
+                replace.add(line.map_list.get(i - 1).getKey());
             }
         }
 
@@ -65,20 +91,58 @@ public class Detour {
     }
 
     /**
-     * Najde souřadnice, které mají společné zadané cesty
+     * Kontroluje jestli zadaná objížďka nenahrazuje nějakou už objížděnou cestu
      *
-     * @param street1 Cesta 1
-     * @param street2 Cesta 2
-     * @return Souřadnice, které mají cesty společné
+     * @return true jestli je vše splněno
      */
-    //pridat do street ..........................  (a odebrat z myline)......
-    private Coordinate getEqualCoord(Street street1, Street street2) {
-        if (street1.begin().equals(street2.begin()) || street1.begin().equals(street2.end()))
-            return street1.begin();
-        else if (street1.end().equals(street2.end()) || street1.end().equals(street2.begin()))
-            return street1.end();
-        else
-            return null;
+    private boolean multipleDetourCheck(MyLine line) {
+        for (Detour det : line.detours) {
+            for (Street s : det.getReplace()) {
+                for (Street s2 : this.replace) {
+                    if (s.equals(s2))
+                        return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Přidá cestu, po které objížďka povede po provedení potřebných kontrol
+     *
+     * @param street Nová cessta po které objížďka povede
+     * @return True jestli se přidání povedlo
+     */
+    public boolean addStreet(Street street) {
+        int lastidx = detourList.size() - 1;
+
+        if (detourList.isEmpty() || (detourList.size() == 1 && detourList.get(0).follows(street))) {
+            setStreetProp(street);
+            return true;
+        } else if (detourList.get(0).follows(street) && detourList.get(0).getEqualCoord(street) != detourList.get(1).getEqualCoord(detourList.get(0))) {
+            detourList.add(0, street);
+            street.select(true);
+            street.setCloseable(false);
+            return true;
+        } else if (detourList.get(lastidx).follows(street) &&
+                detourList.get(lastidx).getEqualCoord(street) != detourList.get(lastidx).getEqualCoord(detourList.get(lastidx - 1))) {
+            setStreetProp(street);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Nastaví vlastnosti ulice a přidá ji do objížďky
+     *
+     * @param street ulice k přidání
+     */
+    private void setStreetProp(Street street) {
+        detourList.add(street);
+        street.select(true);
+        street.setCloseable(false);
     }
 
     /**
@@ -101,19 +165,11 @@ public class Detour {
      * @param route Trasa autobusu do objížďky, do kterré bude cesta přidána
      */
     public void getRoute(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
-        if (replace.get(0).follows(street)) {
-            route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(street, detourList.get(0)), null));
-            for (int i = 0; i < detourList.size() - 1; i++) {
-                route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(detourList.get(i), detourList.get(i + 1)), null));
-            }
-            route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(detourList.get(detourList.size() - 1), getLastReplaced(street)), null));
-        } else {
-            route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(street, detourList.get(detourList.size() - 1)), null));
-            for (int i = detourList.size() - 1; i > 0; i--){
-                route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(detourList.get(i), detourList.get(i - 1)), null));
-            }
-            route.add(new AbstractMap.SimpleEntry<>(getEqualCoord(detourList.get(0), getLastReplaced(street)), null));
+        //route.add(new AbstractMap.SimpleEntry<>(street.getEqualCoord(detourList.get(0)), null));
+        for (int i = 0; i < detourList.size() - 1; i++) {
+            route.add(new AbstractMap.SimpleEntry<>(detourList.get(i).getEqualCoord(detourList.get(i + 1)), null));
         }
+        route.add(new AbstractMap.SimpleEntry<>(detourList.get(detourList.size() - 1).getEqualCoord(getLastReplaced(street)), null));
     }
 
     /**
@@ -123,5 +179,13 @@ public class Detour {
      */
     public int getJump() {
         return jump;
+    }
+
+    public List<Street> getReplace() {
+        return replace;
+    }
+
+    public long getDelay() {
+        return delay;
     }
 }

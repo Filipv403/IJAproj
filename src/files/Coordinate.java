@@ -98,6 +98,9 @@ public class Coordinate{
 
     @Override
     public boolean equals(Object o){
+        if (o == null)
+            return false;
+
         Coordinate co = (Coordinate) o;
         if (x != co.getX() || y != co.getY()) {
             return false;

@@ -177,7 +177,7 @@ public class MyStreet implements Street {
 	 */
 	public boolean follows(Street s) {
 
-		return (this.begin()).equals(s.begin()) || (this.end()).equals(s.end()) || (this.begin()).equals(s.end()) || (this.end()).equals(s.begin());
+		return (this.begin().equals(s.begin()) || this.end().equals(s.end()) || this.begin().equals(s.end()) || this.end().equals(s.begin())) && !this.equals(s);
 	}
 
 	/**
@@ -298,11 +298,14 @@ public class MyStreet implements Street {
 	/**
 	 * Zvýrazní cestu na mapě
 	 */
-	public void select() {
+	public void select(boolean isDetour) {
 		this.isSelected = true;
 
 		if (this.mapLine != null && this.isOpen()) {
-			this.mapLine.setStroke(Color.rgb(85, 255, 0));
+			if (isDetour)
+				this.mapLine.setStroke(Color.rgb(212, 245, 29));
+			else
+				this.mapLine.setStroke(Color.rgb(85, 255, 0));
 		}
 	}
 
@@ -314,4 +317,20 @@ public class MyStreet implements Street {
 	public void setCloseable(boolean closeable) {
 		isCloseable = closeable;
 	}
+
+	/**
+	 * Najde souřadnice, které mají společné zadané cesty
+	 *
+	 * @param street Cesta se kterou se hledají stejné koncové souřadnice
+	 * @return Souřadnice, které mají cesty společné
+	 */
+	public Coordinate getEqualCoord(Street street) {
+		if (this.begin().equals(street.begin()) || this.begin().equals(street.end()))
+			return this.begin();
+		else if (this.end().equals(street.end()) || this.end().equals(street.begin()))
+			return this.end();
+		else
+			return null;
+	}
+
 }

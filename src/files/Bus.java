@@ -24,7 +24,7 @@ public class Bus {
     private MyLine line;
     private Circle circle;
     private Schedule schedule;
-    private int delay;
+    private long actDelay;
     private LocalTime prevTime = LocalTime.of(9,0);
     private Stop nextStop;
     //private MyPopup popUp;
@@ -37,7 +37,7 @@ public class Bus {
         this.id=0;
         this.type="";
         this.carrier="";
-        this.delay = 0;
+        this.actDelay = 0;
         this.nextStop = null;
         //this.popUp = null;
     }
@@ -53,9 +53,8 @@ public class Bus {
         this.id = id;
         this.type = type;
         this.carrier = carrier;
-        this.delay = 0;
+        this.actDelay = 0;
         this.nextStop = null;
-        //this.popUp = null;
     }
 
     /**
@@ -182,23 +181,22 @@ public class Bus {
      * @param currentTime Aktuální čas
      */
     public void updatePos(LocalTime currentTime) {
+        if (id == 31)
+            System.out.println();
+
         //Sestavení cesty
         List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
         //Získání cest, o kterých autobus jede
         List<Street> streets = this.line.getStreets();
-        //spočítání zpoždění
+        //spočítání zpoždění trasy
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
         this.nextStop = getLine().getFirstStop();
-        /*if (this.popUp != null) {
-            //this.popUp.update(this);
-        }*/
 
         //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
             this.circle.setVisible(true);
         } else {
-            //deselect();
             this.circle.setVisible(false);
             return;
         }
@@ -207,9 +205,6 @@ public class Bus {
         int nextStop = schedule.getNextStop(route, currentTime);
         this.nextStop = findNextStop(route, nextStop);
 
-        /*if (this.popUp != null)
-            this.popUp.update();*/
-
         long routeDuration = Duration.between(route.get(nextStop).getValue(), route.get(nextStop - 1).getValue()).getSeconds();
         long currentDuration = Duration.between(currentTime, route.get(nextStop - 1).getValue()).getSeconds();
 
@@ -217,6 +212,10 @@ public class Bus {
         double currentLen = len * (currentDuration / (double) routeDuration);
 
         Vec2d newPos = RouteCalculation.getPosition(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), currentLen);
+
+        //spočítání aktuálního zpoždění
+        //při objížďce nefunguje
+        actDelay = RouteCalculation.getCurrentDelay(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), delay.get(nextStop), delay.get(nextStop - 1), currentLen);
 
         //nastavení nové polohy
         this.circle.setCenterX(newPos.x);

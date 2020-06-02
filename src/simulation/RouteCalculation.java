@@ -143,4 +143,11 @@ public class RouteCalculation {
 
         return new Vec2d(x, y);
     }
+
+    public static long getCurrentDelay(Coordinate nextPos, Coordinate prevPos, long nextDelay, long prevDelay, double currentLenght) {
+        double totalL = sqrt(pow(nextPos.diffX(prevPos), 2) + pow(nextPos.diffY(prevPos), 2));
+        double k = currentLenght / totalL;
+
+        return (long) (prevDelay + (k * (nextDelay - prevDelay)));
+    }
 }

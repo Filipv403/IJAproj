@@ -62,7 +62,14 @@ public interface MapObjects {
             line.setStroke(Color.rgb(65, 63, 68));
             line.setStrokeWidth(7);
             line.setOnMouseClicked(e -> {
-                myStreet.setOpen(!myStreet.isOpen());
+                if (appData.isEditingDetour()) {
+                    if (appData.getNewDetour().addStreet(myStreet))
+                        System.out.println("Ulice " + myStreet.getId() + " přidána do objížďky");
+                    else
+                        System.out.println("Ulice " + myStreet.getId() + "nelze přidat");
+                } else {
+                    System.out.println("Ulice " + myStreet.getId() + " vybrána");
+                }
             });
             myStreet.setMapLine(line);
             root.getChildren().addAll(myStreet.getMapLine());
@@ -87,8 +94,6 @@ public interface MapObjects {
             circle.setStroke(Color.BLUE);
             circle.setFill(Color.BLUE);
             circle.setOnMouseClicked(e -> {
-                //l.getStreets().forEach(MyStreet::deselect);
-                //l.getStops().forEach(MyStop::deselect);
                 appData.deselectBus();
                 appData.setSelectedBus(bus);
                 bus.highlightLine();
@@ -96,7 +101,6 @@ public interface MapObjects {
                 myPopup.load(bus);
                 myPopup.display(gridPane);
                 appData.setPopup(myPopup);
-                //bus.setPopUp(myPopup);
             });
             bus.setCircle(circle);
             root.getChildren().addAll(bus.getCircle());
