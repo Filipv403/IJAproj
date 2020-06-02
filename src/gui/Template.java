@@ -129,25 +129,62 @@ public class Template {
         ComboBox<Detour> detourCBox = new ComboBox<Detour>();
         detourCBox.setPromptText("Seznam Objížděk");
 
+        Button removeDetour = new Button("Odstranit objížďku");
         Button createDetour = new Button("Přidat objížďku");
+
+        TextField delayDet = new TextField();
+        HBox detourDelayBox = new HBox(new Label("Zpoždění(minuty): "), delayDet);
+
         createDetour.setOnMouseClicked(e -> {
             if (appData.isEditingDetour()) {
                 appData.finalizeDetour();
-                appData.getSelectedLine().getDetours().add(appData.getNewDetour());
+                if (appData.getNewDetour() != null)
+                    appData.getSelectedLine().getDetours().add(appData.getNewDetour());
+                appData.getSelectedLine().highlight();
+
+                appData.getDetourComboBox().getItems().remove(0, appData.getDetourComboBox().getItems().size());
+
+                try {
+                    appData.getNewDetour().setDelay((long)Double.parseDouble(delayDet.getText()) * 60);
+                } catch (NumberFormatException exception) {
+                    appData.getNewDetour().setDelay(30 * 60);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Přidání objížďky");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Zpoždění je ve špatném formátu. Nastaveno defaultní zpoždění 30 minut.");
+
+                    alert.showAndWait();
+                }
+
+                if (appData.getSelectedLine().getDetours().size() > 0)
+                    appData.getDetourComboBox().getItems().addAll(appData.getSelectedLine().getDetours());
+                removeDetour.setDisable(false);
+                detourCBox.setDisable(false);
+                appData.toggleEditDetour();
             }
             else if (appData.getSelectedLine() != null) {
                 appData.createDetour();
+                removeDetour.setDisable(true);
+                detourCBox.setDisable(true);
+                appData.toggleEditDetour();
             }
-
-            appData.toggleEditDetour();
         });
+        appData.setLineSetText(detourSetText);
+        appData.setDetourComboBox(detourCBox);
+        appData.setRemoveDetour(removeDetour);
 
-        Button removeDetour = new Button("Odstranit objížďku");
         removeDetour.setOnMouseClicked(e -> {
+            if (appData.getSelectedLine() != null && appData.getDetourComboBox().getValue() != null) {
+                appData.getDetourComboBox().getValue().remove();
+                appData.getSelectedLine().getDetours().remove(appData.getDetourComboBox().getValue());
+                appData.getDetourComboBox().getItems().remove(appData.getDetourComboBox().getValue());
 
+                appData.getSelectedLine().deselect();
+                appData.getSelectedLine().highlight();
+            }
         });
 
-        rightMenu.getChildren().addAll(detourSetText, detourCBox, createDetour, removeDetour);
+        rightMenu.getChildren().addAll(detourSetText, detourCBox,removeDetour, detourDelayBox, createDetour);
 
         //rightMenu.getChildren().addAll(stops.getStopBox(), linky.getLineBox(), busBox.getBusBox());
         rightMenu.setId("vbox");
@@ -185,9 +222,12 @@ public class Template {
         Scene scene = new Scene(gridPane, 1600, 900);
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE){
-                appData.deselectBus();
-                appData.cancleDetourEdit();
-                appData.deselectStreet();
+                if (appData.isEditingDetour()) {
+                    appData.cancleDetourEdit();
+                } else {
+                    appData.deselectBus();
+                    appData.deselectStreet();
+                }
             }
         });
         window.setScene(scene);

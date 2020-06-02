@@ -1,9 +1,7 @@
 package files;
 
 import gui.MyPopup;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 
 public class AppData {
@@ -15,6 +13,9 @@ public class AppData {
     private CheckBox checkBox;
     private Spinner<Integer> trafficSpinner;
     private Label streetSetText;
+    private Label lineSetText;
+    private ComboBox<Detour> detourComboBox;
+    private Button removeDetour;
 
     public void setSelectedBus(Bus selectedBus) {
         this.selectedBus = selectedBus;
@@ -74,6 +75,8 @@ public class AppData {
         if (selectedBus != null) {
             selectedBus.deselect();
             selectedBus = null;
+
+            detourComboBox.getItems().remove(0, detourComboBox.getItems().size());
         }
 
         if (popup != null) {
@@ -88,11 +91,13 @@ public class AppData {
             selectedStreet.deselect();
         }
 
-
         selectedStreet = null;
         checkBox.setSelected(false);
+        checkBox.setText("Zavřená");
+        checkBox.setDisable(false);
         trafficSpinner.getValueFactory().setValue(1);
         streetSetText.setText("Nastavení Ulice: Žádná nevybrána");
+        lineSetText.setText("Nastavení objížďky pro linku:\n\tŽádná nevybrána");
     }
 
     public boolean isEditingDetour() {
@@ -109,9 +114,17 @@ public class AppData {
 
     public void finalizeDetour() {
         if (newDetour.finalize(selectedBus.getLine())) {
-            System.out.println("Objížďka přidána");
+            selectedBus.getLine().deselect();
         } else {
-            System.out.println("Objížďku se nepovedlo vytvořit");
+            newDetour.remove();
+            newDetour = null;
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Přidání objížďky");
+            alert.setHeaderText(null);
+            alert.setContentText("Objížďka byla chybně vytvořena a nebyla přidána");
+
+            alert.showAndWait();
         }
     }
 
@@ -125,10 +138,34 @@ public class AppData {
 
     public void cancleDetourEdit() {
         isEditingDetour = false;
+        if (newDetour != null)
+            newDetour.remove();
         newDetour = null;
+        removeDetour.setDisable(false);
+        detourComboBox.setDisable(false);
     }
 
     public Detour getNewDetour() {
         return newDetour;
+    }
+
+    public void setLineSetText(Label lineSetText) {
+        this.lineSetText = lineSetText;
+    }
+
+    public ComboBox<Detour> getDetourComboBox() {
+        return detourComboBox;
+    }
+
+    public Label getLineSetText() {
+        return lineSetText;
+    }
+
+    public void setDetourComboBox(ComboBox<Detour> detourComboBox) {
+        this.detourComboBox = detourComboBox;
+    }
+
+    public void setRemoveDetour(Button removeDetour) {
+        this.removeDetour = removeDetour;
     }
 }

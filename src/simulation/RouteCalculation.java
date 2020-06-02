@@ -95,7 +95,7 @@ public class RouteCalculation {
                 delay.add(curentDelay);
             } else {
                 //přidání zpoždění aktuální ulice a předchozích ulic
-                long dur = Duration.between(route.get(i).getValue(), route.get(i + 1).getValue()).getSeconds();
+                long dur = Duration.between(route.get(i).getValue().minusSeconds(curentDelay), route.get(i + 1).getValue()).getSeconds();
                 long newDelay =(long) (((streets.get(i).getTraffic() - 1) / 2.0) * dur);
 
                 curentDelay += newDelay;
@@ -149,5 +149,15 @@ public class RouteCalculation {
         double k = currentLenght / totalL;
 
         return (long) (prevDelay + (k * (nextDelay - prevDelay)));
+    }
+
+    public static void addDetourDelay(List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay,List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, List<Long> delay) {
+
+        for (AbstractMap.SimpleEntry<Integer, Long> detDelay : detourDelay) {
+            for (int i = detDelay.getKey(); i < route.size(); i++) {
+                route.get(i).setValue(route.get(i).getValue().plusSeconds(detDelay.getValue()));
+                delay.set(i, delay.get(i) + detDelay.getValue());
+            }
+        }
     }
 }

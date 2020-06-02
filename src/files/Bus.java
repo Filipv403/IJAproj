@@ -2,12 +2,11 @@ package files;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.AbstractMap;
 
 import com.sun.javafx.geom.Vec2d;
-import gui.MyPopup;
 import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
@@ -25,9 +24,7 @@ public class Bus {
     private Circle circle;
     private Schedule schedule;
     private long actDelay;
-    private LocalTime prevTime = LocalTime.of(9,0);
-    private Stop nextStop;
-    //private MyPopup popUp;
+    private AbstractMap.SimpleEntry<Stop, LocalTime> nextStop;
 
     /**
      * Konstruktor pro Autobus
@@ -38,8 +35,7 @@ public class Bus {
         this.type="";
         this.carrier="";
         this.actDelay = 0;
-        this.nextStop = null;
-        //this.popUp = null;
+        this.nextStop = new AbstractMap.SimpleEntry<Stop, LocalTime>(null, null);
     }
 
     /**
@@ -54,7 +50,7 @@ public class Bus {
         this.type = type;
         this.carrier = carrier;
         this.actDelay = 0;
-        this.nextStop = null;
+        this.nextStop = new AbstractMap.SimpleEntry<Stop, LocalTime>(null, null);
     }
 
     /**
@@ -184,14 +180,16 @@ public class Bus {
         if (id == 31)
             System.out.println();
 
+        List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay = new ArrayList<>();
+
         //Sestavení cesty
-        List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule);
+        List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule, detourDelay);
         //Získání cest, o kterých autobus jede
         List<Street> streets = this.line.getStreets();
         //spočítání zpoždění trasy
         List<Long> delay = RouteCalculation.computeDelay(route, streets);
 
-        this.nextStop = getLine().getFirstStop();
+        RouteCalculation.addDetourDelay(detourDelay, route, delay);
 
         //nastavení viditelnostu autobusu
         if (route != null && currentTime.isAfter(route.get(0).getValue()) && currentTime.isBefore(route.get(route.size() - 1).getValue())) {
@@ -214,7 +212,6 @@ public class Bus {
         Vec2d newPos = RouteCalculation.getPosition(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), currentLen);
 
         //spočítání aktuálního zpoždění
-        //při objížďce nefunguje
         actDelay = RouteCalculation.getCurrentDelay(route.get(nextStop).getKey(), route.get(nextStop - 1).getKey(), delay.get(nextStop), delay.get(nextStop - 1), currentLen);
 
         //nastavení nové polohy
@@ -229,15 +226,15 @@ public class Bus {
      * @param nextNode Index dalšího bodu na cestě
      * @return Další zastávku
      */
-    private Stop findNextStop(List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, int nextNode) {
+    private AbstractMap.SimpleEntry<Stop, LocalTime> findNextStop(List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, int nextNode) {
         Stop stop;
         for (int i = nextNode; i < route.size(); i++) {
             if ((stop = schedule.getStopAt(route.get(i).getKey())) != null) {
-                return stop;
+                return new AbstractMap.SimpleEntry<>(stop, route.get(i).getValue());
             }
         }
 
-        return line.getFirstStop();
+        return new AbstractMap.SimpleEntry<>(null, null);
     }
 
     /**
@@ -245,27 +242,18 @@ public class Bus {
      *
      * @return zastávka autobusu
      */
-    public Stop getNextStop() {
+    public AbstractMap.SimpleEntry<Stop, LocalTime> getNextStop() {
         return nextStop;
-    }
-
-    /**
-     * Nastaví vyskakovací okno
-     * @param popUp vyskakovací okno
-     */
-    public void setPopUp(MyPopup popUp) {
-        //this.popUp = popUp;
     }
 
     /**
      * zruší vybrání autobusu
      */
     public void deselect() {
-       /* if (this.popUp != null) {
-            this.popUp.notDisplay();
-            this.popUp = null;
-        } */
-
         this.line.deselect();
+    }
+
+    public long getActDelay() {
+        return actDelay;
     }
 }

@@ -17,6 +17,14 @@ public class Detour {
     private long delay;
     private int jump;
 
+    @Override
+    public String toString() {
+        if (replace.size() > 0)
+         return "Objížďka pro " + replace.get(0);
+        else
+            return "Neplatná objížďka";
+    }
+
     public Detour() {
         this.replace = new ArrayList<>();
         this.detourList = new ArrayList<>();
@@ -52,6 +60,9 @@ public class Detour {
         boolean startFound = false;
         boolean endFound = false;
         int startIdx = -1;
+
+        if (detourList.size() <= 0)
+            return false;
 
         for (int i = 1; i < line.map_list.size(); i++) {
             Coordinate node = line.map_list.get(i).getKey().getEqualCoord(line.map_list.get(i - 1).getKey());
@@ -117,12 +128,31 @@ public class Detour {
     public boolean addStreet(Street street) {
         int lastidx = detourList.size() - 1;
 
+        if (!street.isOpen())
+            return false;
+
+        //odstranění ulice z objížďky
+        if (detourList.size() > 0) {
+            if (street.equals(detourList.get(0))) {
+                street.select(0);
+                street.setCloseable(true);
+                detourList.remove(0);
+                return true;
+            } else if (street.equals(detourList.get(detourList.size() - 1))) {
+                street.select(0);
+                street.setCloseable(true);
+                detourList.remove(detourList.size() - 1);
+                return true;
+            }
+        }
+
+        //přidání ulice do objížďky
         if (detourList.isEmpty() || (detourList.size() == 1 && detourList.get(0).follows(street))) {
             setStreetProp(street);
             return true;
         } else if (detourList.get(0).follows(street) && detourList.get(0).getEqualCoord(street) != detourList.get(1).getEqualCoord(detourList.get(0))) {
             detourList.add(0, street);
-            street.select(true);
+            street.select(1);
             street.setCloseable(false);
             return true;
         } else if (detourList.get(lastidx).follows(street) &&
@@ -141,7 +171,7 @@ public class Detour {
      */
     private void setStreetProp(Street street) {
         detourList.add(street);
-        street.select(true);
+        street.select(1);
         street.setCloseable(false);
     }
 
@@ -165,11 +195,14 @@ public class Detour {
      * @param route Trasa autobusu do objížďky, do kterré bude cesta přidána
      */
     public void getRoute(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
-        //route.add(new AbstractMap.SimpleEntry<>(street.getEqualCoord(detourList.get(0)), null));
         for (int i = 0; i < detourList.size() - 1; i++) {
             route.add(new AbstractMap.SimpleEntry<>(detourList.get(i).getEqualCoord(detourList.get(i + 1)), null));
         }
         route.add(new AbstractMap.SimpleEntry<>(detourList.get(detourList.size() - 1).getEqualCoord(getLastReplaced(street)), null));
+    }
+
+    public void getStreets(List<Street> streets) {
+        streets.addAll(detourList);
     }
 
     /**
@@ -187,5 +220,24 @@ public class Detour {
 
     public long getDelay() {
         return delay;
+    }
+
+    public void highlight() {
+        replace.forEach(s -> {
+            s.select(2);
+        });
+
+        detourList.forEach(s -> {
+            s.select(1);
+        });
+    }
+
+    public void deselect() {
+        detourList.forEach(Street::deselect);
+        replace.forEach(Street::deselect);
+    }
+
+    public void setDelay(long delay) {
+        this.delay = delay;
     }
 }

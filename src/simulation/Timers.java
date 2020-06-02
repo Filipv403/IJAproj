@@ -7,6 +7,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -101,11 +103,20 @@ public class Timers {
      */
     private void updateTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        if (labelCurrentTime != null)
-            labelCurrentTime.setText("Aktuální čas: " + currentTime.format(dtf));
-        else
+        //pozastavení při vytváření objížďky
+        if (data != null && data.isEditingDetour()) {
+            if (labelCurrentTime != null) {
+                labelCurrentTime.setText("Aktuální čas: " + currentTime.format(dtf) + " (Pozastaven)");
+                labelCurrentTime.setTextFill(Color.RED);
+            }
+
             return;
-            //System.out.println(currentTime.format(dtf));
+        }
+
+        if (labelCurrentTime != null) {
+            labelCurrentTime.setTextFill(Color.BLACK);
+            labelCurrentTime.setText("Aktuální čas: " + currentTime.format(dtf));
+        }
     }
 
     /**
@@ -135,7 +146,8 @@ public class Timers {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    currentTime = currentTime.plusNanos((long)(100000000 * scale));
+                    if (data != null && !data.isEditingDetour())
+                        currentTime = currentTime.plusNanos((long)(100000000 * scale));
                     updateTime();
                 });
             }

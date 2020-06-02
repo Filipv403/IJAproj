@@ -69,7 +69,7 @@ public interface Street {
 	/**
 	 * Zvýrazní cestu na mapě
 	 */
-	public void select(boolean isDetour);
+	public void select(int newMode);
 
 	/**
 	 * Zjistí jestli je cesta otevřená

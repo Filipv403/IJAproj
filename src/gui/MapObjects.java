@@ -72,11 +72,14 @@ public interface MapObjects {
                         appData.deselectStreet();
                         appData.deselectBus();
                         appData.setSelectedStreet(myStreet);
-                        appData.getSelectedStreet().select(false);
+                        appData.getSelectedStreet().select(0);
 
                         appData.getStreetSetText().setText("Nastavení Ulice: " + myStreet.getId());
                         appData.getCheckBox().setSelected(!appData.getSelectedStreet().isOpen());
                         appData.getTrafficSpinner().getValueFactory().setValue(appData.getSelectedStreet().getTraffic());
+
+                        appData.getCheckBox().setDisable(!appData.getSelectedStreet().isCloseable());
+                        appData.getCheckBox().setText(appData.getSelectedStreet().isCloseable() ? "Zavřená" : "Nelze uzavřít");
                     } else { //odzančení ulice
                         appData.deselectStreet();
                     }
@@ -113,6 +116,10 @@ public interface MapObjects {
                 myPopup.load(bus);
                 myPopup.display(gridPane);
                 appData.setPopup(myPopup);
+                appData.getLineSetText().setText("Nastavení objížďky pro linku:\n\t" + appData.getSelectedLine().getId());
+
+                if (appData.getSelectedLine().getDetours().size() > 0)
+                    appData.getDetourComboBox().getItems().addAll(appData.getSelectedLine().getDetours());
             });
             bus.setCircle(circle);
             root.getChildren().addAll(bus.getCircle());

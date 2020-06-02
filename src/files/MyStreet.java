@@ -19,9 +19,15 @@ public class MyStreet implements Street {
 	private Coordinate[] c = new Coordinate[2];
 	private boolean isOpen;
 	private boolean isCloseable;
+
+	@Override
+	public String toString() {
+		return nazev;
+	}
+
 	private int traffic;
 	private Line mapLine;
-	private boolean isSelected;
+	private int selectMode;
 
 	/**
 	 * Prázdný konstruktor ulice, který nastaví prázdné jméno, souřadnice na nulu, vše na tru a provoz na 1
@@ -32,7 +38,7 @@ public class MyStreet implements Street {
 		this.isOpen = true;
 		this.isCloseable = true;
 		this.traffic = 1;
-		this.isSelected = false;
+		this.selectMode = -1;
 	}
 
 	/**
@@ -47,7 +53,7 @@ public class MyStreet implements Street {
 		this.isOpen = true;
 		this.isCloseable = true;
 		this.traffic = 1;
-		this.isSelected = false;
+		this.selectMode = -1;
 	}
 	
 	/**
@@ -256,11 +262,25 @@ public class MyStreet implements Street {
 				this.mapLine.setStroke(Color.RED);
 			}
 			else {
-				if (!isSelected)
-					this.mapLine.setStroke(Color.rgb(65, 63, 68));
-				else
-					this.mapLine.setStroke(Color.rgb(85, 255, 0));
+				changeColor();
 			}
+		}
+	}
+
+	private void changeColor() {
+		switch (selectMode) {
+			case -1:
+				this.mapLine.setStroke(Color.rgb(65, 63, 68));
+				break;
+			case 0:
+				this.mapLine.setStroke(Color.rgb(85, 255, 0));
+				break;
+			case 1:
+				this.mapLine.setStroke(Color.rgb(212, 245, 29));
+				break;
+			case 2:
+				this.mapLine.setStroke(Color.rgb(235, 94, 7));
+				break;
 		}
 	}
 
@@ -287,24 +307,21 @@ public class MyStreet implements Street {
 	 * Zruší zvýraznění úsečky na mapě
 	 */
 	public void deselect() {
-		this.isSelected = false;
+		this.selectMode = -1;
 
 		if (this.mapLine != null && this.isOpen()) {
-			this.mapLine.setStroke(Color.rgb(65, 63, 68));
+			changeColor();
 		}
 	}
 
 	/**
 	 * Zvýrazní cestu na mapě
 	 */
-	public void select(boolean isDetour) {
-		this.isSelected = true;
+	public void select(int newMode) {
+		this.selectMode = newMode;
 
 		if (this.mapLine != null && this.isOpen()) {
-			if (isDetour)
-				this.mapLine.setStroke(Color.rgb(212, 245, 29));
-			else
-				this.mapLine.setStroke(Color.rgb(85, 255, 0));
+			changeColor();
 		}
 	}
 
@@ -330,15 +347,6 @@ public class MyStreet implements Street {
 			return this.end();
 		else
 			return null;
-	}
-
-	/**
-	 * Vrátí hodnotu, zda byla ulice rozkliknuta
-	 *
-	 * @return true nebo false zda na ulici bylo kliknutu
-	 */
-	public boolean isSelected() {
-		return this.isSelected;
 	}
 
 	public boolean isCloseable() {

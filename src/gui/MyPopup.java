@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * Vyskakovací okénko s údajema autobusu, po kliknutí na autobus
  *
@@ -23,6 +25,7 @@ public class MyPopup {
     private SplitPane popup;
     private GridPane gridPane;
     private Text nextStopField;
+    private Text delay;
     private Bus selectedBus;
 
     /**
@@ -50,8 +53,8 @@ public class MyPopup {
         Text busLine = new Text("Linka: " + bus.getLine().getId());
         Text firstStop = new Text("Po\u010d\u00e1te\u010dn\u00ed zast\u00e1vka: " + bus.getLine().getFirstStop().getId());
         Text lastStop = new Text("Kone\u010dn\u00e1 zast\u00e1vka: " + bus.getLine().getLastStop().getId());
-        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getId() + " (" + bus.getSchedule().getTime(bus.getNextStop()) + ")");
-
+        Text nextStop = new Text("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + bus.getNextStop().getKey().getId() + " (" + bus.getNextStop().getValue().format(DateTimeFormatter.ofPattern("HH:mm")) + ")");
+        this.delay = new Text("Zpoždění: " + bus.getActDelay() / 60 + " min.");
         this.nextStopField = nextStop;
 
         GridPane.setHalignment(busId, HPos.CENTER);
@@ -61,6 +64,7 @@ public class MyPopup {
         GridPane.setHalignment(firstStop, HPos.CENTER);
         GridPane.setHalignment(lastStop, HPos.CENTER);
         GridPane.setHalignment(nextStop, HPos.CENTER);
+        GridPane.setHalignment(delay, HPos.CENTER);
 
         leftGrid.add(busId, 0, 0);
         leftGrid.add(busType, 1, 0);
@@ -72,6 +76,7 @@ public class MyPopup {
         rightGrid.add(firstStop, 0, 0);
         rightGrid.add(lastStop, 1, 0);
         rightGrid.add(nextStop, 0, 1, 2, 1);
+        rightGrid.add(delay, 0, 2, 2, 1);
         rightGrid.getColumnConstraints().add(new ColumnConstraints(290));
         rightGrid.getRowConstraints().add(new RowConstraints(75));
 
@@ -83,6 +88,7 @@ public class MyPopup {
         firstStop.getStyleClass().add("text-id");
         lastStop.getStyleClass().add("text-id");
         nextStop.getStyleClass().add("text-id");
+        delay.getStyleClass().add("text-id");
 
         this.popup = popup;
 
@@ -121,6 +127,7 @@ public class MyPopup {
             return;
         }
 
-        nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + selectedBus.getNextStop().getId() + " (" + selectedBus.getSchedule().getTime(selectedBus.getNextStop()) + ")");
+        nextStopField.setText("N\u00e1sleduj\u00edc\u00ed zast\u00e1vka: " + selectedBus.getNextStop().getKey().getId() + " (" + selectedBus.getNextStop().getValue().format(DateTimeFormatter.ofPattern("HH:mm")) + ")");
+        delay.setText("Zpoždění: " + selectedBus.getActDelay() / 60 + " min.");
     }
 }
