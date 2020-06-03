@@ -144,6 +144,16 @@ public class RouteCalculation {
         return new Vec2d(x, y);
     }
 
+    /**
+     * Spočítá aktuální zpoždění
+     *
+     * @param nextPos následující pozice autobusu
+     * @param prevPos předchozí pozice autobusu
+     * @param nextDelay následující zpoždění
+     * @param prevDelay předchozí zpoždění
+     * @param currentLenght aktuální vzdálenost mezi body
+     * @return aktuální zpoždění
+     */
     public static long getCurrentDelay(Coordinate nextPos, Coordinate prevPos, long nextDelay, long prevDelay, double currentLenght) {
         double totalL = sqrt(pow(nextPos.diffX(prevPos), 2) + pow(nextPos.diffY(prevPos), 2));
         double k = currentLenght / totalL;
@@ -151,6 +161,13 @@ public class RouteCalculation {
         return (long) (prevDelay + (k * (nextDelay - prevDelay)));
     }
 
+    /**
+     * Připočítá zpoždění způsobené objížďkami
+     *
+     * @param detourDelay zpoždění objížďkami
+     * @param route cesta autobusu
+     * @param delay zpožděni pro jednotlivé úseky cesty
+     */
     public static void addDetourDelay(List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay,List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, List<Long> delay) {
 
         for (AbstractMap.SimpleEntry<Integer, Long> detDelay : detourDelay) {

@@ -112,6 +112,8 @@ public interface MapObjects {
                 appData.deselectStreet();
                 appData.setSelectedBus(bus);
                 bus.highlightLine();
+                bus.getCircle().setStroke(Color.rgb(26, 89, 6));
+                bus.getCircle().setFill(Color.rgb(26, 89, 6));
                 MyPopup myPopup = new MyPopup();
                 myPopup.load(bus);
                 myPopup.display(gridPane);

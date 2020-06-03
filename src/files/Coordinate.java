@@ -96,6 +96,11 @@ public class Coordinate{
         return coordinate;
     }
 
+    /**
+     * porovnáná dvou souřadnic
+     * @param o další souřadnice pro porovnání
+     * @return true jesli jsou souřadnice stejné
+     */
     @Override
     public boolean equals(Object o){
         if (o == null)

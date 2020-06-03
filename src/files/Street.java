@@ -141,9 +141,21 @@ public interface Street {
 	 */
 	Coordinate getEqualCoord(Street street);
 
+	/**
+	 * Zjistí jestli se ulice dá uzavřít
+	 * @return ulice se dá zavřít
+	 */
 	boolean isCloseable();
 
+	/**
+	 * Nastaví jestli je ulice otevřená
+	 * @param open informace o otevření ulice
+	 */
 	void setOpen(boolean open);
 
+	/**
+	 * Nastaví stupeň provozu na ulici
+	 * @param traffic stuoeň provozu
+	 */
 	void setTraffic(int traffic);
 }

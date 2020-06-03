@@ -17,6 +17,10 @@ public class Detour {
     private long delay;
     private int jump;
 
+    /**
+     * Převedení objížďky na string
+     * @return textová reprezentace objížďky
+     */
     @Override
     public String toString() {
         if (replace.size() > 0)
@@ -25,6 +29,9 @@ public class Detour {
             return "Neplatná objížďka";
     }
 
+    /**
+     * Konstruktor
+     */
     public Detour() {
         this.replace = new ArrayList<>();
         this.detourList = new ArrayList<>();
@@ -201,6 +208,10 @@ public class Detour {
         route.add(new AbstractMap.SimpleEntry<>(detourList.get(detourList.size() - 1).getEqualCoord(getLastReplaced(street)), null));
     }
 
+    /**
+     * Přidá seznam ulic po kterých objížďka vede to zadaného listu
+     * @param streets list do kterého budou ulice přidány
+     */
     public void getStreets(List<Street> streets) {
         streets.addAll(detourList);
     }
@@ -214,14 +225,25 @@ public class Detour {
         return jump;
     }
 
+    /**
+     * Získá seznam ulic které jsou objížděné
+     * @return seznam ulic
+     */
     public List<Street> getReplace() {
         return replace;
     }
 
+    /**
+     * Získá zpoždění objížďly
+     * @return zpoždění objížďky
+     */
     public long getDelay() {
         return delay;
     }
 
+    /**
+     * Zvýrazní objížďku na mapě
+     */
     public void highlight() {
         replace.forEach(s -> {
             s.select(2);
@@ -232,11 +254,18 @@ public class Detour {
         });
     }
 
+    /**
+     * Zruší zvýraznění objížďky
+     */
     public void deselect() {
         detourList.forEach(Street::deselect);
         replace.forEach(Street::deselect);
     }
 
+    /**
+     * Nastaví zpoždění objížďky
+     * @param delay zpoždění v sekundách
+     */
     public void setDelay(long delay) {
         this.delay = delay;
     }

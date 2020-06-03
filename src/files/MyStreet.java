@@ -267,6 +267,9 @@ public class MyStreet implements Street {
 		}
 	}
 
+	/**
+	 * Změní barvu cesty, podle aktuálního aktivního modu pro cestu
+	 */
 	private void changeColor() {
 		switch (selectMode) {
 			case -1:
@@ -349,6 +352,10 @@ public class MyStreet implements Street {
 			return null;
 	}
 
+	/**
+	 * Zjistí jestli se cesta dá uzavřít
+	 * @return true jestli se cesta dá zavřít
+	 */
 	public boolean isCloseable() {
 		return isCloseable;
 	}

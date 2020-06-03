@@ -136,7 +136,11 @@ public class MyLine implements Line {
 		Line line = new MyLine(id);
 		return line;
 	}
-	
+
+	/**
+	 * Získá textovou reprezentaci linky
+	 * @return textová reprezentace linky
+	 */
 	@Override
     public String toString(){
 		try {
@@ -243,7 +247,7 @@ public class MyLine implements Line {
 	 * jízdního řádu, v případě že se jedná o zlom na cestě k hodnotě času je přiřazena hodnota null.
 	 *
 	 * @param schedule Jízdí řád autobusu pro danou linku
-	 * @param detourDelay
+	 * @param detourDelay seznam se zpožděním vytvořeným objížďkami
 	 * @return Souřadnice, které reprezentují jednotlivé zlomy na cestě/zastávky a časy kdy se tam autobus má nacházet
 	 */
 	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule, List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay) {
@@ -287,6 +291,12 @@ public class MyLine implements Line {
 		return route;
 	}
 
+	/**
+	 * Nastevení cesty pro objížďku
+	 * @param street ulice která se má jako první objíždět
+	 * @param route aktuálně vytvořená cesta autobusu
+	 * @return počet přeskočených cest
+	 */
 	private int setDetourRoute(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
 		for (Detour detour : detours) {
 			if (detour.isReplacing(street)) {
@@ -298,6 +308,11 @@ public class MyLine implements Line {
 		return 0;
 	}
 
+	/**
+	 * Nastevení cest po kterých objížďka vede
+	 * @param street ulice která se má jako první objíždět
+	 * @return počet přeskočených cest
+	 */
 	private int setDetourStreets(Street street, List<Street> streets) {
 		for (Detour detour : detours) {
 			if (detour.isReplacing(street)) {
@@ -309,6 +324,12 @@ public class MyLine implements Line {
 		return 0;
 	}
 
+	/**
+	 * Nastavení zpoždění objížďky
+	 * @param street ulice která se má jako první objíždět
+	 * @param route aktuálně vytvořená cesta autobusu
+	 * @return počet přeskočených cest
+	 */
 	private long setDetourDelay(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
 		for (Detour detour : detours) {
 			if (detour.isReplacing(street)) {
@@ -365,6 +386,9 @@ public class MyLine implements Line {
 		return streets;
 	}
 
+	/**
+	 * Zrušení zvýrazení linky
+	 */
 	public void deselect() {
 		this.map_list.forEach(pair -> {
 			pair.getKey().deselect();
@@ -375,6 +399,10 @@ public class MyLine implements Line {
 		this.detours.forEach(Detour::deselect);
 	}
 
+	/**
+	 * Získá seznam objížděk na lince
+	 * @return seznam objížděk
+	 */
 	public List<Detour> getDetours() {
 		return detours;
 	}

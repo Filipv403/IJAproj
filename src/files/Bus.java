@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.AbstractMap;
 
 import com.sun.javafx.geom.Vec2d;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import simulation.RouteCalculation;
 
@@ -251,8 +252,14 @@ public class Bus {
      */
     public void deselect() {
         this.line.deselect();
+        circle.setStroke(Color.BLUE);
+        circle.setFill(Color.BLUE);
     }
 
+    /**
+     * Získá aktuální zpoždění autobusu
+     * @return aktuální zpoždění v sekundách
+     */
     public long getActDelay() {
         return actDelay;
     }

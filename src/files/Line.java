@@ -43,5 +43,8 @@ public interface Line {
 		return line;
 	}
 
+	/**
+	 * Zruší zvýraznení linky
+	 */
     void deselect();
 }
