@@ -174,14 +174,14 @@ public class MyLine implements Line {
     	for (int i = 0; i < map_list.size(); i++) {
     		//najde první zastávku
     		if (!haveStart) {
-				if (map_list.get(i).getValue() != null && map_list.get(i).getKey().isOpen()) {
+				if (map_list.get(i).getValue() != null && map_list.get(i).getKey().isOpen() && !hasDetour(map_list.get(i).getKey())) {
 					haveStart = true;
 					idxs[0] = i;
 				}
 			} else {
     			//hledá poslední zastávku
     			if (map_list.get(i).getValue() != null) {
-    				if (map_list.get(i).getKey().isOpen()) {
+    				if (map_list.get(i).getKey().isOpen() && !hasDetour(map_list.get(i).getKey())) {
     					haveEnd = true;
     					idxs[1] = i;
 					} else if (!hasDetour(map_list.get(i).getKey())) { //ulice je zavřená a nemá objížďku
