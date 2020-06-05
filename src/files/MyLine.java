@@ -1,10 +1,7 @@
 package files;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Třídá reprezentující linku autobusu
@@ -250,7 +247,7 @@ public class MyLine implements Line {
 	 * @param detourDelay seznam se zpožděním vytvořeným objížďkami
 	 * @return Souřadnice, které reprezentují jednotlivé zlomy na cestě/zastávky a časy kdy se tam autobus má nacházet
 	 */
-	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule, List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay) {
+	public List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> getBusRoute(Schedule schedule, List<AbstractMap.SimpleEntry<Vector<Integer>, Long>> detourDelay) {
 		List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = new ArrayList<>();
 		int jump;
 
@@ -267,7 +264,10 @@ public class MyLine implements Line {
 					route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getKey().getEqualCoord(map_list.get(i + 1).getKey()), null));
 				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getKey(), route);
-					detourDelay.add(new AbstractMap.SimpleEntry<>(route.size() - 1, setDetourDelay(map_list.get(i).getKey(), route)));
+					Vector<Integer> tmp = new Vector<Integer>();
+					tmp.add(route.size() - detourSize(map_list.get(i).getKey(), route));
+					tmp.add(route.size() - 1);
+					detourDelay.add(new AbstractMap.SimpleEntry<>(tmp, setDetourDelay(map_list.get(i).getKey(), route)));
 					i += jump;
 				}
 			} else {
@@ -280,7 +280,10 @@ public class MyLine implements Line {
 						route.add(new AbstractMap.SimpleEntry<>(map_list.get(i).getKey().getEqualCoord(map_list.get(i + 1).getKey()), null));
 				} else { //s objížďkou
 					jump = setDetourRoute(map_list.get(i).getValue().getStreet(), route);
-					detourDelay.add(new AbstractMap.SimpleEntry<>(route.size() - 1, setDetourDelay(map_list.get(i).getValue().getStreet(), route)));
+					Vector<Integer> tmp = new Vector<Integer>();
+					tmp.add(route.size() - detourSize(map_list.get(i).getValue().getStreet(), route));
+					tmp.add(route.size() - 1);
+					detourDelay.add(new AbstractMap.SimpleEntry<>(tmp, setDetourDelay(map_list.get(i).getValue().getStreet(), route)));
 					i += jump;
 				}
 			}
@@ -302,6 +305,22 @@ public class MyLine implements Line {
 			if (detour.isReplacing(street)) {
 				detour.getRoute(street, route);
 				return detour.getJump();
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Zjistí počet ulic v objížďce
+	 * @param street ulice která se má jako první objíždět
+	 * @param route aktuálně vytvořená cesta autobusu
+	 * @return počet přeskočených cest
+	 */
+	private int detourSize(Street street, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route) {
+		for (Detour detour : detours) {
+			if (detour.isReplacing(street)) {
+				return detour.getDetourListSize();
 			}
 		}
 

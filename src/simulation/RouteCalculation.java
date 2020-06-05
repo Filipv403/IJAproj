@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
@@ -163,14 +164,21 @@ public class RouteCalculation {
 
     /**
      * Připočítá zpoždění způsobené objížďkami
-     *
-     * @param detourDelay zpoždění objížďkami
+     *  @param detourDelay zpoždění objížďkami
      * @param route cesta autobusu
      * @param delay zpožděni pro jednotlivé úseky cesty
      */
-    public static void addDetourDelay(List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay,List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, List<Long> delay) {
+    public static void addDetourDelay(List<AbstractMap.SimpleEntry<Vector<Integer>, Long>> detourDelay, List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route, List<Long> delay) {
+        List<AbstractMap.SimpleEntry<Integer, Long>> tmp = new ArrayList<>();
 
-        for (AbstractMap.SimpleEntry<Integer, Long> detDelay : detourDelay) {
+        for (AbstractMap.SimpleEntry<Vector<Integer>, Long> detDelay : detourDelay) {
+            long addPerNode = detDelay.getValue() / (detDelay.getKey().get(1) - detDelay.getKey().get(0) + 1);
+            for (int i = detDelay.getKey().get(0); i <= detDelay.getKey().get(1); i++ ) {
+                tmp.add(new AbstractMap.SimpleEntry<>(i, addPerNode));
+            }
+        }
+
+        for (AbstractMap.SimpleEntry<Integer, Long> detDelay : tmp) {
             for (int i = detDelay.getKey(); i < route.size(); i++) {
                 route.get(i).setValue(route.get(i).getValue().plusSeconds(detDelay.getValue()));
                 delay.set(i, delay.get(i) + detDelay.getValue());

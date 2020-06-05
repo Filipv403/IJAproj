@@ -269,4 +269,12 @@ public class Detour {
     public void setDelay(long delay) {
         this.delay = delay;
     }
+
+    /**
+     * Zjistí počet ulic v objížďce
+     * @return počet ulic v objížďce
+     */
+    public int getDetourListSize() {
+        return detourList.size();
+    }
 }

@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap;
+import java.util.Vector;
 
 import com.sun.javafx.geom.Vec2d;
 import javafx.scene.paint.Color;
@@ -181,7 +182,7 @@ public class Bus {
         if (id == 31)
             System.out.println();
 
-        List<AbstractMap.SimpleEntry<Integer, Long>> detourDelay = new ArrayList<>();
+        List<AbstractMap.SimpleEntry<Vector<Integer>, Long>> detourDelay = new ArrayList<>();
 
         //Sestavení cesty
         List<AbstractMap.SimpleEntry<Coordinate, LocalTime>> route = this.line.getBusRoute(this.schedule, detourDelay);

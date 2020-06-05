@@ -132,7 +132,7 @@ public class Template {
         Button removeDetour = new Button("Odstranit objížďku");
         Button createDetour = new Button("Přidat objížďku");
 
-        TextField delayDet = new TextField();
+        TextField delayDet = new TextField("30");
         HBox detourDelayBox = new HBox(new Label("Zpoždění(minuty): "), delayDet);
 
         createDetour.setOnMouseClicked(e -> {
